@@ -6,19 +6,22 @@ export default component$(() => {
     <>
       <div class="container mx-auto m-10 flex flex-col gap-10">
         <img src="/logo_wide.png" class="logo h-36 md:h-52 px-12 mx-auto" />
-        <p class="mx-10">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-          ultricies ullamcorper risus, et molestie orci tempor a. Etiam
-          tincidunt ligula id efficitur laoreet. Phasellus pulvinar tempus
-          lorem, in malesuada nulla laoreet at. Praesent scelerisque augue
-          purus, eget ultricies orci bibendum eget. Quisque cursus venenatis
-          porttitor. Sed porta at ante sed consequat. Etiam sed condimentum
-          orci. Nam rutrum justo a massa consectetur egestas. Aliquam nibh
-          tortor, tincidunt sit amet gravida ac, commodo nec elit. Nullam ex
-          erat, ultrices vitae laoreet non, posuere ut dui. Nulla vestibulum,
-          lorem non pellentesque lobortis, justo enim lacinia justo, at
-          efficitur diam dui ac nisi.
-        </p>
+        <section>
+          <p class="mx-10 mb-3">
+            Wir sind der Gaming Club der OST Fachhochschule. Bei uns wird mit
+            Leidenschaft Videospiele gespielt und sich darüber ausgetauscht.
+            Alle Arten von Gamern sind bei uns willkommen, egal auf welcher
+            Konsole du spielst, kompetitiv / nur zum Spass oder welche Gamegenre
+            du magst. Solange genug Interesse für ein Game vorhanden ist, wird
+            es bei uns gespielt. Zusätzlich veranstalten wir regelmässig
+            Turniere und spielen mit unseren kompetitiven Teams in den
+            entsprechenden Ligen.
+          </p>
+          <p class="mx-10">
+            Hast du lust ein Teil unseres Clubs zu sein? Dann tritt unserem
+            Discord bei!
+          </p>
+        </section>
         <a
           href="https://discord.gg/UAWGz7gg5A"
           class="absolute bottom-[25%] md:bottom-[30%] self-center w-1/2 md:w-1/3 lg:w-1/6"
