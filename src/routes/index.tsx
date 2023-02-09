@@ -21,7 +21,7 @@ export default component$(() => {
         </p>
         <a
           href="https://discord.gg/UAWGz7gg5A"
-          class="absolute bottom-[25%] md:bottom-[20%] self-center w-1/2 md:w-1/3 lg:w-1/6"
+          class="absolute bottom-[25%] md:bottom-[30%] self-center w-1/2 md:w-1/3 lg:w-1/6"
         >
           <img src="join_discord.svg" alt="join discord" />
         </a>
