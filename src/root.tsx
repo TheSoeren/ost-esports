@@ -1,8 +1,11 @@
-import { component$, useStyles$ } from '@builder.io/qwik';
-import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
-import { RouterHead } from './components/router-head/router-head';
-
-import globalStyles from './global.css?inline';
+import { component$, useStyles$ } from '@builder.io/qwik'
+import {
+  QwikCityProvider,
+  RouterOutlet,
+  ServiceWorkerRegister,
+} from '@builder.io/qwik-city'
+import { RouterHead } from './components/router-head/router-head'
+import globalStyles from './global.css?inline'
 
 export default component$(() => {
   /**
@@ -11,7 +14,7 @@ export default component$(() => {
    *
    * Dont remove the `<head>` and `<body>` elements.
    */
-  useStyles$(globalStyles);
+  useStyles$(globalStyles)
 
   return (
     <QwikCityProvider>
@@ -25,5 +28,5 @@ export default component$(() => {
         <ServiceWorkerRegister />
       </body>
     </QwikCityProvider>
-  );
-});
+  )
+})

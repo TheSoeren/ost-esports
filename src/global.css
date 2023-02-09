@@ -5,7 +5,25 @@
  * the styles in here will be applied to the Document, without any sort of CSS scoping.
  *
  */
- @tailwind base;
- @tailwind components;
- @tailwind utilities;
- 
+@tailwind base;
+@tailwind components;
+
+.main-nav {
+  @apply flex items-center gap-2 flex-row;
+}
+
+.main-nav-item {
+  @apply rounded p-2;
+}
+
+.page-content {
+  @apply container mx-auto my-5;
+}
+
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: Roboto, system-ui, sans-serif;
+  }
+}
