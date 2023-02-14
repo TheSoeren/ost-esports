@@ -8,14 +8,14 @@ export default component$(() => {
         <img src="/logo_wide.png" class="logo h-36 md:h-52 px-12 mx-auto" />
         <section>
           <p class="mx-10 mb-3">
-            Wir sind der Gaming Club der OST Fachhochschule. Bei uns wird mit
-            Leidenschaft Videospiele gespielt und sich darüber ausgetauscht.
-            Alle Arten von Gamern sind bei uns willkommen, egal auf welcher
-            Konsole du spielst, kompetitiv / nur zum Spass oder welche Gamegenre
-            du magst. Solange genug Interesse für ein Game vorhanden ist, wird
-            es bei uns gespielt. Zusätzlich veranstalten wir regelmässig
-            Turniere und spielen mit unseren kompetitiven Teams in den
-            entsprechenden Ligen.
+            Wir sind der Gaming Club der Ostschweizer Fachhochschule. Bei uns
+            wird mit Leidenschaft Videospiele gespielt und sich darüber
+            ausgetauscht. Alle Arten von Gamern sind bei uns willkommen, egal
+            auf welcher Konsole du spielst, kompetitiv / nur zum Spass oder
+            welche Gamegenre du magst. Solange genug Interesse für ein Game
+            vorhanden ist, wird es bei uns gespielt. Zusätzlich veranstalten wir
+            regelmässig Turniere und spielen mit unseren kompetitiven Teams in
+            den entsprechenden Ligen.
           </p>
           <p class="mx-10">
             Hast du lust ein Teil unseres Clubs zu sein? Dann tritt unserem
