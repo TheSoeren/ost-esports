@@ -1,12 +1,8 @@
-import { component$, type Signal } from '@builder.io/qwik'
+import { component$ } from '@builder.io/qwik'
 
-interface NaviagtionProps {
-  ref?: Signal<HTMLDivElement | undefined>
-}
-
-export default component$(({ ref }: NaviagtionProps) => {
+export default component$(() => {
   return (
-    <nav ref={ref} class="main-nav mx-auto">
+    <nav class="main-nav mx-auto">
       <a href="/news" class="main-nav-item">
         News
       </a>
