@@ -3,8 +3,8 @@ import type { DocumentHead } from '@builder.io/qwik-city'
 
 export default component$(() => {
   return (
-    <section class="container p-8 mx-auto flex flex-col gap-10">
-      <p class="mb-3">
+    <section class="container p-8 mx-auto flex flex-col gap-4">
+      <p>
         Wir sind der Gaming Club der Ostschweizer Fachhochschule. Bei uns wird
         mit Leidenschaft Videospiele gespielt und sich darüber ausgetauscht.
         Alle Arten von Gamern sind bei uns willkommen, egal auf welcher Konsole
@@ -19,7 +19,7 @@ export default component$(() => {
       </p>
       <a
         href="https://discord.gg/UAWGz7gg5A"
-        class="block mx-auto my-10 w-1/3 md:w-1/4 lg:w-1/6"
+        class="block mx-auto mt-2 md:mt-8 mb-8 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6"
       >
         <img src="join_discord.svg" alt="join discord" />
       </a>
