@@ -6,8 +6,8 @@ export default component$(() => {
       <a href="/news" class="main-nav-item">
         News
       </a>
-      <a href="/teams" class="main-nav-item">
-        Teams
+      <a href="/games" class="main-nav-item">
+        Games
       </a>
       <a href="/join" class="main-nav-item">
         Mitmachen

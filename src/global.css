@@ -24,6 +24,27 @@
 
 @layer base {
   html {
-    font-family: Roboto, system-ui, sans-serif;
+    /* font-family: Roboto, system-ui, sans-serif; */
+    font-family: Barlow;
+    background-color: #121212;
+    color: white;
+  }
+
+  .square {
+    aspect-ratio: 1/1;
   }
 }
+
+/* Games Page */
+.game-title {
+  @apply grid place-items-center text-5xl my-3 sm:text-7xl;
+}
+
+.game-all-widgets {
+  @apply p-4 grid gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3;
+}
+
+.game-widget {
+  @apply square bg-cover bg-center rounded-lg ring-1 ring-slate-900/5 shadow-xl;
+}
+/**************/
