@@ -20,6 +20,10 @@
   @apply container mx-auto my-5;
 }
 
+.w-112 {
+  width: 18rem; /* 480px */
+}
+
 @tailwind utilities;
 
 @layer base {
