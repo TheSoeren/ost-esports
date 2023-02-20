@@ -1,18 +1,21 @@
 import { component$, Slot } from '@builder.io/qwik'
-import Header from '../components/header'
+
+import Footer from '~/components/footer'
+import Header from '~/components/header'
 import Navigation from '../components/navigation'
 
 export default component$(() => {
   return (
-    <>
-      <main>
-        <Header />
-        <Navigation />
+    <section class="flex flex-col min-h-screen">
+      <Header />
+      <main class="flex-grow">
+       <Navigation />
+         develop
         <section>
           <Slot />
         </section>
       </main>
-      <footer></footer>
-    </>
+      <Footer />
+    </section>
   )
 })
