@@ -1,0 +1,7 @@
+.main-nav {
+  @apply flex items-center gap-10 flex-row px-8 py-4;
+}
+
+.main-nav-item {
+  @apply px-2;
+}

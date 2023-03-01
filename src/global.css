@@ -7,27 +7,20 @@
  */
 @tailwind base;
 @tailwind components;
-
-.main-nav {
-  @apply flex items-center gap-2 flex-row;
-}
-
-.main-nav-item {
-  @apply rounded p-2;
-}
-
-.page-content {
-  @apply container mx-auto my-5;
-}
-
-.w-112 {
-  width: 18rem; /* 480px */
-}
-
 @tailwind utilities;
 
 @layer base {
   html {
     font-family: Roboto, system-ui, sans-serif;
+  }
+
+  .w-112 {
+    width: 18rem; /* 480px */
+  }
+}
+
+@layer utilities {
+  .page-content {
+    @apply container mx-auto my-5;
   }
 }
