@@ -1,0 +1,19 @@
+.games__container {
+  @apply grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 lg:gap-8;
+}
+
+.games__tile {
+  @apply relative rounded-lg transition hover:transition shadow-lg hover:shadow-2xl hover:scale-105;
+}
+
+.games__tile::before {
+  @apply content-[''] block pt-[100%];
+}
+
+.games__tile-link {
+  @apply absolute top-0 left-0 h-full w-full rounded-lg;
+}
+
+.games__tile-image {
+  @apply h-full object-cover rounded-lg;
+}

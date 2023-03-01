@@ -1,14 +1,20 @@
-import { component$ } from '@builder.io/qwik'
+import { component$, useStylesScoped$ } from '@builder.io/qwik'
+import styles from '~/css/navigation.css?inline'
 
 export default component$(() => {
+  useStylesScoped$(styles)
+
   return (
-    <nav class="main-nav mx-auto">
-      <div>
+    <section class="main-nav">
+      <a href="/">
+        <img src="/logo_wide.png" class="logo h-14 justify-end" />
+      </a>
+      <nav>
         <a href="/news" class="main-nav-item">
           News
         </a>
-        <a href="/games" class="main-nav-item">
-          Games
+        <a href="/teams" class="main-nav-item">
+          Teams
         </a>
         <a href="/join" class="main-nav-item">
           Mitmachen
@@ -16,10 +22,7 @@ export default component$(() => {
         <a href="/gallery" class="main-nav-item hidden">
           Gallerie
         </a>
-      </div>
-      <a href="#">
-        <img src="/logo_wide.png" class="logo h-14 justify-end" />
-      </a>
-    </nav>
+      </nav>
+    </section>
   )
 })
