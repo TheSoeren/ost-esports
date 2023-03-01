@@ -7,48 +7,20 @@
  */
 @tailwind base;
 @tailwind components;
-
-.main-nav {
-  @apply flex items-center gap-2 flex-row justify-between p-2;
-}
-
-.main-nav-item {
-  @apply rounded p-2;
-}
-
-.page-content {
-  @apply container mx-auto my-5;
-}
-
-.w-112 {
-  width: 18rem; /* 480px */
-}
-
 @tailwind utilities;
 
 @layer base {
   html {
-    /* font-family: Roboto, system-ui, sans-serif; */
-    font-family: Barlow;
-    background-color: #121212;
-    color: white;
+    font-family: Roboto, system-ui, sans-serif;
   }
 
-  .square {
-    aspect-ratio: 1/1;
+  .w-112 {
+    width: 18rem; /* 480px */
   }
 }
 
-/* Games Page */
-.game-title {
-  @apply grid place-items-center text-5xl my-3 font-bold sm:text-7xl;
+@layer utilities {
+  .page-content {
+    @apply container mx-auto my-5;
+  }
 }
-
-.game-all-widgets {
-  @apply p-4 grid gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3;
-}
-
-.game-widget {
-  @apply square bg-cover bg-center rounded-lg ring-1 ring-slate-900/5 shadow-xl;
-}
-/**************/

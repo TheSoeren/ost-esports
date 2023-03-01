@@ -16,10 +16,6 @@ module.exports = {
         },
       },
     },
-    screens: {
-      sm: '400px', // min-width
-      md: '768px',
-    },
   },
   variants: {
     animation: ['motion-safe'],
