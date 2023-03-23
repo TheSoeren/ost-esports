@@ -9,8 +9,8 @@ export default component$(() => {
   return (
     <article class="page-content">
       <div class="games__container">
-        {games.map((game) => (
-          <GameTile {...game} />
+        {games.map((game, index) => (
+          <GameTile key={index} {...game} />
         ))}
       </div>
     </article>
