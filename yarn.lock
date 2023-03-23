@@ -9,21 +9,21 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@builder.io/qwik-city@0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@builder.io/qwik-city/-/qwik-city-0.2.1.tgz#c57f481a75534ff54ddb0f38403acc66b5d02f41"
-  integrity sha512-g+ZC4Neo1XYQ/8uquUp6GKwr0eagpuCyQ3LkAtFhaIARaO67+cZfR6EFLJzf9wz5AVSt8/0QSD7wJEpni1i4IA==
+"@builder.io/qwik-city@0.6.6":
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/@builder.io/qwik-city/-/qwik-city-0.6.6.tgz#3dda334e1e622f40eca4e26a6b97be4f276f1b30"
+  integrity sha512-khqveboSCnmFCDzBq2OxNkplu6ngS64CNRu4RQI08e76uWjov+Y0xahYCsZuZP5Dp1A/Vji8d4MY4cLL+c0lZA==
   dependencies:
     "@mdx-js/mdx" "2.3.0"
     "@types/mdx" "2.0.3"
     source-map "0.7.4"
     vfile "5.3.7"
-    zod "^3.20.6"
+    zod "^3.21.4"
 
-"@builder.io/qwik@0.18.1":
-  version "0.18.1"
-  resolved "https://registry.yarnpkg.com/@builder.io/qwik/-/qwik-0.18.1.tgz#341d01c5749a07230c700a5e4df859b857654cd0"
-  integrity sha512-11qx5Wh6WRxgvHDJDppJORhykzkACUYuu9qRKEGdS3vTkBQ2Rr8NFDjYon2x6+8Wu9WukHk84ANywWnS91gS/w==
+"@builder.io/qwik@0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@builder.io/qwik/-/qwik-0.23.0.tgz#b25a39bc28aaddc64dce00dfb672f4f6324794f5"
+  integrity sha512-srbA4o9KyeGXA0fUibZW7I6iasjYhpBlp1Iq74dLTB4Py66wfazpekZ+qi57XcuSj3cBPf/Rsz/yxvQx5DwM2g==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -3443,10 +3443,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zod@^3.20.6:
-  version "3.20.6"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.20.6.tgz#2f2f08ff81291d47d99e86140fedb4e0db08361a"
-  integrity sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==
+zod@^3.21.4:
+  version "3.21.4"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.21.4.tgz#10882231d992519f0a10b5dd58a38c9dabbb64db"
+  integrity sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==
 
 zwitch@^2.0.0:
   version "2.0.4"
