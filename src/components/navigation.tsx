@@ -13,7 +13,7 @@ export default component$(() => {
         <a href="/news" class="main-nav-item">
           News
         </a>
-        <a href="/teams" class="main-nav-item">
+        <a href="/games" class="main-nav-item">
           Teams
         </a>
         <a href="/join" class="main-nav-item">

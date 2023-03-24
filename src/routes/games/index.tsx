@@ -4,7 +4,7 @@ import {
   useResource$,
   useStyles$,
 } from '@builder.io/qwik'
-import GameTile from '~/components/teams/game-tile'
+import GameTile from '~/components/games/game-tile'
 import styles from '~/css/teams.css?inline'
 import type { Game, ListResult } from '~/types'
 
