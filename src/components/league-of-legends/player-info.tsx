@@ -6,13 +6,16 @@ import {
   useTask$,
 } from '@builder.io/qwik'
 import type { Player, User } from '~/types'
+import fetch from '~/ajax'
 
 export default component$(({ id, user, roleIcon, collectionId }: Player) => {
   const src = useSignal('')
 
   useTask$(({ track }) => {
     track(() => roleIcon)
-    src.value = `http://159.69.196.31/api/files/${collectionId}/${id}/${roleIcon}`
+    src.value = `${
+      import.meta.env.VITE_API_URL
+    }/api/files/${collectionId}/${id}/${roleIcon}`
   })
 
   const userResource = useResource$<User>(({ cleanup }) => {
@@ -42,12 +45,9 @@ export async function getUser(
   id: string,
   controller?: AbortController
 ): Promise<User> {
-  const response = await fetch(
-    `http://159.69.196.31/api/collections/users/records/${id}`,
-    {
-      signal: controller?.signal,
-    }
-  )
+  const response = await fetch(`/api/collections/users/records/${id}`, {
+    signal: controller?.signal,
+  })
 
   return response.json()
 }

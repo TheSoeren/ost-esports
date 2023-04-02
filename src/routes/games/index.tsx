@@ -7,6 +7,7 @@ import {
 import GameTile from '~/components/games/game-tile'
 import styles from '~/css/games.css?inline'
 import type { Game, ListResult } from '~/types'
+import fetch from '~/ajax'
 
 export default component$(() => {
   useStyles$(styles)
@@ -39,12 +40,9 @@ export default component$(() => {
 export async function getGames(
   controller?: AbortController
 ): Promise<ListResult<Game>> {
-  const response = await fetch(
-    `http://159.69.196.31/api/collections/games/records`,
-    {
-      signal: controller?.signal,
-    }
-  )
+  const response = await fetch(`/api/collections/games/records`, {
+    signal: controller?.signal,
+  })
 
   return response.json()
 }
