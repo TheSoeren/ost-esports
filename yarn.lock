@@ -9,10 +9,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@builder.io/qwik-city@0.100.0":
-  version "0.100.0"
-  resolved "https://registry.yarnpkg.com/@builder.io/qwik-city/-/qwik-city-0.100.0.tgz#6f84af5f6919e28937ea07024284a4425a05e68e"
-  integrity sha512-EEZ8q10vmEjOOe5qQIel+jLcuuFYOjakIIgHt5KOWnY/L0HBw9xzFDkFDcdmPJlrCmHTm3y4T1ZtqKPEFNgO9w==
+"@builder.io/qwik-city@0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@builder.io/qwik-city/-/qwik-city-0.7.1.tgz#2ce49eabc1bf92846495f9209a2dd7ec25bc48de"
+  integrity sha512-FkRG5OSrMYGnAlVmZnbu/1HaleNG+MWzcBuBRN0qk5u403eye+14a8sjdDD5RSPmG2/OUxHeBLKOmadk8SE7jg==
   dependencies:
     "@mdx-js/mdx" "2.3.0"
     "@types/mdx" "2.0.3"
@@ -20,10 +20,10 @@
     vfile "5.3.7"
     zod "^3.21.4"
 
-"@builder.io/qwik@0.100.0":
-  version "0.100.0"
-  resolved "https://registry.yarnpkg.com/@builder.io/qwik/-/qwik-0.100.0.tgz#5d1b850b3315a47b722a371f49519a78fe996ea9"
-  integrity sha512-p2DAHZTkPFVN3fz3I6Ael6pLLdlzf89owPJVAIoQ9vt5jULnDJRf096qGc84Y+gaoqfoFWBYHYVnHOP0fnRjQg==
+"@builder.io/qwik@0.25.0":
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/@builder.io/qwik/-/qwik-0.25.0.tgz#c57bcf9d28e973a6c8c73a44364f12485d9264b4"
+  integrity sha512-4Yc2bv84UynCiWJf5BQ7cBweD9bvv1kNHoG1yCDx1SagbuKzBEvgyTHMwfrKmUTJ0llDZmA1UPmKQ5agxRnfAg==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"

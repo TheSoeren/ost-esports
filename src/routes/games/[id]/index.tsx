@@ -6,8 +6,7 @@ import {
 } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
 import styles from '~/css/teams.css?inline'
-import type { Game, ListResult, Team } from '~/types'
-import getTeamTile from '~/data/player-info-mapping'
+import type { ListResult, Team } from '~/types'
 import fetch from '~/ajax'
 import TeamTile from '~/components/teams/team-tile'
 
