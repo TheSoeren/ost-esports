@@ -7,13 +7,12 @@ export default component$(({ id, name }: Team) => {
     const controller = new AbortController()
     cleanup(() => controller.abort())
 
-    return getPlayers(controller, id)
+    return getPlayers(id, controller)
   })
 
   return (
     <div class="teams__tile">
       <div>{name}</div>
-
       <Resource
         value={playerResource}
         onPending={() => <>Loading...</>}
@@ -31,8 +30,8 @@ export default component$(({ id, name }: Team) => {
 })
 
 export async function getPlayers(
-  controller?: AbortController,
-  teamId?: string
+  teamId: string,
+  controller?: AbortController
 ): Promise<ListResult<Player>> {
   const response = await fetch(
     `http://159.69.196.31/api/collections/memberhip/records?filter=(team="${teamId}")`,
@@ -41,5 +40,5 @@ export async function getPlayers(
     }
   )
 
-  return await response.json()
+  return response.json()
 }

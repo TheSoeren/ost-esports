@@ -9,10 +9,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@builder.io/qwik-city@0.6.6":
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/@builder.io/qwik-city/-/qwik-city-0.6.6.tgz#3dda334e1e622f40eca4e26a6b97be4f276f1b30"
-  integrity sha512-khqveboSCnmFCDzBq2OxNkplu6ngS64CNRu4RQI08e76uWjov+Y0xahYCsZuZP5Dp1A/Vji8d4MY4cLL+c0lZA==
+"@builder.io/qwik-city@0.100.0":
+  version "0.100.0"
+  resolved "https://registry.yarnpkg.com/@builder.io/qwik-city/-/qwik-city-0.100.0.tgz#6f84af5f6919e28937ea07024284a4425a05e68e"
+  integrity sha512-EEZ8q10vmEjOOe5qQIel+jLcuuFYOjakIIgHt5KOWnY/L0HBw9xzFDkFDcdmPJlrCmHTm3y4T1ZtqKPEFNgO9w==
   dependencies:
     "@mdx-js/mdx" "2.3.0"
     "@types/mdx" "2.0.3"
@@ -20,10 +20,10 @@
     vfile "5.3.7"
     zod "^3.21.4"
 
-"@builder.io/qwik@0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@builder.io/qwik/-/qwik-0.23.0.tgz#b25a39bc28aaddc64dce00dfb672f4f6324794f5"
-  integrity sha512-srbA4o9KyeGXA0fUibZW7I6iasjYhpBlp1Iq74dLTB4Py66wfazpekZ+qi57XcuSj3cBPf/Rsz/yxvQx5DwM2g==
+"@builder.io/qwik@0.100.0":
+  version "0.100.0"
+  resolved "https://registry.yarnpkg.com/@builder.io/qwik/-/qwik-0.100.0.tgz#5d1b850b3315a47b722a371f49519a78fe996ea9"
+  integrity sha512-p2DAHZTkPFVN3fz3I6Ael6pLLdlzf89owPJVAIoQ9vt5jULnDJRf096qGc84Y+gaoqfoFWBYHYVnHOP0fnRjQg==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -3186,10 +3186,10 @@ typescript@4.3.4:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.4.tgz#3f85b986945bcf31071decdd96cf8bfa65f9dcbc"
   integrity sha512-uauPG7XZn9F/mo+7MrsRjyvbxFpzemRjKEZXS4AK83oP2KKOJPvb+9cO/gmnv8arWZvhnjVOXz7B49m1l0e9Ew==
 
-typescript@4.9.4:
-  version "4.9.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.4.tgz#a2a3d2756c079abda241d75f149df9d561091e78"
-  integrity sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==
+typescript@5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.3.tgz#fe976f0c826a88d0a382007681cbb2da44afdedf"
+  integrity sha512-xv8mOEDnigb/tN9PSMTwSEqAnUvkoXMQlicOb0IUVDBSQCgBSaAAROUZYy2IcUy5qU6XajK5jjjO7TMWqBTKZA==
 
 undici@5.14.0:
   version "5.14.0"

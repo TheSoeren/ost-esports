@@ -15,7 +15,6 @@ export default component$(() => {
     const controller = new AbortController()
     cleanup(() => controller.abort())
 
-    // Fetch the data and return the promises.
     return getGames(controller)
   })
 
@@ -47,5 +46,5 @@ export async function getGames(
     }
   )
 
-  return await response.json()
+  return response.json()
 }

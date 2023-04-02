@@ -19,7 +19,7 @@ export default component$(({ id, user, roleIcon, collectionId }: Player) => {
     const controller = new AbortController()
     cleanup(() => controller.abort())
 
-    return getUser(controller, user)
+    return getUser(user, controller)
   })
 
   return (
@@ -39,8 +39,8 @@ export default component$(({ id, user, roleIcon, collectionId }: Player) => {
 })
 
 export async function getUser(
-  controller?: AbortController,
-  id?: string
+  id: string,
+  controller?: AbortController
 ): Promise<User> {
   const response = await fetch(
     `http://159.69.196.31/api/collections/users/records/${id}`,
@@ -49,5 +49,5 @@ export async function getUser(
     }
   )
 
-  return await response.json()
+  return response.json()
 }
