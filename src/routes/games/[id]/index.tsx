@@ -5,7 +5,7 @@ import {
   useStyles$,
 } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
-import styles from '~/css/teams.css?inline'
+import styles from '~/css/teams/index.css?inline'
 import type { ListResult, Team } from '~/types'
 import fetch from '~/ajax'
 import TeamTile from '~/components/teams/team-tile'

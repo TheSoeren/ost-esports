@@ -3,12 +3,15 @@ import {
   component$,
   useResource$,
   useSignal,
+  useStylesScoped$,
   useTask$,
 } from '@builder.io/qwik'
 import type { Player, User } from '~/types'
 import fetch from '~/ajax'
+import styles from '~/css/teams/lol-player-info.css?inline'
 
 export default component$(({ id, user, roleIcon, collectionId }: Player) => {
+  useStylesScoped$(styles)
   const src = useSignal('')
 
   useTask$(({ track }) => {
@@ -26,7 +29,7 @@ export default component$(({ id, user, roleIcon, collectionId }: Player) => {
   })
 
   return (
-    <>
+    <section class="player-info">
       <img class="player-info__role" src={src.value} alt={roleIcon} />
 
       <Resource
@@ -34,10 +37,12 @@ export default component$(({ id, user, roleIcon, collectionId }: Player) => {
         onPending={() => <>Loading...</>}
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={(user) => (
-          <div>username: {user.name ? user.name : user.username}</div>
+          <div class="player-info__text">
+            {user.name ? user.name : user.username}
+          </div>
         )}
       />
-    </>
+    </section>
   )
 })
 

@@ -1,7 +1,0 @@
-.teams__container {
-  @apply grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 lg:gap-7;
-}
-
-.teams__tile {
-  @apply relative rounded-lg shadow-lg bg-slate-300 p-5;
-}
