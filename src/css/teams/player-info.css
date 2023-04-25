@@ -1,0 +1,11 @@
+.player-info {
+  @apply flex my-1;
+}
+
+.player-info__icon {
+  @apply w-8 h-8 mr-3;
+}
+
+.player-info__text {
+  @apply my-auto text-2xl;
+}

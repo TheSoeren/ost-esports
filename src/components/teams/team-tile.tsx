@@ -1,12 +1,16 @@
-import { Resource, component$, useResource$ } from '@builder.io/qwik'
+import {
+  Resource,
+  component$,
+  useResource$,
+  useStylesScoped$,
+} from '@builder.io/qwik'
 import type { ListResult, Player, Team } from '~/types'
-import fetch from '~/ajax'
-import { useLocation } from '@builder.io/qwik-city'
-import getPlayerInfo from '~/data/player-info-mapping'
+import PlayerInfo from '~/components/teams/player-info'
+import { getPlayers } from '~/data/teams/data-fetching'
+import styles from '~/css/teams/team-tile.css?inline'
 
 export default component$(({ id, name }: Team) => {
-  const { params } = useLocation()
-  const PlayerInfo = getPlayerInfo(params.id)
+  useStylesScoped$(styles)
 
   const playerResource = useResource$<ListResult<Player>>(({ cleanup }) => {
     const controller = new AbortController()
@@ -33,17 +37,3 @@ export default component$(({ id, name }: Team) => {
     </div>
   )
 })
-
-export async function getPlayers(
-  teamId: string,
-  controller?: AbortController
-): Promise<ListResult<Player>> {
-  const response = await fetch(
-    `/api/collections/memberhip/records?filter=(team="${teamId}")`,
-    {
-      signal: controller?.signal,
-    }
-  )
-
-  return response.json()
-}

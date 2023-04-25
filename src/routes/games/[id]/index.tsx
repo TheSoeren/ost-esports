@@ -2,18 +2,19 @@ import {
   component$,
   Resource,
   useResource$,
-  useStyles$,
+  useStylesScoped$,
 } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
 import styles from '~/css/teams/index.css?inline'
 import type { ListResult, Team } from '~/types'
 import fetch from '~/ajax'
-import TeamTile from '~/components/teams/team-tile'
+import getTeamTile from '~/data/teams/team-tile-mapping'
 
 export default component$(() => {
-  useStyles$(styles)
+  useStylesScoped$(styles)
 
   const { params } = useLocation()
+  const TeamTile = getTeamTile(params.id)
   const teamsResource = useResource$<ListResult<Team>>(({ cleanup }) => {
     const controller = new AbortController()
     cleanup(() => controller.abort())

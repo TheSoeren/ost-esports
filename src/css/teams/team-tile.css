@@ -1,0 +1,8 @@
+.teams__tile {
+  @apply relative rounded-lg shadow-lg bg-pink-100 p-5;
+}
+
+.teams__name {
+  @apply text-3xl;
+  margin-bottom: 1rem;
+}
