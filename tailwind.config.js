@@ -15,6 +15,11 @@ module.exports = {
           '100%': { opacity: 1 },
         },
       },
+      colors: {
+        'ost-black': '#191919',
+        'ost-pink': '#8C195F',
+        'ost-orange': '#D72864',
+      },
     },
   },
   variants: {

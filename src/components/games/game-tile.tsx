@@ -10,7 +10,9 @@ export default component$(({ collectionId, id, image, name }: Game) => {
 
   useTask$(({ track }) => {
     track(() => image)
-    src.value = `http://159.69.196.31/api/files/${collectionId}/${id}/${image}`
+    src.value = `${
+      import.meta.env.VITE_API_URL
+    }/api/files/${collectionId}/${id}/${image}`
   })
 
   return (

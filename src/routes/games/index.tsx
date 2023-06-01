@@ -5,8 +5,10 @@ import {
   useStyles$,
 } from '@builder.io/qwik'
 import GameTile from '~/components/games/game-tile'
-import styles from '~/css/teams.css?inline'
+import styles from '~/css/games.css?inline'
 import type { Game, ListResult } from '~/types'
+import fetch from '~/ajax'
+import { type DocumentHead } from '@builder.io/qwik-city'
 
 export default component$(() => {
   useStyles$(styles)
@@ -15,7 +17,6 @@ export default component$(() => {
     const controller = new AbortController()
     cleanup(() => controller.abort())
 
-    // Fetch the data and return the promises.
     return getGames(controller)
   })
 
@@ -40,12 +41,13 @@ export default component$(() => {
 export async function getGames(
   controller?: AbortController
 ): Promise<ListResult<Game>> {
-  const response = await fetch(
-    `http://159.69.196.31/api/collections/games/records`,
-    {
-      signal: controller?.signal,
-    }
-  )
+  const response = await fetch(`/api/collections/games/records`, {
+    signal: controller?.signal,
+  })
 
-  return await response.json()
+  return response.json()
+}
+
+export const head: DocumentHead = {
+  title: 'OST Games',
 }
