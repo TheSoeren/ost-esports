@@ -7,7 +7,7 @@ export default component$(() => {
   return (
     <section class="main-nav">
       <a href="/">
-        <img src="/logo_wide.png" class="logo h-14 justify-end" />
+        <img src="/logo_wide.webp" class="logo h-14 justify-end" />
       </a>
       <nav>
         <a href="/news" class="main-nav-item">

@@ -20,7 +20,11 @@ export default component$(({ user }: Player) => {
 
   return (
     <section class="player-info">
-      <img class="player-info__icon" src="/profile.png" alt="Profile Picture" />
+      <img
+        class="player-info__icon"
+        src="/profile.webp"
+        alt="Profile Picture"
+      />
 
       <Resource
         value={userResource}
