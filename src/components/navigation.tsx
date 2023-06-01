@@ -6,7 +6,7 @@ export default component$(() => {
 
   return (
     <section class="main-nav">
-      <a href="/">
+      <a href="/" aria-label="Site Overview">
         <img
           src="/logo_wide.webp"
           alt="OST ESports Logo"
