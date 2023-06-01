@@ -32,7 +32,7 @@ export default component$(
 
     return (
       <section class="player-info">
-        <img class="player-info__icon" src={src.value} alt="Profile Picture" />
+        <img class="player-info__icon" src={src.value} alt="Role Icon" />
 
         <Resource
           value={userResource}
