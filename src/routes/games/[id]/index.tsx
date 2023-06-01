@@ -4,7 +4,7 @@ import {
   useResource$,
   useStylesScoped$,
 } from '@builder.io/qwik'
-import { useLocation } from '@builder.io/qwik-city'
+import { type DocumentHead, useLocation } from '@builder.io/qwik-city'
 import styles from '~/css/teams/index.css?inline'
 import type { ListResult, Team } from '~/types'
 import fetch from '~/ajax'
@@ -52,4 +52,8 @@ export async function getTeams(
   )
 
   return response.json()
+}
+
+export const head: DocumentHead = {
+  title: 'OST Teams',
 }

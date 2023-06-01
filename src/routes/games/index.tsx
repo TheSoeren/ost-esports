@@ -8,6 +8,7 @@ import GameTile from '~/components/games/game-tile'
 import styles from '~/css/games.css?inline'
 import type { Game, ListResult } from '~/types'
 import fetch from '~/ajax'
+import { type DocumentHead } from '@builder.io/qwik-city'
 
 export default component$(() => {
   useStyles$(styles)
@@ -45,4 +46,8 @@ export async function getGames(
   })
 
   return response.json()
+}
+
+export const head: DocumentHead = {
+  title: 'OST Games',
 }
