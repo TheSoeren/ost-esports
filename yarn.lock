@@ -9,21 +9,21 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@builder.io/qwik-city@0.103.0":
-  version "0.103.0"
-  resolved "https://registry.yarnpkg.com/@builder.io/qwik-city/-/qwik-city-0.103.0.tgz#1cafdc7fc21304923a998fb41b653d5a14036860"
-  integrity sha512-lryB9UrUR+/uOdYqXBIpBmInbK+rDRTzkRdfterNgZlBKR+enWnL4C/C50p4w1zjtl3RRx64hedf6dyn0setmg==
+"@builder.io/qwik-city@1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@builder.io/qwik-city/-/qwik-city-1.1.4.tgz#950397349e1659a2b6e42c29d0e52a7e04046efe"
+  integrity sha512-J6EAZN2vXaoou5PBC3GS6Z0RTC4jzXXNup+gLQou4yMVPnnI+i4g1bD1240Uo0VDhTLJQkBHxKWMWwRqgckISA==
   dependencies:
     "@mdx-js/mdx" "2.3.0"
-    "@types/mdx" "2.0.4"
+    "@types/mdx" "2.0.5"
     source-map "0.7.4"
     vfile "5.3.7"
     zod "^3.21.4"
 
-"@builder.io/qwik@0.103.0":
-  version "0.103.0"
-  resolved "https://registry.yarnpkg.com/@builder.io/qwik/-/qwik-0.103.0.tgz#1cc27119b3ca5517033af3c553c84bd4f79dd423"
-  integrity sha512-pBNbOJZpODp9yMCyGnVxWwcNgolH4bx8/AeLcWN7jGhjcrCcQpH8WEV6tjXCGUH/JfSGYjywI4FdYsMRam8wdg==
+"@builder.io/qwik@1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@builder.io/qwik/-/qwik-1.1.4.tgz#8109b294ff23ca615ffc79deee405bc3df16c4cf"
+  integrity sha512-FSbe2GcUBptAXMAHfN+oGUpnb3nZXzup2EYlza61bAfgWSx9SryOwNULyROis3mu7Ywdua3w6VKvCWOFdovz2w==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -378,10 +378,10 @@
   dependencies:
     "@types/unist" "*"
 
-"@types/mdx@2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@types/mdx/-/mdx-2.0.4.tgz#d1cad61ccc803b3c248c3d9990a2a6880bef537f"
-  integrity sha512-qCYrNdpKwN6YO6FVnx+ulfqifKlE3lQGsNhvDaW9Oxzyob/cRLBJWow8GHBBD4NxQ7BVvtsATgLsX0vZAWmtrg==
+"@types/mdx@2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/mdx/-/mdx-2.0.5.tgz#9a85a8f70c7c4d9e695a21d5ae5c93645eda64b1"
+  integrity sha512-76CqzuD6Q7LC+AtbPqrvD9AqsN0k8bsYo2bM2J8pmNldP1aIPAbzUQ7QbobyXL4eLr1wK5x8FZFe8eF/ubRuBg==
 
 "@types/mdx@^2.0.0":
   version "2.0.3"
