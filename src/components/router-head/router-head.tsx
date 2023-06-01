@@ -25,18 +25,21 @@ export const RouterHead = component$(() => {
       <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
         rel="stylesheet"
+        media="none"
+        // @ts-ignore -> method to have non-blocking css (https://keithclark.co.uk/articles/loading-css-without-blocking-render/)
+        onload="if(media!='all')media='all'"
       />
 
       {head.meta.map((m) => (
-        <meta {...m} />
+        <meta key={m.key} {...m} />
       ))}
 
       {head.links.map((l) => (
-        <link {...l} />
+        <link key={l.key} {...l} />
       ))}
 
       {head.styles.map((s) => (
-        <style {...s.props} dangerouslySetInnerHTML={s.style} />
+        <style key={s.key} {...s.props} dangerouslySetInnerHTML={s.style} />
       ))}
     </>
   )
