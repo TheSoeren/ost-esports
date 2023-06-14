@@ -1,0 +1,12 @@
+.news-tile {
+  @apply relative rounded-lg shadow-lg bg-pink-100 p-5;
+}
+
+.news-tile__title {
+  @apply text-3xl;
+  margin-bottom: 1rem;
+}
+
+.news-tile:first-of-type {
+  @apply col-span-full;
+}

@@ -18,6 +18,10 @@
   .w-112 {
     width: 18rem; /* 480px */
   }
+
+  hr {
+    @apply h-px mt-2 mb-4 bg-gray-200 border-0 dark:bg-gray-700;
+  }
 }
 
 @layer utilities {

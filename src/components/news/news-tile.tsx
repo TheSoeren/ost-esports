@@ -1,15 +1,14 @@
-import { component$ } from '@builder.io/qwik'
+import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import type { NewsEntry } from '~/types'
-
-export function random() {
-  return Math.round(Math.random())
-}
+import styles from '~/css/news/news-tile.css?inline'
 
 export default component$(({ title, content }: NewsEntry) => {
-  return (
-    <div>
-      <div>{title}</div>
+  useStylesScoped$(styles)
 
+  return (
+    <div class="news-tile">
+      <div class="news-tile__title">{title}</div>
+      <hr />
       {/* We can do `dangerouslySetInnerHTML` here because the content is sanitized by pocketbase */}
       <div class="prose" dangerouslySetInnerHTML={content}></div>
     </div>
