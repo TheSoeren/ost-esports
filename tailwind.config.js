@@ -6,15 +6,6 @@ module.exports = {
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
       },
-      animation: {
-        fadeIn: 'fadeIn 2s ease-in forwards',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: 0 },
-          '100%': { opacity: 1 },
-        },
-      },
       colors: {
         'ost-black': '#191919',
         'ost-pink': '#8C195F',
@@ -25,5 +16,5 @@ module.exports = {
   variants: {
     animation: ['motion-safe'],
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 }

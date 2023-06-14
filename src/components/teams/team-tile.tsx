@@ -1,22 +1,22 @@
 import {
   Resource,
   component$,
+  noSerialize,
   useResource$,
   useStylesScoped$,
 } from '@builder.io/qwik'
 import type { ListResult, Player, Team } from '~/types'
 import PlayerInfo from '~/components/teams/player-info'
-import { getPlayers } from '~/data/teams/data-fetching'
 import styles from '~/css/teams/team-tile.css?inline'
+import pb from '~/pocketbase'
 
 export default component$(({ id, name }: Team) => {
   useStylesScoped$(styles)
 
-  const playerResource = useResource$<ListResult<Player>>(({ cleanup }) => {
-    const controller = new AbortController()
-    cleanup(() => controller.abort())
-
-    return getPlayers(id, controller)
+  const playerResource = useResource$<ListResult<Player>>(async () => {
+    const response = await getPlayers(id)
+    noSerialize(response)
+    return response
   })
 
   return (
@@ -28,8 +28,8 @@ export default component$(({ id, name }: Team) => {
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={(players) => (
           <div>
-            {players.items.map((player, index) => (
-              <PlayerInfo key={index} {...player} />
+            {players.items.map((player) => (
+              <PlayerInfo key={player.id} {...player} />
             ))}
           </div>
         )}
@@ -37,3 +37,9 @@ export default component$(({ id, name }: Team) => {
     </div>
   )
 })
+
+export async function getPlayers(teamId: string) {
+  return pb
+    .collection('membership')
+    .getList<Player>(1, 30, { filter: `team="${teamId}"` })
+}
