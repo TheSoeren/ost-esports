@@ -1,31 +1,32 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik'
+import { component$, useStyles$ } from '@builder.io/qwik'
+import { Link } from '@builder.io/qwik-city'
 import styles from '~/css/navigation.css?inline'
 
 export default component$(() => {
-  useStylesScoped$(styles)
+  useStyles$(styles)
 
   return (
     <section class="main-nav">
-      <a href="/" aria-label="Site Overview">
+      <Link href="/" aria-label="Site Overview">
         <img
           src="/logo_wide.webp"
           alt="OST ESports Logo"
           class="logo h-14 justify-end"
         />
-      </a>
+      </Link>
       <nav>
-        <a href="/news" class="main-nav-item">
+        <Link href="/news" class="main-nav-item">
           News
-        </a>
-        <a href="/games" class="main-nav-item">
+        </Link>
+        <Link href="/games" class="main-nav-item">
           Teams
-        </a>
-        <a href="/join" class="main-nav-item">
-          Mitmachen
-        </a>
-        <a href="/gallery" class="main-nav-item hidden">
+        </Link>
+        <Link href="/gallery" class="main-nav-item">
           Gallerie
-        </a>
+        </Link>
+        <Link href="/join" class="main-nav-item">
+          Mitmachen
+        </Link>
       </nav>
     </section>
   )

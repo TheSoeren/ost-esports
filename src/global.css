@@ -18,10 +18,18 @@
   .w-112 {
     width: 18rem; /* 480px */
   }
+
+  hr {
+    @apply h-px mt-2 mb-4 bg-gray-200 border-0 dark:bg-gray-700;
+  }
 }
 
 @layer utilities {
   .page-content {
     @apply container mx-auto my-5;
+  }
+
+  .btn-outline {
+    @apply bg-transparent hover:bg-ost-pink text-ost-pink font-semibold hover:text-white py-1 px-3 border border-ost-pink hover:border-transparent rounded;
   }
 }

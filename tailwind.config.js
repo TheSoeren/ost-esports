@@ -6,24 +6,23 @@ module.exports = {
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
       },
-      animation: {
-        fadeIn: 'fadeIn 2s ease-in forwards',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: 0 },
-          '100%': { opacity: 1 },
-        },
-      },
       colors: {
         'ost-black': '#191919',
         'ost-pink': '#8C195F',
         'ost-orange': '#D72864',
       },
     },
+    screens: {
+      xs: '319px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+    },
   },
   variants: {
     animation: ['motion-safe'],
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 }
