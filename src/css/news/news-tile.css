@@ -2,11 +2,23 @@
   @apply relative rounded-lg shadow-lg bg-pink-100 p-5;
 }
 
+.news-tile__header {
+  @apply flex justify-between;
+}
+
 .news-tile__title {
-  @apply text-3xl;
-  margin-bottom: 1rem;
+  @apply text-2xl;
+
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
 }
 
 .news-tile:first-of-type {
-  @apply col-span-full;
+  @apply sm:col-span-2;
+}
+
+.news__tile-link {
+  @apply h-fit whitespace-nowrap;
 }

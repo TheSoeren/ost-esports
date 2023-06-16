@@ -10,6 +10,7 @@ import styles from '~/css/teams/index.css?inline'
 import type { ListResult, Team } from '~/types'
 import getTeamTile from '~/data/teams/team-tile-mapping'
 import pb from '~/pocketbase'
+import BackButton from '~/components/elements/back-button'
 
 export default component$(() => {
   useStylesScoped$(styles)
@@ -23,7 +24,8 @@ export default component$(() => {
   })
 
   return (
-    <article class="page-content">
+    <article>
+      <BackButton href="/games" />
       <div class="teams__container">
         <Resource
           value={teamsResource}
@@ -47,5 +49,5 @@ export async function getTeams(gameId: string) {
 }
 
 export const head: DocumentHead = {
-  title: 'OST Teams',
+  title: 'OST eSports - Teams',
 }

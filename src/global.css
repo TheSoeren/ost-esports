@@ -28,4 +28,8 @@
   .page-content {
     @apply container mx-auto my-5;
   }
+
+  .btn-outline {
+    @apply bg-transparent hover:bg-ost-pink text-ost-pink font-semibold hover:text-white py-1 px-3 border border-ost-pink hover:border-transparent rounded;
+  }
 }

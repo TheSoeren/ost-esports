@@ -1,32 +1,37 @@
-import { component$ } from '@builder.io/qwik'
+import {
+  Resource,
+  component$,
+  noSerialize,
+  useResource$,
+} from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
+import NewsTile from '~/components/news/news-tile'
+import pb from '~/pocketbase'
+import type { NewsEntry } from '~/types'
 
 export default component$(() => {
+  const newsResource = useResource$<NewsEntry>(async () => {
+    const response = await getNews()
+    noSerialize(response)
+    return response
+  })
+
   return (
-    <section class="container p-8 mx-auto flex flex-col gap-4">
-      <p>
-        Wir sind der Gaming Club der Ostschweizer Fachhochschule. Bei uns wird
-        mit Leidenschaft Videospiele gespielt und sich darüber ausgetauscht.
-        Alle Arten von Gamern sind bei uns willkommen, egal auf welcher Konsole
-        du spielst, kompetitiv / nur zum Spass oder welche Gamegenre du magst.
-        Solange genug Interesse für ein Game vorhanden ist, wird es bei uns
-        gespielt. Zusätzlich veranstalten wir regelmässig Turniere und spielen
-        mit unseren kompetitiven Teams in den entsprechenden Ligen.
-      </p>
-      <p>
-        Hast du lust ein Teil unseres Clubs zu sein? Dann tritt unserem Discord
-        bei!
-      </p>
-      <a
-        href="https://discord.gg/UAWGz7gg5A"
-        class="block mx-auto mt-2 md:mt-8 mb-8 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6"
-      >
-        <img src="join_discord.svg" alt="join discord" />
-      </a>
-    </section>
+    <article>
+      <Resource
+        value={newsResource}
+        onPending={() => <>Loading...</>}
+        onRejected={(error) => <>Error: {error.message}</>}
+        onResolved={(news) => <NewsTile {...news} />}
+      />
+    </article>
   )
 })
 
+export async function getNews() {
+  return pb.collection('news').getFirstListItem<NewsEntry>('')
+}
+
 export const head: DocumentHead = {
-  title: 'OST ESports',
+  title: 'OST eSports',
 }

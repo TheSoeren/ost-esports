@@ -1,0 +1,7 @@
+.news-detail {
+  @apply shadow-md p-5 rounded;
+}
+
+.news-detail__title {
+  @apply text-3xl mb-4;
+}

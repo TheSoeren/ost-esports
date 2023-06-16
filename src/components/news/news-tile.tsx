@@ -1,16 +1,21 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import type { NewsEntry } from '~/types'
 import styles from '~/css/news/news-tile.css?inline'
+import { Link } from '@builder.io/qwik-city'
 
-export default component$(({ title, content }: NewsEntry) => {
+export default component$(({ id, title, teaser }: NewsEntry) => {
   useStylesScoped$(styles)
 
   return (
-    <div class="news-tile">
-      <div class="news-tile__title">{title}</div>
+    <section class="news-tile">
+      <div class="news-tile__header">
+        <div class="news-tile__title">{title}</div>
+        <Link href={'/news/' + id} class="btn-outline news__tile-link">
+          Weiterlesen
+        </Link>
+      </div>
       <hr />
-      {/* We can do `dangerouslySetInnerHTML` here because the content is sanitized by pocketbase */}
-      <div class="prose" dangerouslySetInnerHTML={content}></div>
-    </div>
+      <div>{teaser}</div>
+    </section>
   )
 })

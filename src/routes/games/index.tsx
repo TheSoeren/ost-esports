@@ -21,7 +21,7 @@ export default component$(() => {
   })
 
   return (
-    <article class="page-content">
+    <article>
       <Resource
         value={gamesResource}
         onPending={() => <>Loading...</>}
@@ -43,5 +43,5 @@ export async function getGames() {
 }
 
 export const head: DocumentHead = {
-  title: 'OST Games',
+  title: 'OST eSports - Games',
 }
