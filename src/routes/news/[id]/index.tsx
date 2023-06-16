@@ -23,7 +23,7 @@ export default component$(() => {
 
   return (
     <article>
-      <BackButton href="/news" />
+      <BackButton href="/news" label="Zur Übersicht" />
       <Resource
         value={newsResource}
         onPending={() => <>Loading...</>}

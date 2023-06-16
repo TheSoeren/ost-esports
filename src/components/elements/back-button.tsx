@@ -3,11 +3,17 @@ import { Link } from '@builder.io/qwik-city'
 import { faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
 
-export default component$((props: { href: string }) => {
+interface BackButton {
+  href: string
+  label: string
+}
+
+export default component$(({ href, label }: BackButton) => {
   const backButtonAnimate = useSignal(false)
 
   return (
     <Link
+      href={href}
       class="block mb-2 text-ost-pink btn-outline w-fit"
       onMouseEnter$={$(() => {
         backButtonAnimate.value = true
@@ -15,7 +21,6 @@ export default component$((props: { href: string }) => {
       onMouseLeave$={$(() => {
         backButtonAnimate.value = false
       })}
-      {...props}
     >
       <FaIcon
         icon={faAnglesLeft}
@@ -23,7 +28,7 @@ export default component$((props: { href: string }) => {
         fade={backButtonAnimate.value}
         fixedWidth
       />
-      Zurück
+      {label}
     </Link>
   )
 })

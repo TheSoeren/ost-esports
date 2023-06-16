@@ -25,7 +25,7 @@ export default component$(() => {
 
   return (
     <article>
-      <BackButton href="/games" />
+      <BackButton href="/games" label="Game Auswahl" />
       <div class="teams__container">
         <Resource
           value={teamsResource}
