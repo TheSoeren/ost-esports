@@ -16,7 +16,7 @@ export default component$(() => {
 
   const { params } = useLocation()
   const newsResource = useResource$<NewsEntry>(async () => {
-    const response = await getNewsEntry(params.id)
+    const response = await pb.collection('news').getOne<NewsEntry>(params.id)
     noSerialize(response)
     return response
   })
@@ -43,7 +43,3 @@ export default component$(() => {
     </article>
   )
 })
-
-export async function getNewsEntry(id: string) {
-  return pb.collection('news').getOne<NewsEntry>(id)
-}

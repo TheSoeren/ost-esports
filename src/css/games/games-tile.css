@@ -1,17 +1,9 @@
-.games__container {
-  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5 lg:gap-7;
-}
-
 .games__tile {
   @apply relative rounded-lg transition hover:transition shadow-lg hover:shadow-2xl hover:scale-105;
 }
 
 .games__tile::before {
   @apply content-[''] block pt-[100%];
-}
-
-.games__tile-link {
-  @apply absolute top-0 left-0 h-full w-full rounded-lg;
 }
 
 .games__tile-image {

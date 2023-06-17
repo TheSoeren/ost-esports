@@ -1,0 +1,11 @@
+.pagination-button__left {
+  @apply rounded-r-none;
+}
+
+.pagination-button__pages {
+  @apply rounded-none border-l-0;
+}
+
+.pagination-button__right {
+  @apply rounded-l-none border-l-0;
+}

@@ -2,7 +2,7 @@ import { component$ } from '@builder.io/qwik'
 
 export default component$(() => {
   return (
-    <footer>
+    <footer class="mt-auto">
       <img
         src="/banner.webp"
         alt="Banner with Valorant, Rocket League and League of Legends"

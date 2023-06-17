@@ -1,9 +1,9 @@
-import { component$, useStyles$ } from '@builder.io/qwik'
+import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import { Link } from '@builder.io/qwik-city'
 import styles from '~/css/navigation.css?inline'
 
 export default component$(() => {
-  useStyles$(styles)
+  useStylesScoped$(styles)
 
   return (
     <section class="main-nav">
@@ -15,16 +15,16 @@ export default component$(() => {
         />
       </Link>
       <nav>
-        <Link href="/news" class="main-nav-item">
+        <Link href="/news" class="px-2">
           News
         </Link>
-        <Link href="/games" class="main-nav-item">
+        <Link href="/games" class="px-2">
           Teams
         </Link>
-        <Link href="/gallery" class="main-nav-item">
+        <Link href="/gallery" class="px-2">
           Gallerie
         </Link>
-        <Link href="/join" class="main-nav-item">
+        <Link href="/join" class="px-2">
           Mitmachen
         </Link>
       </nav>

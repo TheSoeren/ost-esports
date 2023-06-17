@@ -11,7 +11,7 @@ import type { NewsEntry } from '~/types'
 
 export default component$(() => {
   const newsResource = useResource$<NewsEntry>(async () => {
-    const response = await getNews()
+    const response = await pb.collection('news').getFirstListItem<NewsEntry>('')
     noSerialize(response)
     return response
   })
@@ -27,10 +27,6 @@ export default component$(() => {
     </article>
   )
 })
-
-export async function getNews() {
-  return pb.collection('news').getFirstListItem<NewsEntry>('')
-}
 
 export const head: DocumentHead = {
   title: 'OST eSports',
