@@ -1,0 +1,21 @@
+.gallery__tile {
+  @apply relative rounded-lg transition hover:transition shadow-lg hover:shadow-2xl hover:scale-105;
+}
+
+.gallery__tile::before {
+  @apply content-[''] block pt-[100%];
+}
+
+.gallery__tile-image {
+  @apply h-full object-cover rounded-lg;
+}
+
+.gallery__tile-backdrop {
+  @apply bg-white/60 h-[101%] w-[101%] absolute rounded-lg backdrop-blur-sm overflow-hidden;
+  top: -1px;
+  left: -1px;
+}
+
+.gallery__tile-backdrop-text {
+  @apply text-3xl absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+}

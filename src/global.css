@@ -20,7 +20,7 @@
   }
 
   hr {
-    @apply h-px mt-2 mb-4 bg-gray-200 border-0 dark:bg-gray-700;
+    @apply h-px mt-2 mb-4 bg-gray-200 border-0;
   }
 }
 
@@ -30,6 +30,12 @@
   }
 
   .btn-outline {
-    @apply bg-transparent hover:bg-ost-pink text-ost-pink font-semibold hover:text-white py-1 px-3 border border-ost-pink hover:border-transparent rounded;
+    @apply bg-transparent text-ost-pink font-semibold py-1 px-3 border rounded h-fit border-ost-pink;
+    @apply hover:border-transparent hover:text-white hover:bg-ost-pink;
+    @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-white;
+  }
+
+  .btn-outline--highlight {
+    @apply bg-ost-pink text-white;
   }
 }

@@ -15,7 +15,7 @@ export default component$(() => {
   useStylesScoped$(styles)
 
   const newsResource = useResource$<ListResult<NewsEntry>>(async () => {
-    const response = await getNews()
+    const response = await pb.collection('news').getList<NewsEntry>(1, 30)
     noSerialize(response)
     return response
   })
@@ -37,10 +37,6 @@ export default component$(() => {
     </article>
   )
 })
-
-export async function getNews() {
-  return pb.collection('news').getList<NewsEntry>(1, 30)
-}
 
 export const head: DocumentHead = {
   title: 'OST eSports - News',

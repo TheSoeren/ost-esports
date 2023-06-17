@@ -14,7 +14,9 @@ export default component$(({ id, name }: Team) => {
   useStylesScoped$(styles)
 
   const playerResource = useResource$<ListResult<Player>>(async () => {
-    const response = await getPlayers(id)
+    const response = await pb
+      .collection('membership')
+      .getList<Player>(1, 30, { filter: `team="${id}"` })
     noSerialize(response)
     return response
   })
@@ -37,9 +39,3 @@ export default component$(({ id, name }: Team) => {
     </div>
   )
 })
-
-export async function getPlayers(teamId: string) {
-  return pb
-    .collection('membership')
-    .getList<Player>(1, 30, { filter: `team="${teamId}"` })
-}

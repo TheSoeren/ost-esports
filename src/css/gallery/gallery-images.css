@@ -1,0 +1,9 @@
+.gallery-images__container {
+  @apply grid grid-cols-1 gap-3 my-5;
+  @apply sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6;
+  @apply md:gap-5 lg:gap-7;
+}
+
+.gallery-images__image {
+  @apply w-full my-auto hover:scale-105 transition-transform rounded-lg;
+}

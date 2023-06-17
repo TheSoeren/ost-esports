@@ -13,7 +13,7 @@ export default component$(({ user: userId, roleIcon, ...record }: Player) => {
   useStylesScoped$(styles)
 
   const userResource = useResource$<User>(async () => {
-    const response = await getUser(userId)
+    const response = await pb.collection('users').getOne<User>(userId)
     noSerialize(response)
     return response
   })
@@ -39,7 +39,3 @@ export default component$(({ user: userId, roleIcon, ...record }: Player) => {
     </section>
   )
 })
-
-export async function getUser(id: string) {
-  return pb.collection('users').getOne<User>(id)
-}

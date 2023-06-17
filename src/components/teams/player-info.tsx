@@ -9,11 +9,11 @@ import type { Player, User } from '~/types'
 import styles from '~/css/teams/player-info.css?inline'
 import pb from '~/pocketbase'
 
-export default component$(({ user }: Player) => {
+export default component$(({ user: userId }: Player) => {
   useStylesScoped$(styles)
 
   const userResource = useResource$<User>(async () => {
-    const response = await getUser(user)
+    const response = await pb.collection('users').getOne<User>(userId)
     noSerialize(response)
     return response
   })
@@ -39,7 +39,3 @@ export default component$(({ user }: Player) => {
     </section>
   )
 })
-
-export async function getUser(id: string) {
-  return pb.collection('users').getOne<User>(id)
-}

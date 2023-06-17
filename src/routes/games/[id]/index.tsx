@@ -18,7 +18,9 @@ export default component$(() => {
   const { params } = useLocation()
   const TeamTile = getTeamTile(params.id)
   const teamsResource = useResource$<ListResult<Team>>(async () => {
-    const response = await getTeams(params.id)
+    const response = await pb
+      .collection('teams')
+      .getList<Team>(1, 30, { filter: `game="${params.id}"` })
     noSerialize(response)
     return response
   })
@@ -41,12 +43,6 @@ export default component$(() => {
     </article>
   )
 })
-
-export async function getTeams(gameId: string) {
-  return pb
-    .collection('teams')
-    .getList<Team>(1, 30, { filter: `game="${gameId}"` })
-}
 
 export const head: DocumentHead = {
   title: 'OST eSports - Teams',
