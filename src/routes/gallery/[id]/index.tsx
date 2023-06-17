@@ -17,7 +17,7 @@ import Pagination from '~/components/elements/pagination'
 export default component$(() => {
   useStylesScoped$(styles)
 
-  const pagination = usePagination(1, 3)
+  const pagination = usePagination(1, 30)
   const { params } = useLocation()
   const imagesResource = useResource$<ListResult<GalleryImage>>(
     async ({ track }) => {
