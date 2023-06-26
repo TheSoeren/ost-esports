@@ -5,8 +5,15 @@ import styles from '~/css/navigation.css?inline'
 export default component$(() => {
   useStylesScoped$(styles)
 
+  const navItems = [
+    { label: 'NEWS', href: '/news' },
+    { label: 'TEAMS', href: '/games' },
+    { label: 'GALERIE', href: '/gallery' },
+    { label: 'MITMACHEN', href: '/join' },
+  ]
+
   return (
-    <section class="main-nav">
+    <section class="main-nav flex flex-row">
       <Link href="/" aria-label="Site Overview">
         <img
           src="/logo_wide.webp"
@@ -14,19 +21,12 @@ export default component$(() => {
           class="logo h-14 justify-end"
         />
       </Link>
-      <nav>
-        <Link href="/news" class="px-2">
-          News
-        </Link>
-        <Link href="/games" class="px-2">
-          Teams
-        </Link>
-        <Link href="/gallery" class="px-2">
-          Gallerie
-        </Link>
-        <Link href="/join" class="px-2">
-          Mitmachen
-        </Link>
+      <nav class="flex flex-row justify-evenly flex-1">
+        {navItems.map((item, index) => (
+          <Link href={item.href} class="nav-item text-lg font-bold" key={index}>
+            {item.label}
+          </Link>
+        ))}
       </nav>
     </section>
   )

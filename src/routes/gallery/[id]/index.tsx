@@ -41,7 +41,7 @@ export default component$(() => {
 
   return (
     <article>
-      <BackButton href="/gallery" label="Gallerie Auswahl" />
+      <BackButton href="/gallery" label="Galerie Auswahl" />
       <Pagination {...pagination} />
       <div class="gallery-images__container">
         <Resource

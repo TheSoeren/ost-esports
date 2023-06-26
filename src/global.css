@@ -39,3 +39,36 @@
     @apply bg-ost-pink text-white;
   }
 }
+
+:root {
+  --background: #0a0e13;
+  --background-light: #0f1519;
+  --text: #f9f9f9;
+  --primary: #cc93ff;
+  --secondary: rgb(172, 87, 172);
+  --separator: #252c32;
+}
+
+html,
+body {
+  background-color: var(--background-light);
+  color: var(--text);
+}
+
+.logo {
+  filter: drop-shadow(0 0 4px #fff);
+}
+
+.main-nav {
+  background-color: var(--background);
+  border-bottom: solid 1px var(--separator);
+}
+
+.nav-item {
+  border-bottom: 3px solid transparent;
+  padding: 10px;
+}
+
+.nav-item:hover {
+  border-bottom: 3px solid var(--primary);
+}

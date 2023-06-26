@@ -1,9 +1,16 @@
 .news-tile {
-  @apply relative rounded-lg shadow-lg bg-pink-100 p-5;
+  @apply relative p-5;
+}
+
+.news-tile::before {
+  content: '';
+  /* a gradient bar up top */
+  @apply absolute top-0 left-0 w-full h-1;
+  background: linear-gradient(to right, var(--primary), var(--secondary))
 }
 
 .news-tile__header {
-  @apply flex justify-between;
+  @apply flex justify-between pb-4;
 }
 
 .news-tile__title {
