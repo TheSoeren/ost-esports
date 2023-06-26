@@ -6,7 +6,7 @@
   content: '';
   /* a gradient bar up top */
   @apply absolute top-0 left-0 w-full h-1;
-  background: linear-gradient(to right, var(--primary), var(--secondary))
+  background: linear-gradient(to right, var(--secondary), var(--primary));
 }
 
 .news-tile__header {
@@ -26,6 +26,6 @@
   @apply sm:col-span-2;
 }
 
-.news__tile-link {
+.news-tile__link {
   @apply h-fit whitespace-nowrap;
 }

@@ -10,7 +10,7 @@ export default component$(({ id, title, teaser }: NewsEntry) => {
     <section class="news-tile">
       <div class="news-tile__header">
         <div class="news-tile__title">{title}</div>
-        <Link href={'/news/' + id} class="btn-outline news__tile-link">
+        <Link href={'/news/' + id} class="btn-outline news-tile__link">
           Weiterlesen
         </Link>
       </div>

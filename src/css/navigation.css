@@ -1,3 +1,14 @@
 .main-nav {
   @apply flex items-center gap-10 flex-row px-8 py-4;
+  background-color: var(--background);
+  border-bottom: solid 1px var(--separator);
+}
+
+.logo {
+  filter: drop-shadow(0 0 4px #fff);
+}
+
+.nav-item {
+  @apply text-lg p-2 font-bold transition-all border-b-4 border-b-transparent;
+  @apply hover:border-b-ost-pink;
 }

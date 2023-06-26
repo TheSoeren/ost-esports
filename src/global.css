@@ -31,44 +31,25 @@
 
   .btn-outline {
     @apply bg-transparent text-ost-pink font-semibold py-1 px-3 border rounded h-fit border-ost-pink;
-    @apply hover:border-transparent hover:text-white hover:bg-ost-pink;
-    @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-white;
+    @apply hover:border-transparent hover:text-light-white hover:bg-ost-pink;
+    @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-light-white;
   }
 
   .btn-outline--highlight {
-    @apply bg-ost-pink text-white;
+    @apply bg-ost-pink text-light-white;
   }
 }
 
 :root {
   --background: #0a0e13;
   --background-light: #0f1519;
-  --text: #f9f9f9;
-  --primary: #cc93ff;
-  --secondary: rgb(172, 87, 172);
+  --primary: var(--color-ost-pink);
+  --secondary: var(--color-ost-orange);
   --separator: #252c32;
 }
 
 html,
 body {
   background-color: var(--background-light);
-  color: var(--text);
-}
-
-.logo {
-  filter: drop-shadow(0 0 4px #fff);
-}
-
-.main-nav {
-  background-color: var(--background);
-  border-bottom: solid 1px var(--separator);
-}
-
-.nav-item {
-  border-bottom: 3px solid transparent;
-  padding: 10px;
-}
-
-.nav-item:hover {
-  border-bottom: 3px solid var(--primary);
+  color: var(--color-light-white);
 }

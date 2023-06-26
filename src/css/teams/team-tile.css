@@ -1,8 +1,15 @@
-.teams__tile {
-  @apply relative rounded-lg shadow-lg bg-pink-100 p-5;
+.team-tile {
+  @apply relative p-5 border-ost-pink border-b-2 rounded-lg;
 }
 
-.teams__name {
+.team-tile__name {
   @apply text-3xl;
   margin-bottom: 1rem;
+}
+
+.team-tile::before {
+  content: '';
+  /* a gradient bar up top */
+  @apply absolute top-0 left-0 w-full h-1;
+  background: linear-gradient(to right, var(--secondary), var(--primary));
 }

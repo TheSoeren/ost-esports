@@ -1,15 +1,15 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik'
+import { component$, useStyles$ } from '@builder.io/qwik'
 import { Link } from '@builder.io/qwik-city'
 import styles from '~/css/navigation.css?inline'
 
 export default component$(() => {
-  useStylesScoped$(styles)
+  useStyles$(styles)
 
   const navItems = [
-    { label: 'NEWS', href: '/news' },
-    { label: 'TEAMS', href: '/games' },
-    { label: 'GALERIE', href: '/gallery' },
-    { label: 'MITMACHEN', href: '/join' },
+    { label: 'News', href: '/news' },
+    { label: 'Teams', href: '/games' },
+    { label: 'Galerie', href: '/gallery' },
+    { label: 'Mitmachen', href: '/join' },
   ]
 
   return (
@@ -23,8 +23,8 @@ export default component$(() => {
       </Link>
       <nav class="flex flex-row justify-evenly flex-1">
         {navItems.map((item, index) => (
-          <Link href={item.href} class="nav-item text-lg font-bold" key={index}>
-            {item.label}
+          <Link href={item.href} class="nav-item" key={index}>
+            {item.label.toUpperCase()}
           </Link>
         ))}
       </nav>

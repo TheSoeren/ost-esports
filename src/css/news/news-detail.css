@@ -1,7 +1,11 @@
 .news-detail {
-  @apply shadow-md p-5 rounded;
+  @apply pt-5;
 }
 
 .news-detail__title {
   @apply text-3xl mb-4;
+}
+
+.news-detail__content * {
+  color: var(--color-light-white) !important; /* Overwrite prose styling */
 }
