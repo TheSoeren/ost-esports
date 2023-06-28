@@ -1,5 +1,9 @@
 .main-nav {
-  @apply flex items-center gap-10 flex-row px-8 py-4 border-b-[1px] border-ost-black bg-pink-50;
+  @apply flex items-center gap-2 flex-row px-8 py-4 border-b-[1px] border-ost-black bg-pink-50;
+}
+
+.logo {
+  @apply shrink-0;
 }
 
 .nav-item {

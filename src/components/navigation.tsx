@@ -18,12 +18,8 @@ export default component$(() => {
 
   return (
     <section class="main-nav flex flex-row">
-      <Link href="/" aria-label="Site Overview">
-        <img
-          src="/logo_wide.webp"
-          alt="OST ESports Logo"
-          class="logo h-14 justify-end"
-        />
+      <Link href="/" aria-label="Site Overview" class="shrink-0">
+        <img src="/logo_wide.webp" alt="OST ESports Logo" class="logo h-14" />
       </Link>
       <nav class="flex flex-row justify-evenly flex-1">
         {navItems.map((item, index) => (
