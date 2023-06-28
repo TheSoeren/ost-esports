@@ -1,14 +1,34 @@
 .main-nav {
-  @apply flex items-center gap-10 flex-row px-8 py-4;
-  background-color: var(--background);
-  border-bottom: solid 1px var(--separator);
-}
-
-.logo {
-  filter: drop-shadow(0 0 4px #fff);
+  @apply flex items-center gap-10 flex-row px-8 py-4 border-b-[1px] border-ost-black bg-pink-50;
 }
 
 .nav-item {
-  @apply text-lg p-2 font-bold transition-all border-b-4 border-b-transparent;
-  @apply hover:border-b-ost-pink;
+  @apply relative text-lg p-2 font-bold;
+}
+
+.nav-item::after {
+  content: '';
+  @apply absolute left-0 bottom-0 w-full h-1 transition-all;
+  background: linear-gradient(
+    90deg,
+    var(--color-ost-pink) 10%,
+    var(--color-ost-violet) 10%,
+    var(--color-ost-violet) 25%,
+    var(--color-ost-black) 25%,
+    var(--color-ost-black) 50%
+  );
+  background-size: 200%;
+  opacity: 0;
+}
+
+.nav-item:hover::after {
+  opacity: 1;
+}
+
+.nav-item--highlight::after {
+  opacity: 1;
+}
+
+.nav-item--highlight:hover::after {
+  background-size: 120%;
 }

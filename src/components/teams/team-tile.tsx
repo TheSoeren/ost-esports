@@ -22,7 +22,7 @@ export default component$(({ id, name }: Team) => {
   })
 
   return (
-    <div class="team-tile">
+    <div class="tile team-tile">
       <div class="team-tile__name">{name}</div>
       <Resource
         value={playerResource}

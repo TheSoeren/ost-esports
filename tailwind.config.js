@@ -8,8 +8,8 @@ module.exports = {
       },
       colors: {
         'ost-black': '#191919',
-        'ost-pink': '#8C195F',
-        'ost-orange': '#D72864',
+        'ost-violet': '#8C195F',
+        'ost-pink': '#D72864',
         'light-white': '#f9f9f9',
       },
     },

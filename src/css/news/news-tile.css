@@ -2,13 +2,6 @@
   @apply relative p-5;
 }
 
-.news-tile::before {
-  content: '';
-  /* a gradient bar up top */
-  @apply absolute top-0 left-0 w-full h-1;
-  background: linear-gradient(to right, var(--secondary), var(--primary));
-}
-
 .news-tile__header {
   @apply flex justify-between pb-4;
 }
