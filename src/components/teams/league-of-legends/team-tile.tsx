@@ -22,8 +22,8 @@ export default component$(({ id, name }: Team) => {
   })
 
   return (
-    <div class="teams__tile">
-      <div class="teams__name">{name}</div>
+    <div class="tile team-tile">
+      <div class="team-tile__name">{name}</div>
       <Resource
         value={playerResource}
         onPending={() => <>Loading...</>}

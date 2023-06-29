@@ -7,14 +7,13 @@ export default component$(({ id, title, teaser }: NewsEntry) => {
   useStylesScoped$(styles)
 
   return (
-    <section class="news-tile">
+    <section class="tile news-tile">
       <div class="news-tile__header">
         <div class="news-tile__title">{title}</div>
-        <Link href={'/news/' + id} class="btn-outline news__tile-link">
+        <Link href={'/news/' + id} class="btn-outline news-tile__link">
           Weiterlesen
         </Link>
       </div>
-      <hr />
       <div>{teaser}</div>
     </section>
   )

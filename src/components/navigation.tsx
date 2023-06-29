@@ -1,32 +1,39 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik'
-import { Link } from '@builder.io/qwik-city'
+import { component$, useStyles$ } from '@builder.io/qwik'
+import { Link, useLocation } from '@builder.io/qwik-city'
 import styles from '~/css/navigation.css?inline'
 
 export default component$(() => {
-  useStylesScoped$(styles)
+  useStyles$(styles)
+  const location = useLocation()
+
+  const navItems = [
+    { label: 'News', href: '/news' },
+    { label: 'Teams', href: '/games' },
+    { label: 'Galerie', href: '/gallery' },
+    { label: 'Mitmachen', href: '/join' },
+  ]
+
+  const urlMatcher = (url: string) =>
+    location.url.pathname.startsWith(url + '/')
 
   return (
-    <section class="main-nav">
-      <Link href="/" aria-label="Site Overview">
-        <img
-          src="/logo_wide.webp"
-          alt="OST ESports Logo"
-          class="logo h-14 justify-end"
-        />
+    <section class="main-nav flex flex-row">
+      <Link href="/" aria-label="Site Overview" class="shrink-0">
+        <img src="/logo_wide.webp" alt="OST ESports Logo" class="logo h-14" />
       </Link>
-      <nav>
-        <Link href="/news" class="px-2">
-          News
-        </Link>
-        <Link href="/games" class="px-2">
-          Teams
-        </Link>
-        <Link href="/gallery" class="px-2">
-          Gallerie
-        </Link>
-        <Link href="/join" class="px-2">
-          Mitmachen
-        </Link>
+      <nav class="flex flex-row justify-evenly flex-1">
+        {navItems.map((item, index) => (
+          <Link
+            href={item.href}
+            class={[
+              'nav-item',
+              urlMatcher(item.href) ? 'nav-item--highlight' : '',
+            ]}
+            key={index}
+          >
+            {item.label.toUpperCase()}
+          </Link>
+        ))}
       </nav>
     </section>
   )

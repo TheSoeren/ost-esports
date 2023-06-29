@@ -10,6 +10,17 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --primary: var(--color-ost-violet);
+    --secondary: var(--color-ost-orange);
+    --separator: #252c32;
+  }
+
+  html,
+  body {
+    @apply text-ost-black;
+  }
+
   html {
     @apply text-ost-black;
     font-family: Roboto, system-ui, sans-serif;
@@ -30,12 +41,35 @@
   }
 
   .btn-outline {
-    @apply bg-transparent text-ost-pink font-semibold py-1 px-3 border rounded h-fit border-ost-pink;
-    @apply hover:border-transparent hover:text-white hover:bg-ost-pink;
-    @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-white;
+    @apply bg-white text-ost-violet font-semibold py-1 px-3 border rounded h-fit border-ost-violet transition-colors;
+    @apply hover:border-transparent hover:text-white hover:bg-ost-violet;
+    @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-light-white;
   }
 
   .btn-outline--highlight {
-    @apply bg-ost-pink text-white;
+    @apply bg-ost-violet text-light-white;
+  }
+
+  .tile {
+    @apply rounded-b-md;
+    background: linear-gradient(180deg, transparent 25%, #fdf2f8 100%);
+  }
+
+  .tile::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-1 transition-all;
+    background: linear-gradient(
+      90deg,
+      var(--color-ost-pink) 10%,
+      var(--color-ost-violet) 10%,
+      var(--color-ost-violet) 25%,
+      var(--color-ost-black) 25%,
+      var(--color-ost-black) 50%
+    );
+    background-size: 200%;
+  }
+
+  .tile:hover::before {
+    background-size: 120%;
   }
 }

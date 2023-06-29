@@ -8,8 +8,9 @@ module.exports = {
       },
       colors: {
         'ost-black': '#191919',
-        'ost-pink': '#8C195F',
-        'ost-orange': '#D72864',
+        'ost-violet': '#8C195F',
+        'ost-pink': '#D72864',
+        'light-white': '#f9f9f9',
       },
     },
     screens: {
@@ -24,5 +25,30 @@ module.exports = {
   variants: {
     animation: ['motion-safe'],
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    // expose colors as css variables
+    function ({ addBase, theme }) {
+      function extractColorVars(colorObj, colorGroup = '') {
+        return Object.keys(colorObj).reduce((vars, colorKey) => {
+          const value = colorObj[colorKey]
+          const cssVariable =
+            colorKey === 'DEFAULT'
+              ? `--color${colorGroup}`
+              : `--color${colorGroup}-${colorKey}`
+
+          const newVars =
+            typeof value === 'string'
+              ? { [cssVariable]: value }
+              : extractColorVars(value, `-${colorKey}`)
+
+          return { ...vars, ...newVars }
+        }, {})
+      }
+
+      addBase({
+        ':root': extractColorVars(theme('colors')),
+      })
+    },
+  ],
 }

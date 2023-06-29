@@ -1,9 +1,9 @@
 .news-tile {
-  @apply relative rounded-lg shadow-lg bg-pink-100 p-5;
+  @apply relative p-5;
 }
 
 .news-tile__header {
-  @apply flex justify-between;
+  @apply flex justify-between pb-4;
 }
 
 .news-tile__title {
@@ -19,6 +19,6 @@
   @apply sm:col-span-2;
 }
 
-.news__tile-link {
+.news-tile__link {
   @apply h-fit whitespace-nowrap;
 }

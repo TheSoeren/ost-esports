@@ -35,7 +35,7 @@ export default component$(({ name, id }: Gallery) => {
         </div>
         <Resource
           value={imageResource}
-          onRejected={() => <div class="bg-ost-pink rounded-lg h-full"></div>}
+          onRejected={() => <div class="bg-ost-violet rounded-lg h-full"></div>}
           onResolved={(galleryImage) => (
             <img
               src={pb.files.getUrl(galleryImage, galleryImage.image)}

@@ -1,5 +1,5 @@
 .news-detail {
-  @apply shadow-md p-5 rounded;
+  @apply pt-5;
 }
 
 .news-detail__title {

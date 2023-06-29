@@ -3,7 +3,7 @@ import {
   component$,
   noSerialize,
   useResource$,
-  useStylesScoped$,
+  useStyles$,
 } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
 import BackButton from '~/components/elements/back-button'
@@ -12,7 +12,7 @@ import type { NewsEntry } from '~/types'
 import styles from '~/css/news/news-detail.css?inline'
 
 export default component$(() => {
-  useStylesScoped$(styles)
+  useStyles$(styles)
 
   const { params } = useLocation()
   const newsResource = useResource$<NewsEntry>(async () => {
@@ -36,7 +36,10 @@ export default component$(() => {
               <em>{teaser}</em>
             </p>
             {/* We can do `dangerouslySetInnerHTML` here because the content is sanitized by pocketbase */}
-            <div class="prose" dangerouslySetInnerHTML={content}></div>
+            <div
+              class="news-detail__content prose"
+              dangerouslySetInnerHTML={content}
+            ></div>
           </section>
         )}
       />

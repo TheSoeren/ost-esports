@@ -14,7 +14,7 @@ export default component$(({ href, label }: BackButton) => {
   return (
     <Link
       href={href}
-      class="block mb-2 text-ost-pink btn-outline w-fit"
+      class="block btn-outline w-fit"
       onMouseEnter$={$(() => {
         backButtonAnimate.value = true
       })}
