@@ -57,14 +57,19 @@
 
   .tile::before {
     content: '';
-    @apply absolute top-0 left-0 w-full h-1;
+    @apply absolute top-0 left-0 w-full h-1 transition-all;
     background: linear-gradient(
       90deg,
-      var(--color-ost-pink) 20%,
-      var(--color-ost-violet) 20%,
-      var(--color-ost-violet) 55%,
-      var(--color-ost-black) 55%,
-      var(--color-ost-black) 100%
+      var(--color-ost-pink) 10%,
+      var(--color-ost-violet) 10%,
+      var(--color-ost-violet) 25%,
+      var(--color-ost-black) 25%,
+      var(--color-ost-black) 50%
     );
+    background-size: 200%;
+  }
+
+  .tile:hover::before {
+    background-size: 120%;
   }
 }
