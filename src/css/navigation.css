@@ -1,5 +1,21 @@
 .main-nav {
-  @apply flex items-center gap-2 flex-row px-8 py-4 border-b-[1px] border-ost-black bg-pink-50;
+  @apply flex flex-col items-center gap-2 px-8 py-4 border-b-[1px] border-ost-black bg-pink-50;
+  @apply sm:flex-row;
+}
+
+.menu-toggle {
+  @apply block;
+  @apply sm:hidden;
+}
+
+.brand-container {
+  @apply flex justify-between w-full;
+  @apply sm:w-auto;
+}
+
+.navigation {
+  @apply flex-col w-full items-end;
+  @apply sm:justify-evenly sm:flex-1 sm:flex-row;
 }
 
 .logo {
