@@ -1,41 +1,50 @@
 import {
-  Resource,
   component$,
-  noSerialize,
-  useResource$,
+  useSignal,
   useStylesScoped$,
+  useTask$,
 } from '@builder.io/qwik'
-import type { ListResult, Player, Team } from '~/types'
+import type { Membership, Player, Team } from '~/types'
 import PlayerInfo from '~/components/teams/league-of-legends/player-info'
 import styles from '~/css/teams/team-tile.css?inline'
-import pb from '~/pocketbase'
 
-export default component$(({ id, name }: Team) => {
-  useStylesScoped$(styles)
+export default component$(
+  ({ id, name, expand: { ['membership(team)']: memberships } }: Team) => {
+    useStylesScoped$(styles)
 
-  const playerResource = useResource$<ListResult<Player>>(async () => {
-    const response = await pb
-      .collection('membership')
-      .getList<Player>(1, 30, { filter: `team="${id}"`, $cancelKey: id })
-    noSerialize(response)
-    return response
-  })
+    const sigMembership = useSignal<Membership[]>()
+    const sigPlayers = useSignal<Player[]>()
 
-  return (
-    <div class="tile team-tile">
-      <div class="team-tile__name">{name}</div>
-      <Resource
-        value={playerResource}
-        onPending={() => <>Loading...</>}
-        onRejected={(error) => <>Error: {error.message}</>}
-        onResolved={(players) => (
-          <div>
-            {players.items.map((player) => (
-              <PlayerInfo key={player.id} {...player} />
-            ))}
-          </div>
-        )}
-      />
-    </div>
-  )
-})
+    useTask$(({ track }) => {
+      track(() => memberships)
+
+      sigMembership.value = (memberships as Membership[])?.filter(
+        (m: Membership) => m.team === id
+      )
+      sigPlayers.value = sigMembership.value?.map(
+        (m: Membership) => m.expand['user'] as Player
+      )
+    })
+
+    return (
+      <div class="tile team-tile">
+        <div class="team-tile__name">{name}</div>
+        {sigPlayers.value?.map((player) => {
+          const membership = sigMembership.value?.find(
+            (m) => m.user === player.id
+          )
+
+          if (!membership) return null
+
+          return (
+            <PlayerInfo
+              key={player.id}
+              membership={membership}
+              player={player}
+            />
+          )
+        })}
+      </div>
+    )
+  }
+)

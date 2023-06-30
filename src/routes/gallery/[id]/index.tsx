@@ -1,7 +1,6 @@
 import {
   Resource,
   component$,
-  noSerialize,
   useResource$,
   useStylesScoped$,
 } from '@builder.io/qwik'
@@ -34,8 +33,8 @@ export default component$(() => {
         )
 
       pagination.setTotalPages(response.totalPages)
-      noSerialize(response)
-      return response
+
+      return structuredClone(response)
     }
   )
 

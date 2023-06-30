@@ -1,23 +1,23 @@
 import {
   component$,
-  noSerialize,
   Resource,
   useResource$,
   useStylesScoped$,
 } from '@builder.io/qwik'
 import GameTile from '~/components/games/game-tile'
 import styles from '~/css/games/index.css?inline'
-import type { Game, ListResult } from '~/types'
+import type { Game } from '~/types'
 import { type DocumentHead } from '@builder.io/qwik-city'
 import pb from '~/pocketbase'
+import type { ListResult } from 'pocketbase'
 
 export default component$(() => {
   useStylesScoped$(styles)
 
   const gamesResource = useResource$<ListResult<Game>>(async () => {
     const response = await pb.collection('games').getList<Game>(1, 30)
-    noSerialize(response)
-    return response
+
+    return structuredClone(response)
   })
 
   return (

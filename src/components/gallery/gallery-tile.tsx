@@ -1,7 +1,6 @@
 import {
   Resource,
   component$,
-  noSerialize,
   useResource$,
   useStylesScoped$,
 } from '@builder.io/qwik'
@@ -21,8 +20,8 @@ export default component$(({ name, id }: Gallery) => {
     const response = await pb
       .collection('gallery_images')
       .getFirstListItem<GalleryImage>(`gallery="${id}"`)
-    noSerialize(response)
-    return response
+
+    return structuredClone(response)
   })
 
   return (
