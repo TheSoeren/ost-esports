@@ -1,9 +1,4 @@
-import {
-  Resource,
-  component$,
-  noSerialize,
-  useResource$,
-} from '@builder.io/qwik'
+import { Resource, component$, useResource$ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import NewsTile from '~/components/news/news-tile'
 import pb from '~/pocketbase'

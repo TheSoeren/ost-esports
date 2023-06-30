@@ -1,7 +1,6 @@
 import {
   Resource,
   component$,
-  noSerialize,
   useResource$,
   useStylesScoped$,
 } from '@builder.io/qwik'
