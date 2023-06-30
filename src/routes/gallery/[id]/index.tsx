@@ -12,6 +12,7 @@ import BackButton from '~/components/elements/back-button'
 import styles from '~/css/gallery/gallery-images.css?inline'
 import usePagination from '~/hooks/usePagination'
 import Pagination from '~/components/elements/pagination'
+import GalleryListSkeleton from '~/components/gallery/gallery-list-skeleton'
 
 export default component$(() => {
   useStylesScoped$(styles)
@@ -45,6 +46,7 @@ export default component$(() => {
       <div class="gallery-images__container">
         <Resource
           value={imagesResource}
+          onPending={() => <GalleryListSkeleton />}
           onResolved={(galleryImages) => (
             <>
               {galleryImages.items.map((galleryImage) => (

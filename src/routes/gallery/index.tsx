@@ -10,6 +10,7 @@ import pb from '~/pocketbase'
 import type { Gallery } from '~/types/gallery'
 import styles from '~/css/gallery/index.css?inline'
 import GalleryTile from '~/components/gallery/gallery-tile'
+import GalleryTileSkeleton from '~/components/gallery/gallery-tile-skeleton'
 
 export default component$(() => {
   useStylesScoped$(styles)
@@ -25,6 +26,7 @@ export default component$(() => {
       <div class="gallery__container">
         <Resource
           value={teamsResource}
+          onPending={() => <GalleryTileSkeleton />}
           onResolved={(galleries) => (
             <>
               {galleries.items.map((gallery) => (

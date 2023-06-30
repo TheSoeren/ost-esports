@@ -5,5 +5,5 @@
 }
 
 .gallery-images__image {
-  @apply w-full my-auto hover:scale-105 transition-transform rounded-lg;
+  @apply w-full my-auto hover:scale-105 transition-transform rounded-lg max-h-48 object-cover;
 }
