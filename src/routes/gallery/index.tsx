@@ -1,7 +1,6 @@
 import {
   Resource,
   component$,
-  noSerialize,
   useResource$,
   useStylesScoped$,
 } from '@builder.io/qwik'
@@ -17,8 +16,8 @@ export default component$(() => {
 
   const teamsResource = useResource$<ListResult<Gallery>>(async () => {
     const response = await pb.collection('galleries').getList<Gallery>(1, 30)
-    noSerialize(response)
-    return response
+
+    return structuredClone(response)
   })
 
   return (

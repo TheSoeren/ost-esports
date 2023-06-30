@@ -34,8 +34,8 @@ export default component$(() => {
         )
 
       pagination.setTotalPages(response.totalPages)
-      noSerialize(response)
-      return response
+
+      return structuredClone(response)
     }
   )
 

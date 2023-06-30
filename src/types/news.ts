@@ -1,4 +1,4 @@
-import type { Record } from './pocketbase'
+import type { Record } from 'pocketbase'
 
 export interface NewsEntry extends Record {
   title: string

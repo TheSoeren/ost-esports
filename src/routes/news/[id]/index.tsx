@@ -17,8 +17,8 @@ export default component$(() => {
   const { params } = useLocation()
   const newsResource = useResource$<NewsEntry>(async () => {
     const response = await pb.collection('news').getOne<NewsEntry>(params.id)
-    noSerialize(response)
-    return response
+
+    return structuredClone(response)
   })
 
   return (

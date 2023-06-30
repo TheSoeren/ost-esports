@@ -12,8 +12,8 @@ import type { NewsEntry } from '~/types'
 export default component$(() => {
   const newsResource = useResource$<NewsEntry>(async () => {
     const response = await pb.collection('news').getFirstListItem<NewsEntry>('')
-    noSerialize(response)
-    return response
+
+    return structuredClone(response)
   })
 
   return (

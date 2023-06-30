@@ -25,8 +25,8 @@ export default component$(() => {
         .collection('news')
         .getList<NewsEntry>(pagination.page.value, pagination.perPage.value)
       pagination.setTotalPages(response.totalPages)
-      noSerialize(response)
-      return response
+
+      return structuredClone(response)
     }
   )
 
