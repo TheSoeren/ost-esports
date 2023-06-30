@@ -18,7 +18,7 @@ export default component$(
     useTask$(({ track }) => {
       track(() => memberships)
 
-      sigMembership.value = (memberships as Membership[]).filter(
+      sigMembership.value = (memberships as Membership[])?.filter(
         (m: Membership) => m.team === id
       )
       sigPlayers.value = sigMembership.value?.map(
