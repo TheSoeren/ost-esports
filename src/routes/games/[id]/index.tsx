@@ -44,7 +44,6 @@ export default component$(() => {
           onResolved={(teams) => (
             <>
               {teams.items.map((team) => (
-                // @ts-expect-error
                 <TeamTile key={team.id} {...team} />
               ))}
             </>

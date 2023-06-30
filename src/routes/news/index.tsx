@@ -1,17 +1,17 @@
 import {
   component$,
-  noSerialize,
   Resource,
   useResource$,
   useStylesScoped$,
 } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-import type { ListResult, NewsEntry } from '~/types'
+import type { NewsEntry } from '~/types'
 import NewsTile from '~/components/news/news-tile'
 import styles from '~/css/news/index.css?inline'
 import pb from '~/pocketbase'
 import Pagination from '~/components/elements/pagination'
 import usePagination from '~/hooks/usePagination'
+import type { ListResult } from 'pocketbase'
 
 export default component$(() => {
   useStylesScoped$(styles)

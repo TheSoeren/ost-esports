@@ -29,7 +29,6 @@ export default component$(() => {
         onResolved={(games) => (
           <div class="games__container">
             {games.items.map((game) => (
-              // @ts-expect-error
               <GameTile key={game.id} {...game} />
             ))}
           </div>

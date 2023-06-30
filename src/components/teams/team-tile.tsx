@@ -18,12 +18,11 @@ export default component$(
     useTask$(({ track }) => {
       track(() => memberships)
 
-      sigMembership.value = memberships?.filter(
+      sigMembership.value = (memberships as Membership[]).filter(
         (m: Membership) => m.team === id
       )
-      // @ts-expect-error
       sigPlayers.value = sigMembership.value?.map(
-        (m: Membership) => m.expand['user']
+        (m: Membership) => m.expand['user'] as Player
       )
     })
 
@@ -31,7 +30,6 @@ export default component$(
       <div class="tile team-tile">
         <div class="team-tile__name">{name}</div>
         {sigPlayers.value?.map((player) => (
-          // @ts-expect-error
           <PlayerInfo key={player.id} {...player} />
         ))}
       </div>

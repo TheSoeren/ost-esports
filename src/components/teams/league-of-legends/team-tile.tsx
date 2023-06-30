@@ -18,12 +18,11 @@ export default component$(
     useTask$(({ track }) => {
       track(() => memberships)
 
-      sigMembership.value = memberships?.filter(
+      sigMembership.value = (memberships as Membership[]).filter(
         (m: Membership) => m.team === id
       )
-      // @ts-expect-error
       sigPlayers.value = sigMembership.value?.map(
-        (m: Membership) => m.expand['user']
+        (m: Membership) => m.expand['user'] as Player
       )
     })
 
