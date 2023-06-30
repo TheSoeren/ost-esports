@@ -12,6 +12,7 @@ import pb from '~/pocketbase'
 import Pagination from '~/components/elements/pagination'
 import usePagination from '~/hooks/usePagination'
 import type { ListResult } from 'pocketbase'
+import NewsListSkeleton from '~/components/news/news-list-skeleton'
 
 export default component$(() => {
   useStylesScoped$(styles)
@@ -35,7 +36,7 @@ export default component$(() => {
       <Pagination {...pagination} />
       <Resource
         value={newsResource}
-        onPending={() => <>Loading...</>}
+        onPending={() => <NewsListSkeleton />}
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={(news) => (
           <div

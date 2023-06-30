@@ -9,6 +9,7 @@ import BackButton from '~/components/elements/back-button'
 import pb from '~/pocketbase'
 import type { NewsEntry } from '~/types'
 import styles from '~/css/news/news-detail.css?inline'
+import NewsEntrySkeleton from '~/components/news/news-entry-skeleton'
 
 export default component$(() => {
   useStyles$(styles)
@@ -25,7 +26,7 @@ export default component$(() => {
       <BackButton href="/news" label="Zur Übersicht" />
       <Resource
         value={newsResource}
-        onPending={() => <>Loading...</>}
+        onPending={() => <NewsEntrySkeleton />}
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={({ title, content, teaser }) => (
           <section class="news-detail">
