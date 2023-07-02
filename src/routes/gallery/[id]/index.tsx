@@ -2,6 +2,7 @@ import {
   Resource,
   component$,
   useResource$,
+  useSignal,
   useStylesScoped$,
 } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
@@ -13,12 +14,24 @@ import styles from '~/css/gallery/gallery-images.css?inline'
 import usePagination from '~/hooks/usePagination'
 import Pagination from '~/components/elements/pagination'
 import GalleryListSkeleton from '~/components/gallery/gallery-list-skeleton'
+import Modal from '~/components/modal'
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import IconButton from '~/components/elements/icon-button'
+
+export function circularSubtract(value: number, length: number) {
+  return (value + length - 1) % length
+}
+
+export function circularAdd(value: number, length: number) {
+  return (value + 1) % length
+}
 
 export default component$(() => {
   useStylesScoped$(styles)
 
   const pagination = usePagination(1, 30)
   const { params } = useLocation()
+  const modalImage = useSignal(0)
   const imagesResource = useResource$<ListResult<GalleryImage>>(
     async ({ track }) => {
       track(() => pagination.page.value)
@@ -49,14 +62,44 @@ export default component$(() => {
           onPending={() => <GalleryListSkeleton />}
           onResolved={(galleryImages) => (
             <>
-              {galleryImages.items.map((galleryImage) => (
+              {galleryImages.items.map((galleryImage, index) => (
                 <img
                   key={galleryImage.id}
                   alt={galleryImage.image}
                   class="gallery-images__image"
                   src={pb.files.getUrl(galleryImage, galleryImage.image)}
+                  onClick$={() => (modalImage.value = index)}
+                  data-hs-overlay="#lightbox"
                 />
               ))}
+              <Modal id="lightbox">
+                <IconButton
+                  icon={faAngleLeft}
+                  onClick$={() => {
+                    modalImage.value = circularSubtract(
+                      modalImage.value,
+                      galleryImages.items.length
+                    )
+                  }}
+                />
+                <img
+                  alt={galleryImages.items[modalImage.value].image}
+                  src={pb.files.getUrl(
+                    galleryImages.items[modalImage.value],
+                    galleryImages.items[modalImage.value].image
+                  )}
+                  class="max-h-screen"
+                />
+                <IconButton
+                  icon={faAngleRight}
+                  onClick$={() => {
+                    modalImage.value = circularAdd(
+                      modalImage.value,
+                      galleryImages.items.length
+                    )
+                  }}
+                />
+              </Modal>
             </>
           )}
         />
