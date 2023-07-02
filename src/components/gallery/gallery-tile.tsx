@@ -13,35 +13,24 @@ export function random() {
   return Math.round(Math.random())
 }
 
-export default component$(({ name, id }: Gallery) => {
+export default component$(({ name, coverImage, ...record }: Gallery) => {
   useStylesScoped$(styles)
-
-  const imageResource = useResource$<GalleryImage>(async () => {
-    const response = await pb
-      .collection('gallery_images')
-      .getFirstListItem<GalleryImage>(`gallery="${id}"`)
-
-    return structuredClone(response)
-  })
 
   return (
     <section
       class={['gallery__tile', random() ? 'hover:-rotate-1' : 'hover:rotate-1']}
     >
-      <Link href={id} class="absolute top-0 left-0 h-full w-full rounded-lg">
+      <Link
+        href={record.id}
+        class="absolute top-0 left-0 h-full w-full rounded-lg"
+      >
         <div class="gallery__tile-backdrop">
           <span class="gallery__tile-backdrop-text">{name}</span>
         </div>
-        <Resource
-          value={imageResource}
-          onRejected={() => <div class="bg-ost-violet rounded-lg h-full"></div>}
-          onResolved={(galleryImage) => (
-            <img
-              src={pb.files.getUrl(galleryImage, galleryImage.image)}
-              alt={name}
-              class="gallery__tile-image"
-            />
-          )}
+        <img
+          src={pb.files.getUrl(record, coverImage)}
+          alt={name}
+          class="gallery__tile-image"
         />
       </Link>
     </section>
