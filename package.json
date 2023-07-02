@@ -46,6 +46,7 @@
     "undici": "5.14.0",
     "vercel": "^28.4.17",
     "vite": "^4.3.1",
-    "vite-tsconfig-paths": "^4.2.0"
+    "vite-tsconfig-paths": "^4.2.0",
+    "preline": "^1.9.0"
   }
 }

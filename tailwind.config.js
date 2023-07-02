@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}', 'node_modules/preline/dist/*.js'],
   theme: {
     extend: {
       fontFamily: {
@@ -27,6 +27,7 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/typography'),
+    require('preline/plugin'),
     // expose colors as css variables
     function ({ addBase, theme }) {
       function extractColorVars(colorObj, colorGroup = '') {
