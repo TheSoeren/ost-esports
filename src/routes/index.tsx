@@ -7,7 +7,11 @@ import type { NewsEntry } from '~/types'
 
 export default component$(() => {
   const newsResource = useResource$<NewsEntry>(async () => {
-    const response = await pb.collection('news').getFirstListItem<NewsEntry>('')
+    const response = await pb
+      .collection('news')
+      .getFirstListItem<NewsEntry>('', {
+        sort: '-publishDate',
+      })
 
     return structuredClone(response)
   })
