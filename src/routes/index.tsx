@@ -1,12 +1,17 @@
 import { Resource, component$, useResource$ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import NewsTile from '~/components/news/news-tile'
+import NewsTileSkeleton from '~/components/news/news-tile-skeleton'
 import pb from '~/pocketbase'
 import type { NewsEntry } from '~/types'
 
 export default component$(() => {
   const newsResource = useResource$<NewsEntry>(async () => {
-    const response = await pb.collection('news').getFirstListItem<NewsEntry>('')
+    const response = await pb
+      .collection('news')
+      .getFirstListItem<NewsEntry>('', {
+        sort: '-publishDate',
+      })
 
     return structuredClone(response)
   })
@@ -15,7 +20,7 @@ export default component$(() => {
     <article>
       <Resource
         value={newsResource}
-        onPending={() => <>Loading...</>}
+        onPending={() => <NewsTileSkeleton />}
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={(news) => <NewsTile {...news} />}
       />

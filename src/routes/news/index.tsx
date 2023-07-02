@@ -12,6 +12,7 @@ import pb from '~/pocketbase'
 import Pagination from '~/components/elements/pagination'
 import usePagination from '~/hooks/usePagination'
 import type { ListResult } from 'pocketbase'
+import NewsListSkeleton from '~/components/news/news-list-skeleton'
 
 export default component$(() => {
   useStylesScoped$(styles)
@@ -23,7 +24,9 @@ export default component$(() => {
 
       const response = await pb
         .collection('news')
-        .getList<NewsEntry>(pagination.page.value, pagination.perPage.value)
+        .getList<NewsEntry>(pagination.page.value, pagination.perPage.value, {
+          sort: '-publishDate',
+        })
       pagination.setTotalPages(response.totalPages)
 
       return structuredClone(response)
@@ -35,7 +38,7 @@ export default component$(() => {
       <Pagination {...pagination} />
       <Resource
         value={newsResource}
-        onPending={() => <>Loading...</>}
+        onPending={() => <NewsListSkeleton />}
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={(news) => (
           <div

@@ -10,6 +10,7 @@ import type { Game } from '~/types'
 import { type DocumentHead } from '@builder.io/qwik-city'
 import pb from '~/pocketbase'
 import type { ListResult } from 'pocketbase'
+import GameTileSkeleton from '~/components/games/game-tile-skeleton'
 
 export default component$(() => {
   useStylesScoped$(styles)
@@ -24,7 +25,7 @@ export default component$(() => {
     <article>
       <Resource
         value={gamesResource}
-        onPending={() => <>Loading...</>}
+        onPending={() => <GameTileSkeleton />}
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={(games) => (
           <div class="games__container">
