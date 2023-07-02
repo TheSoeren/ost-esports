@@ -1,12 +1,7 @@
-import {
-  Resource,
-  component$,
-  useResource$,
-  useStylesScoped$,
-} from '@builder.io/qwik'
+import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import { Link } from '@builder.io/qwik-city'
 import pb from '~/pocketbase'
-import type { Gallery, GalleryImage } from '~/types'
+import type { Gallery } from '~/types'
 import styles from '~/css/gallery/gallery-tile.css?inline'
 
 export function random() {
