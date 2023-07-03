@@ -1,0 +1,21 @@
+.pl-match {
+  @apply flex my-1 py-1 px-2;
+  @apply hover:bg-white;
+}
+
+.pl-match::before {
+  width: 3px;
+  height: 100%;
+}
+
+.pl-match__link {
+  @apply relative border-l-4;
+}
+
+.pl-match__enemy {
+  @apply overflow-hidden text-ellipsis mr-2;
+}
+
+.pl-match__info {
+  @apply ml-auto whitespace-nowrap;
+}

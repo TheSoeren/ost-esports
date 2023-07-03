@@ -1,8 +1,10 @@
 import TeamTile from '~/components/teams/team-tile'
 import LolTeamTile from '~/components/teams/league-of-legends/team-tile'
 
+const LEAGUE_OF_LEGENDS = '24n3v5bb5x7yixv'
+
 const componentMapping = {
-  '24n3v5bb5x7yixv': LolTeamTile,
+  [LEAGUE_OF_LEGENDS]: LolTeamTile,
 }
 
 const isKeyOfTileMapping = (
@@ -15,7 +17,11 @@ const isKeyOfTileMapping = (
   return false
 }
 
-export default function getTeamTile(gameId: string) {
+export function isLoL(gameId: string) {
+  return gameId === LEAGUE_OF_LEGENDS
+}
+
+export function getTeamTile(gameId: string) {
   if (isKeyOfTileMapping(gameId)) {
     return componentMapping[gameId]
   }

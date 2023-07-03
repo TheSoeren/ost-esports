@@ -1,56 +1,73 @@
+import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import {
-  component$,
-  Resource,
-  useResource$,
-  useStylesScoped$,
-} from '@builder.io/qwik'
-import { type DocumentHead, useLocation } from '@builder.io/qwik-city'
+  type DocumentHead,
+  useLocation,
+  routeLoader$,
+} from '@builder.io/qwik-city'
 import styles from '~/css/teams/index.css?inline'
 import type { Team } from '~/types'
-import getTeamTile from '~/data/teams/team-tile-mapping'
+import { isLoL, getTeamTile } from '~/data/teams/team-tile-mapping'
 import pb from '~/pocketbase'
 import BackButton from '~/components/elements/back-button'
-import usePagination from '~/hooks/usePagination'
-import Pagination from '~/components/elements/pagination'
+import type { PlListResult, PlTeam, PlTeamDetailed } from '~/types/primeleague'
 import type { ListResult } from 'pocketbase'
+
+interface UseTeamFetchingResponse {
+  teams: ListResult<Team>
+  plTeamList: PlTeamDetailed[]
+}
+
+export const useTeamFetching = routeLoader$<UseTeamFetchingResponse>(
+  async (requestEvent) => {
+    const teams = await pb.collection('teams').getList<Team>(1, 30, {
+      filter: `game="${requestEvent.params.id}"`,
+      expand: 'membership(team).user',
+      $cancelKey: requestEvent.params.id,
+    })
+
+    if (!isLoL(requestEvent.params.id)) {
+      return { teams, plTeamList: [] }
+    }
+
+    const plTeamResponses = await Promise.all(
+      teams.items.map((team: Team) =>
+        fetch(`https://www.primebot.me/api/teams/?name=${team.name}`)
+      )
+    )
+      .then((responses) => Promise.all(responses.map((res) => res.json())))
+      .then((teams) =>
+        teams
+          .flatMap((team: PlListResult<PlTeam>) => team.results)
+          .filter(
+            (team: PlTeam) => team.matches_count && team.matches_count > 0
+          )
+      )
+
+    const plTeamList = await Promise.all(
+      plTeamResponses.map((team: PlTeam) =>
+        fetch(`https://www.primebot.me/api/teams/${team.id}`)
+      )
+    ).then((responses) => Promise.all(responses.map((res) => res.json())))
+
+    return structuredClone({ teams, plTeamList })
+  }
+)
 
 export default component$(() => {
   useStylesScoped$(styles)
 
-  const pagination = usePagination(1, 30)
   const { params } = useLocation()
   const TeamTile = getTeamTile(params.id)
-  const teamsResource = useResource$<ListResult<Team>>(async ({ track }) => {
-    track(() => pagination.page.value)
-
-    const response = await pb
-      .collection('teams')
-      .getList<Team>(pagination.page.value, pagination.perPage.value, {
-        filter: `game="${params.id}"`,
-        expand: 'membership(team).user',
-        $cancelKey: params.id,
-      })
-    pagination.setTotalPages(response.totalPages)
-    return structuredClone(response)
-  })
+  const teamsResource = useTeamFetching()
 
   return (
     <article>
       <BackButton href="/games" label="Game Auswahl" />
-      <Pagination {...pagination} />
       <div class="teams__container">
-        <Resource
-          value={teamsResource}
-          onResolved={(teams) => (
-            <>
-              {teams.items.map((team) => (
-                <TeamTile key={team.id} {...team} />
-              ))}
-            </>
-          )}
-        />
+        {teamsResource.value.teams.items.map((team) => (
+          <TeamTile key={team.id} {...team} />
+        ))}
       </div>
-      <Pagination {...pagination} />
     </article>
   )
 })

@@ -1,19 +1,33 @@
+import type { Membership, Player, Team } from '~/types'
+import PlayerInfo from '~/components/teams/league-of-legends/player-info'
+import styles from '~/css/teams/team-tile.css?inline'
+import PlMatchList from './pl-match-list'
 import {
   component$,
   useSignal,
   useStylesScoped$,
   useTask$,
 } from '@builder.io/qwik'
-import type { Membership, Player, Team } from '~/types'
-import PlayerInfo from '~/components/teams/league-of-legends/player-info'
-import styles from '~/css/teams/team-tile.css?inline'
+import { useTeamFetching } from '~/routes/games/[id]'
+import type { PlTeamDetailed } from '~/types/primeleague'
 
 export default component$(
   ({ id, name, expand: { ['membership(team)']: memberships } }: Team) => {
     useStylesScoped$(styles)
 
+    const teamResource = useTeamFetching()
+
     const sigMembership = useSignal<Membership[]>()
     const sigPlayers = useSignal<Player[]>()
+    const plTeam = useSignal<PlTeamDetailed>()
+
+    useTask$(({ track }) => {
+      track(() => teamResource.value.plTeamList)
+
+      plTeam.value = teamResource.value.plTeamList.find(
+        (plTeam) => plTeam.name === name
+      )
+    })
 
     useTask$(({ track }) => {
       track(() => memberships)
@@ -27,23 +41,32 @@ export default component$(
     })
 
     return (
-      <div class="tile team-tile">
+      <div class={['tile team-tile', plTeam.value ? 'team-tile--pl' : '']}>
         <div class="team-tile__name">{name}</div>
-        {sigPlayers.value?.map((player) => {
-          const membership = sigMembership.value?.find(
-            (m) => m.user === player.id
-          )
+        <div class="flex flex-col sm:flex-row">
+          <div class="team-tile__player-section">
+            {sigPlayers.value?.map((player) => {
+              const membership = sigMembership.value?.find(
+                (m) => m.user === player.id
+              )
 
-          if (!membership) return null
+              if (!membership) return null
 
-          return (
-            <PlayerInfo
-              key={player.id}
-              membership={membership}
-              player={player}
-            />
-          )
-        })}
+              return (
+                <PlayerInfo
+                  key={player.id}
+                  membership={membership}
+                  player={player}
+                />
+              )
+            })}
+          </div>
+          <div class="team-tile__match-section">
+            {plTeam.value?.matches && (
+              <PlMatchList matches={plTeam.value?.matches} />
+            )}
+          </div>
+        </div>
       </div>
     )
   }
