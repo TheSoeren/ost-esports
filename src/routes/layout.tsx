@@ -7,7 +7,6 @@ import {
   getGameSpecificData,
   LEAGUE_OF_LEGENDS,
 } from '~/data/teams/team-tile-mapping'
-import pb from '~/pocketbase'
 import type { Team } from '~/types'
 import type { PlTeamDetailed } from '~/types/primeleague'
 
