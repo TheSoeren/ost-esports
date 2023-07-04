@@ -8,8 +8,8 @@ import {
   useStylesScoped$,
   useTask$,
 } from '@builder.io/qwik'
-import { useTeamData } from '~/routes/games/[id]'
 import type { PlTeamDetailed } from '~/types/primeleague'
+import { useTeamData } from '~/routes/layout'
 
 export default component$(
   ({ id, name, expand: { ['membership(team)']: memberships } }: Team) => {
