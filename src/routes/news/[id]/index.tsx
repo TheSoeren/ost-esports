@@ -30,7 +30,7 @@ export default component$(() => {
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={({ title, content, teaser }) => (
           <section class="news-detail">
-            <div class="news-detail__title">{title}</div>
+            <h1 class="news-detail__title">{title}</h1>
             <hr />
             <p class="pb-4">
               <em>{teaser}</em>

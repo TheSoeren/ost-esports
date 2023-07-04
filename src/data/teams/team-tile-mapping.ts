@@ -3,7 +3,7 @@ import LolTeamTile from '~/components/teams/league-of-legends/team-tile'
 import type { ListResult } from 'pocketbase'
 import type { Team } from '~/types'
 
-const LEAGUE_OF_LEGENDS = '24n3v5bb5x7yixv'
+export const LEAGUE_OF_LEGENDS = '24n3v5bb5x7yixv'
 
 const componentMapping = {
   [LEAGUE_OF_LEGENDS]: LolTeamTile,

@@ -1,7 +1,3 @@
-.team-tile {
-  @apply relative p-5;
-}
-
 .team-tile--pl {
   @apply col-span-2;
 }

@@ -28,7 +28,7 @@ export default component$(
 
     return (
       <div class="tile team-tile">
-        <div class="team-tile__name">{name}</div>
+        <h2 class="team-tile__name">{name}</h2>
         {sigPlayers.value?.map((player) => (
           <PlayerInfo key={player.id} {...player} />
         ))}

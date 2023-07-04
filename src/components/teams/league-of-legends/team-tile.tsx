@@ -42,7 +42,7 @@ export default component$(
 
     return (
       <div class={['tile team-tile', plTeam.value ? 'team-tile--pl' : '']}>
-        <div class="team-tile__name">{name}</div>
+        <h2 class="team-tile__name">{name}</h2>
         <div class="flex flex-col sm:flex-row">
           <div class="team-tile__player-section">
             {sigPlayers.value?.map((player) => {

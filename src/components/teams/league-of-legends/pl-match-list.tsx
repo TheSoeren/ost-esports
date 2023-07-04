@@ -5,6 +5,8 @@ import styles from '~/css/teams/pl-matches.css?inline'
 
 interface Props {
   matches: PlMatch[]
+  cssClass?: string
+  teamName?: string
 }
 
 export function sortByMatchDay(a: PlMatch, b: PlMatch) {
@@ -16,7 +18,7 @@ export function hasWon(result: string) {
   return !!parseInt(result)
 }
 
-export default component$(({ matches }: Props) => {
+export default component$(({ matches, cssClass, teamName }: Props) => {
   useStylesScoped$(styles)
 
   const resultClass = (result: string | null) => {
@@ -32,7 +34,7 @@ export default component$(({ matches }: Props) => {
   }
 
   return (
-    <section class="pl-match__list">
+    <section class={['pl-match__list', cssClass]}>
       {matches.sort(sortByMatchDay).map((match) => {
         return (
           <a
@@ -41,7 +43,9 @@ export default component$(({ matches }: Props) => {
             target="_blank"
             class={['pl-match', resultClass(match.result)]}
           >
-            <div class="pl-match__enemy">vs. {match.enemy_team.name}</div>
+            <div class="pl-match__enemy">
+              {teamName} vs. {match.enemy_team.name}
+            </div>
             <div class="pl-match__info">
               {match.result
                 ? match.result
