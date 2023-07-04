@@ -3,8 +3,7 @@
 }
 
 .pl-match {
-  @apply flex border-2 border-l-4 px-3 py-1 border-transparent rounded-r;
-  @apply hover:bg-white;
+  @apply flex border-2 border-l-4 px-3 py-1 border-transparent rounded-r transition-all;
 }
 
 .pl-match--pink {
