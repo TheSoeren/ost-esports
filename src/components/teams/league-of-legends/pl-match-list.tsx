@@ -21,14 +21,14 @@ export default component$(({ matches }: Props) => {
 
   const resultClass = (result: string | null) => {
     if (!result) {
-      return 'before:bg-ost-black'
+      return 'pl-match--black'
     }
 
     if (hasWon(result)) {
-      return 'before:bg-ost-pink'
+      return 'pl-match--pink'
     }
 
-    return 'before:bg-ost-violet'
+    return 'pl-match--violet'
   }
 
   return (
@@ -39,15 +39,13 @@ export default component$(({ matches }: Props) => {
             key={match.match_id}
             href={match.prime_league_link}
             target="_blank"
-            class="pl-match__link"
+            class={['pl-match', resultClass(match.result)]}
           >
-            <div class={['pl-match', resultClass(match.result)]}>
-              <div class="pl-match__enemy">{match.enemy_team.name}</div>
-              <div class="pl-match__info">
-                {match.result
-                  ? match.result
-                  : dayjs(match.begin).format('DD.MM.YYYY HH:mm')}
-              </div>
+            <div class="pl-match__enemy">vs. {match.enemy_team.name}</div>
+            <div class="pl-match__info">
+              {match.result
+                ? match.result
+                : dayjs(match.begin).format('DD.MM.YYYY HH:mm')}
             </div>
           </a>
         )
