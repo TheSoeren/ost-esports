@@ -3,7 +3,10 @@ import { routeLoader$ } from '@builder.io/qwik-city'
 import type { ListResult } from 'pocketbase'
 import Footer from '~/components/footer'
 import Header from '~/components/header'
-import { LEAGUE_OF_LEGENDS } from '~/data/teams/team-tile-mapping'
+import {
+  getGameSpecificData,
+  LEAGUE_OF_LEGENDS,
+} from '~/data/teams/team-tile-mapping'
 import pb from '~/pocketbase'
 import type { Team } from '~/types'
 import type { PlTeamDetailed } from '~/types/primeleague'
@@ -18,31 +21,21 @@ interface UseTeamFetchingResponse {
  * remember to add a condition to the rendering of <PlMatchList/> in the root index.tsx.
  */
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
-  const teams = await pb.collection('teams').getList<Team>(1, 30, {
-    filter: `game="${LEAGUE_OF_LEGENDS}"`,
-    expand: 'membership(team).user',
-    $cancelKey: LEAGUE_OF_LEGENDS,
-  })
+  const response = await fetch(
+    `https://api.ost-esports.ch/api/collections/teams/records?filter=(game="${LEAGUE_OF_LEGENDS}")`
+  )
 
-  const gameSpecificData = async () => {
-    const registeredTeams = teams.items
-      .filter((team) => !!(team.gameSpecificData.plTeamId as number))
-      .map((team) => team.gameSpecificData.plTeamId as number)
+  const teams = await response.json()
 
-    const plTeamList = await Promise.all(
-      registeredTeams.map((plTeamId: number) =>
-        fetch(`https://www.primebot.me/api/teams/${plTeamId}`)
-      )
-    ).then((responses) => Promise.all(responses.map((res) => res.json())))
+  // const teams = await pb.collection('teams').getList<Team>(1, 30, {
+  //   filter: `game="${LEAGUE_OF_LEGENDS}"`,
+  //   expand: 'membership(team).user',
+  //   $cancelKey: LEAGUE_OF_LEGENDS,
+  // })
 
-    if (plTeamList.length) {
-      return plTeamList
-    }
+  const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
 
-    return []
-  }
-
-  return structuredClone({ teams, gameSpecificData: await gameSpecificData() })
+  return structuredClone({ teams, gameSpecificData })
 })
 
 export default component$(() => {
