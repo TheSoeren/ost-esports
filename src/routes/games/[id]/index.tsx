@@ -6,18 +6,21 @@ import {
 } from '@builder.io/qwik-city'
 import styles from '~/css/teams/index.css?inline'
 import type { Team } from '~/types'
-import { isLoL, getTeamTile } from '~/data/teams/team-tile-mapping'
+import {
+  getGameSpecificData,
+  getTeamTile,
+} from '~/data/teams/team-tile-mapping'
 import pb from '~/pocketbase'
 import BackButton from '~/components/elements/back-button'
-import type { PlListResult, PlTeam, PlTeamDetailed } from '~/types/primeleague'
+import type { PlTeamDetailed } from '~/types/primeleague'
 import type { ListResult } from 'pocketbase'
 
 interface UseTeamFetchingResponse {
   teams: ListResult<Team>
-  plTeamList: PlTeamDetailed[]
+  gameSpecificData: PlTeamDetailed[]
 }
 
-export const useTeamFetching = routeLoader$<UseTeamFetchingResponse>(
+export const useTeamData = routeLoader$<UseTeamFetchingResponse>(
   async (requestEvent) => {
     const teams = await pb.collection('teams').getList<Team>(1, 30, {
       filter: `game="${requestEvent.params.id}"`,
@@ -25,31 +28,12 @@ export const useTeamFetching = routeLoader$<UseTeamFetchingResponse>(
       $cancelKey: requestEvent.params.id,
     })
 
-    if (!isLoL(requestEvent.params.id)) {
-      return { teams, plTeamList: [] }
-    }
-
-    const plTeamResponses = await Promise.all(
-      teams.items.map((team: Team) =>
-        fetch(`https://www.primebot.me/api/teams/?name=${team.name}`)
-      )
+    const gameSpecificData = await getGameSpecificData(
+      teams,
+      requestEvent.params.id
     )
-      .then((responses) => Promise.all(responses.map((res) => res.json())))
-      .then((teams) =>
-        teams
-          .flatMap((team: PlListResult<PlTeam>) => team.results)
-          .filter(
-            (team: PlTeam) => team.matches_count && team.matches_count > 0
-          )
-      )
 
-    const plTeamList = await Promise.all(
-      plTeamResponses.map((team: PlTeam) =>
-        fetch(`https://www.primebot.me/api/teams/${team.id}`)
-      )
-    ).then((responses) => Promise.all(responses.map((res) => res.json())))
-
-    return structuredClone({ teams, plTeamList })
+    return structuredClone({ teams, gameSpecificData })
   }
 )
 
@@ -58,7 +42,7 @@ export default component$(() => {
 
   const { params } = useLocation()
   const TeamTile = getTeamTile(params.id)
-  const teamsResource = useTeamFetching()
+  const teamsResource = useTeamData()
 
   return (
     <article>

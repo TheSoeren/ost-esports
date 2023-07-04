@@ -8,23 +8,23 @@ import {
   useStylesScoped$,
   useTask$,
 } from '@builder.io/qwik'
-import { useTeamFetching } from '~/routes/games/[id]'
+import { useTeamData } from '~/routes/games/[id]'
 import type { PlTeamDetailed } from '~/types/primeleague'
 
 export default component$(
   ({ id, name, expand: { ['membership(team)']: memberships } }: Team) => {
     useStylesScoped$(styles)
 
-    const teamResource = useTeamFetching()
+    const teamResource = useTeamData()
 
     const sigMembership = useSignal<Membership[]>()
     const sigPlayers = useSignal<Player[]>()
     const plTeam = useSignal<PlTeamDetailed>()
 
     useTask$(({ track }) => {
-      track(() => teamResource.value.plTeamList)
+      track(() => teamResource.value.gameSpecificData)
 
-      plTeam.value = teamResource.value.plTeamList.find(
+      plTeam.value = teamResource.value.gameSpecificData.find(
         (plTeam) => plTeam.name === name
       )
     })
