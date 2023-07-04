@@ -27,19 +27,17 @@ interface UseTeamFetchingResponse {
  * If you generalize this to fetch game specific data about all teams (no only lol)
  * remember to add a condition to the rendering of <PlMatchList/> below.
  */
-export const useTeamData = routeLoader$<UseTeamFetchingResponse>(
-  async (requestEvent) => {
-    const teams = await pb.collection('teams').getList<Team>(1, 30, {
-      filter: `game="${LEAGUE_OF_LEGENDS}"`,
-      expand: 'membership(team).user',
-      $cancelKey: requestEvent.params.id,
-    })
+export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
+  const teams = await pb.collection('teams').getList<Team>(1, 30, {
+    filter: `game="${LEAGUE_OF_LEGENDS}"`,
+    expand: 'membership(team).user',
+    $cancelKey: LEAGUE_OF_LEGENDS,
+  })
 
-    const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
+  const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
 
-    return structuredClone({ teams, gameSpecificData })
-  }
-)
+  return structuredClone({ teams, gameSpecificData })
+})
 
 export default component$(() => {
   useStylesScoped$(styles)
