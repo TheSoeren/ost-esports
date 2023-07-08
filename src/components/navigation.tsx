@@ -60,9 +60,9 @@ export default component$(() => {
           class={['sm:hidden mt-5 w-2/5', !isOpen.value ? 'hidden' : '']}
           aria-label="Additional Links"
         >
-          <Link href="https://discord.gg/UAWGz7gg5A" class="block">
+          <a href="https://discord.gg/UAWGz7gg5A" target="_blank" class="block">
             <img src="/join_discord.svg" alt="join discord" />
-          </Link>
+          </a>
         </div>
         <nav
           class={['navigation w-1/2', isOpen.value ? 'flex' : 'hidden sm:flex']}

@@ -72,15 +72,28 @@ export default component$(() => {
               />
             ))}
             <Modal id="lightbox">
-              <IconButton
-                icon={faAngleLeft}
-                onClick$={() => {
-                  modalImage.value = circularSubtract(
-                    modalImage.value,
-                    galleryImages.items.length
-                  )
-                }}
-              />
+              <div class="flex justify-around">
+                <IconButton
+                  icon={faAngleLeft}
+                  onClick$={() => {
+                    modalImage.value = circularSubtract(
+                      modalImage.value,
+                      galleryImages.items.length
+                    )
+                  }}
+                  cssClass="w-full rounded-none rounded-tl-lg"
+                />
+                <IconButton
+                  icon={faAngleRight}
+                  onClick$={() => {
+                    modalImage.value = circularAdd(
+                      modalImage.value,
+                      galleryImages.items.length
+                    )
+                  }}
+                  cssClass="w-full rounded-none rounded-tr-lg"
+                />
+              </div>
               <img
                 alt={galleryImages.items[modalImage.value].image}
                 src={pb.files.getUrl(
@@ -88,15 +101,6 @@ export default component$(() => {
                   galleryImages.items[modalImage.value].image
                 )}
                 class="max-h-screen"
-              />
-              <IconButton
-                icon={faAngleRight}
-                onClick$={() => {
-                  modalImage.value = circularAdd(
-                    modalImage.value,
-                    galleryImages.items.length
-                  )
-                }}
               />
             </Modal>
           </div>
