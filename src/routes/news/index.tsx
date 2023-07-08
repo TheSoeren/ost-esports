@@ -12,7 +12,7 @@ import Pagination from '~/components/elements/pagination'
 import usePagination from '~/hooks/usePagination'
 import type { ListResult } from 'pocketbase'
 import NewsListSkeleton from '~/components/news/news-list-skeleton'
-import usePocketbase from '~/hooks/usePocketBase'
+import usePocketbase from '~/hooks/usePocketbase'
 
 export default component$(() => {
   useStylesScoped$(styles)

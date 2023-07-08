@@ -2,7 +2,7 @@ import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import { Link } from '@builder.io/qwik-city'
 import type { Game } from '~/types'
 import styles from '~/css/games/games-tile.css?inline'
-import usePocketbase from '~/hooks/usePocketBase'
+import usePocketbase from '~/hooks/usePocketbase'
 
 export function random() {
   return Math.round(Math.random())

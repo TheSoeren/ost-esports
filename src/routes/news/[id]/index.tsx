@@ -9,7 +9,7 @@ import BackButton from '~/components/elements/back-button'
 import type { NewsEntry } from '~/types'
 import styles from '~/css/news/news-detail.css?inline'
 import NewsEntrySkeleton from '~/components/news/news-entry-skeleton'
-import usePocketbase from '~/hooks/usePocketBase'
+import usePocketbase from '~/hooks/usePocketbase'
 
 export default component$(() => {
   useStyles$(styles)

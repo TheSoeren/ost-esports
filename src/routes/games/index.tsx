@@ -9,7 +9,7 @@ import styles from '~/css/games/index.css?inline'
 import type { Game } from '~/types'
 import { type DocumentHead } from '@builder.io/qwik-city'
 import GameTileSkeleton from '~/components/games/game-tile-skeleton'
-import usePocketbase from '~/hooks/usePocketBase'
+import usePocketbase from '~/hooks/usePocketbase'
 
 export default component$(() => {
   useStylesScoped$(styles)

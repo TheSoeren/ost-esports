@@ -16,7 +16,7 @@ import GalleryListSkeleton from '~/components/gallery/gallery-list-skeleton'
 import Modal from '~/components/modal'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import IconButton from '~/components/elements/icon-button'
-import usePocketbase from '~/hooks/usePocketBase'
+import usePocketbase from '~/hooks/usePocketbase'
 
 export function circularSubtract(value: number, length: number) {
   return (value + length - 1) % length
