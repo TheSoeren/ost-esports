@@ -1,0 +1,30 @@
+.pl-match__list {
+  @apply flex flex-col gap-1;
+}
+
+.pl-match {
+  @apply flex border-2 border-l-4 px-3 py-1 border-transparent rounded-r transition-all;
+}
+
+.pl-match--pink {
+  @apply border-l-ost-pink;
+  @apply hover:border-ost-pink;
+}
+
+.pl-match--violet {
+  @apply border-l-ost-violet;
+  @apply hover:border-ost-violet;
+}
+
+.pl-match--black {
+  @apply border-l-ost-black;
+  @apply hover:border-ost-black;
+}
+
+.pl-match__enemy {
+  @apply truncate mr-2;
+}
+
+.pl-match__info {
+  @apply ml-auto whitespace-nowrap;
+}

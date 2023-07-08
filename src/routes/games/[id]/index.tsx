@@ -1,56 +1,59 @@
+import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import {
-  component$,
-  Resource,
-  useResource$,
-  useStylesScoped$,
-} from '@builder.io/qwik'
-import { type DocumentHead, useLocation } from '@builder.io/qwik-city'
+  type DocumentHead,
+  useLocation,
+  routeLoader$,
+} from '@builder.io/qwik-city'
 import styles from '~/css/teams/index.css?inline'
-import type { Team } from '~/types'
-import getTeamTile from '~/data/teams/team-tile-mapping'
-import pb from '~/pocketbase'
+import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
+import {
+  getGameSpecificData,
+  getTeamTile,
+} from '~/data/teams/team-tile-mapping'
 import BackButton from '~/components/elements/back-button'
-import usePagination from '~/hooks/usePagination'
-import Pagination from '~/components/elements/pagination'
 import type { ListResult } from 'pocketbase'
+import type { Team } from '~/types'
+import Pocketbase from 'pocketbase'
+
+interface UseTeamFetchingResponse {
+  teams: ListResult<Team>
+  gameSpecificData: ResolvedGameSpecificData
+}
+
+export const useTeamData = routeLoader$<UseTeamFetchingResponse>(
+  async (requestEvent) => {
+    const pb = new Pocketbase(import.meta.env.VITE_API_URL)
+
+    const teams = await pb.collection('teams').getList<Team>(1, 30, {
+      filter: `game="${requestEvent.params.id}"`,
+      expand: 'membership(team).user',
+      $cancelKey: requestEvent.params.id,
+    })
+
+    const gameSpecificData = await getGameSpecificData(
+      teams,
+      requestEvent.params.id
+    )
+
+    return structuredClone({ teams, gameSpecificData })
+  }
+)
 
 export default component$(() => {
   useStylesScoped$(styles)
 
-  const pagination = usePagination(1, 30)
   const { params } = useLocation()
   const TeamTile = getTeamTile(params.id)
-  const teamsResource = useResource$<ListResult<Team>>(async ({ track }) => {
-    track(() => pagination.page.value)
-
-    const response = await pb
-      .collection('teams')
-      .getList<Team>(pagination.page.value, pagination.perPage.value, {
-        filter: `game="${params.id}"`,
-        expand: 'membership(team).user',
-        $cancelKey: params.id,
-      })
-    pagination.setTotalPages(response.totalPages)
-    return structuredClone(response)
-  })
+  const teamsResource = useTeamData()
 
   return (
     <article>
       <BackButton href="/games" label="Game Auswahl" />
-      <Pagination {...pagination} />
       <div class="teams__container">
-        <Resource
-          value={teamsResource}
-          onResolved={(teams) => (
-            <>
-              {teams.items.map((team) => (
-                <TeamTile key={team.id} {...team} />
-              ))}
-            </>
-          )}
-        />
+        {teamsResource.value.teams.items.map((team) => (
+          <TeamTile key={team.id} {...team} />
+        ))}
       </div>
-      <Pagination {...pagination} />
     </article>
   )
 })

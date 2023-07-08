@@ -1,9 +1,5 @@
-.news-tile {
-  @apply relative p-5;
-}
-
 .news-tile__header {
-  @apply flex justify-between pb-4;
+  @apply flex justify-between mb-4;
 }
 
 .news-tile__title {

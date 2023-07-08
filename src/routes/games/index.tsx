@@ -8,15 +8,15 @@ import GameTile from '~/components/games/game-tile'
 import styles from '~/css/games/index.css?inline'
 import type { Game } from '~/types'
 import { type DocumentHead } from '@builder.io/qwik-city'
-import pb from '~/pocketbase'
-import type { ListResult } from 'pocketbase'
 import GameTileSkeleton from '~/components/games/game-tile-skeleton'
+import usePocketbase from '~/hooks/usePocketbase'
 
 export default component$(() => {
   useStylesScoped$(styles)
+  const pb = usePocketbase()
 
-  const gamesResource = useResource$<ListResult<Game>>(async () => {
-    const response = await pb.collection('games').getList<Game>(1, 30)
+  const gamesResource = useResource$<Game[]>(async () => {
+    const response: Game[] = await pb.collection('games').getFullList()
 
     return structuredClone(response)
   })
@@ -29,7 +29,7 @@ export default component$(() => {
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={(games) => (
           <div class="games__container">
-            {games.items.map((game) => (
+            {games.map((game) => (
               <GameTile key={game.id} {...game} />
             ))}
           </div>
