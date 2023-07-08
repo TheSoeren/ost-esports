@@ -14,7 +14,7 @@ export default component$(({ id, title, teaser }: NewsEntry) => {
           Weiterlesen
         </Link>
       </div>
-      <div>{teaser}</div>
+      <div class="news-tile__teaser">{teaser}</div>
     </section>
   )
 })

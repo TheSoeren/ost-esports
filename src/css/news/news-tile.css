@@ -2,6 +2,10 @@
   @apply flex justify-between mb-4;
 }
 
+.news-tile:first-of-type {
+  @apply sm:col-span-2;
+}
+
 .news-tile__title {
   @apply text-2xl;
 
@@ -11,8 +15,8 @@
   display: -webkit-box;
 }
 
-.news-tile:first-of-type {
-  @apply sm:col-span-2;
+.news-tile__teaser {
+  @apply line-clamp-4;
 }
 
 .news-tile__link {
