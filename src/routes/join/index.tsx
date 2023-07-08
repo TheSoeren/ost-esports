@@ -1,5 +1,5 @@
 import { component$ } from '@builder.io/qwik'
-import { Link, type DocumentHead } from '@builder.io/qwik-city'
+import type { DocumentHead } from '@builder.io/qwik-city'
 
 export default component$(() => {
   return (
@@ -17,12 +17,13 @@ export default component$(() => {
         Hast du lust ein Teil unseres Clubs zu sein? Dann tritt unserem Discord
         bei!
       </p>
-      <Link
+      <a
         href="https://discord.gg/UAWGz7gg5A"
+        target="_blank"
         class="block mx-auto mt-2 md:mt-8 mb-8 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6"
       >
         <img src="/join_discord.svg" alt="join discord" />
-      </Link>
+      </a>
     </section>
   )
 })

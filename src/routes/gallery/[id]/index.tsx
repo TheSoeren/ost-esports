@@ -56,52 +56,58 @@ export default component$(() => {
     <article>
       <BackButton href="/gallery" label="Galerie Auswahl" />
       <Pagination {...pagination} />
-      <Resource
-        value={imagesResource}
-        onPending={() => <GalleryListSkeleton />}
-        onResolved={(galleryImages) => (
-          <div class="gallery-images__container">
-            {galleryImages.items.map((galleryImage, index) => (
-              <img
-                key={galleryImage.id}
-                alt={galleryImage.image}
-                class="gallery-images__image"
-                src={pb.files.getUrl(galleryImage, galleryImage.image)}
-                onClick$={() => (modalImage.value = index)}
-                data-hs-overlay="#lightbox"
-              />
-            ))}
-            <Modal id="lightbox">
-              <IconButton
-                icon={faAngleLeft}
-                onClick$={() => {
-                  modalImage.value = circularSubtract(
-                    modalImage.value,
-                    galleryImages.items.length
-                  )
-                }}
-              />
-              <img
-                alt={galleryImages.items[modalImage.value].image}
-                src={pb.files.getUrl(
-                  galleryImages.items[modalImage.value],
-                  galleryImages.items[modalImage.value].image
-                )}
-                class="max-h-screen"
-              />
-              <IconButton
-                icon={faAngleRight}
-                onClick$={() => {
-                  modalImage.value = circularAdd(
-                    modalImage.value,
-                    galleryImages.items.length
-                  )
-                }}
-              />
-            </Modal>
-          </div>
-        )}
-      />
+      <div class="gallery-images__container">
+        <Resource
+          value={imagesResource}
+          onPending={() => <GalleryListSkeleton />}
+          onResolved={(galleryImages) => (
+            <>
+              {galleryImages.items.map((galleryImage, index) => (
+                <img
+                  key={galleryImage.id}
+                  alt={galleryImage.image}
+                  class="gallery-images__image"
+                  src={pb.files.getUrl(galleryImage, galleryImage.image)}
+                  onClick$={() => (modalImage.value = index)}
+                  data-hs-overlay="#lightbox"
+                />
+              ))}
+              <Modal id="lightbox">
+                <div class="flex justify-around">
+                  <IconButton
+                    icon={faAngleLeft}
+                    onClick$={() => {
+                      modalImage.value = circularSubtract(
+                        modalImage.value,
+                        galleryImages.items.length
+                      )
+                    }}
+                    cssClass="w-full rounded-none rounded-tl-lg"
+                  />
+                  <IconButton
+                    icon={faAngleRight}
+                    onClick$={() => {
+                      modalImage.value = circularAdd(
+                        modalImage.value,
+                        galleryImages.items.length
+                      )
+                    }}
+                    cssClass="w-full rounded-none rounded-tr-lg"
+                  />
+                </div>
+                <img
+                  alt={galleryImages.items[modalImage.value].image}
+                  src={pb.files.getUrl(
+                    galleryImages.items[modalImage.value],
+                    galleryImages.items[modalImage.value].image
+                  )}
+                  class="max-h-screen"
+                />
+              </Modal>
+            </>
+          )}
+        />
+      </div>
       <Pagination {...pagination} />
     </article>
   )
