@@ -33,12 +33,12 @@ export default component$(() => {
           <section class="news-detail">
             <h1 class="news-detail__title">{title}</h1>
             <hr />
-            <p class="pb-4">
+            <p class="news-detail__teaser">
               <em>{teaser}</em>
             </p>
             {/* We can do `dangerouslySetInnerHTML` here because the content is sanitized by pocketbase */}
             <div
-              class="news-detail__content prose"
+              class="prose news-detail__content"
               dangerouslySetInnerHTML={content}
             ></div>
           </section>
