@@ -8,7 +8,6 @@ import {
 import { useLocation } from '@builder.io/qwik-city'
 import type { ListResult } from 'pocketbase'
 import type { GalleryImage } from '~/types'
-import pb from '~/pocketbase'
 import BackButton from '~/components/elements/back-button'
 import styles from '~/css/gallery/gallery-images.css?inline'
 import usePagination from '~/hooks/usePagination'
@@ -17,6 +16,7 @@ import GalleryListSkeleton from '~/components/gallery/gallery-list-skeleton'
 import Modal from '~/components/modal'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import IconButton from '~/components/elements/icon-button'
+import usePocketbase from '~/hooks/usePocketBase'
 
 export function circularSubtract(value: number, length: number) {
   return (value + length - 1) % length
@@ -28,6 +28,7 @@ export function circularAdd(value: number, length: number) {
 
 export default component$(() => {
   useStylesScoped$(styles)
+  const pb = usePocketbase()
 
   const pagination = usePagination(1, 30)
   const { params } = useLocation()
@@ -45,7 +46,6 @@ export default component$(() => {
             filter: `gallery="${params.id}"`,
           }
         )
-
       pagination.setTotalPages(response.totalPages)
 
       return structuredClone(response)

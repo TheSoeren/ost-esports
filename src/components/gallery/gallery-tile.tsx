@@ -1,8 +1,8 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import { Link } from '@builder.io/qwik-city'
-import pb from '~/pocketbase'
 import type { Gallery } from '~/types'
 import styles from '~/css/gallery/gallery-tile.css?inline'
+import usePocketbase from '~/hooks/usePocketBase'
 
 export function random() {
   return Math.round(Math.random())
@@ -10,6 +10,7 @@ export function random() {
 
 export default component$(({ name, coverImage, ...record }: Gallery) => {
   useStylesScoped$(styles)
+  const pb = usePocketbase()
 
   return (
     <section

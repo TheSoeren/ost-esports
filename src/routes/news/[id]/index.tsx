@@ -6,13 +6,14 @@ import {
 } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
 import BackButton from '~/components/elements/back-button'
-import pb from '~/pocketbase'
 import type { NewsEntry } from '~/types'
 import styles from '~/css/news/news-detail.css?inline'
 import NewsEntrySkeleton from '~/components/news/news-entry-skeleton'
+import usePocketbase from '~/hooks/usePocketBase'
 
 export default component$(() => {
   useStyles$(styles)
+  const pb = usePocketbase()
 
   const { params } = useLocation()
   const newsResource = useResource$<NewsEntry>(async () => {

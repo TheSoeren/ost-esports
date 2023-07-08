@@ -9,7 +9,7 @@ import {
   useTask$,
 } from '@builder.io/qwik'
 import type { PlTeamDetailed } from '~/types/primeleague'
-import { useTeamData } from '~/routes/layout'
+import { useTeamData } from '~/routes/games/[id]'
 
 export default component$(
   ({ id, name, expand: { ['membership(team)']: memberships } }: Team) => {
@@ -24,7 +24,7 @@ export default component$(
     useTask$(({ track }) => {
       track(() => teamResource.value.gameSpecificData)
 
-      plTeam.value = teamResource.value.gameSpecificData.find(
+      plTeam.value = teamResource.value.gameSpecificData.plTeamList.find(
         (plTeam) => plTeam.name === name
       )
     })
