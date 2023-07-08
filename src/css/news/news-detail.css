@@ -1,0 +1,15 @@
+.news-detail {
+  @apply pt-5;
+}
+
+.news-detail__title {
+  @apply text-3xl mb-4;
+}
+
+.news-detail__teaser {
+  @apply pb-4 text-gray-700;
+}
+
+.news-detail__content {
+  max-width: unset !important;
+}

@@ -1,32 +1,97 @@
-import { component$ } from '@builder.io/qwik'
-import type { DocumentHead } from '@builder.io/qwik-city'
+import {
+  Resource,
+  component$,
+  useResource$,
+  useStylesScoped$,
+} from '@builder.io/qwik'
+import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
+import NewsTile from '~/components/news/news-tile'
+import NewsTileSkeleton from '~/components/news/news-tile-skeleton'
+import PlMatchList from '~/components/teams/league-of-legends/pl-match-list'
+import type { NewsEntry, Team } from '~/types'
+import styles from '~/css/index.css?inline'
+import usePocketbase from '~/hooks/usePocketbase'
+import type { ListResult } from 'pocketbase'
+import Pocketbase from 'pocketbase'
+import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
+import {
+  LEAGUE_OF_LEGENDS,
+  getGameSpecificData,
+  isLeagueOfLegendsData,
+} from '~/data/teams/team-tile-mapping'
+
+interface UseTeamFetchingResponse {
+  teams: ListResult<Team>
+  gameSpecificData: ResolvedGameSpecificData
+}
+
+/*
+ * If you generalize this to fetch game specific data about all teams (not only lol)
+ * remember to add a condition to the rendering of <PlMatchList/>.
+ */
+export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
+  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
+
+  const teams = await pb.collection('teams').getList<Team>(1, 30, {
+    filter: `game="${LEAGUE_OF_LEGENDS}"`,
+    expand: 'membership(team).user',
+    $cancelKey: LEAGUE_OF_LEGENDS,
+  })
+
+  const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
+
+  return structuredClone({ teams, gameSpecificData })
+})
 
 export default component$(() => {
+  useStylesScoped$(styles)
+  const pb = usePocketbase()
+
+  const teamResource = useTeamData()
+  const newsResource = useResource$<NewsEntry>(async () => {
+    const response = await pb
+      .collection('news')
+      .getFirstListItem<NewsEntry>('', {
+        sort: '-publishDate',
+      })
+
+    return structuredClone(response)
+  })
+
+  const renderMatchSection = () => {
+    const data = teamResource.value?.gameSpecificData
+
+    if (isLeagueOfLegendsData(data)) {
+      return (
+        <div class="match-section">
+          {data.plTeamList.map((plTeam) => (
+            <>
+              <div key={plTeam.id} class="tile match-section__tile">
+                <h2 class="text-2xl mb-4">Spiele von {plTeam.name}</h2>
+                <PlMatchList matches={plTeam.matches} />
+              </div>
+            </>
+          ))}
+        </div>
+      )
+    }
+
+    return null
+  }
+
   return (
-    <section class="container p-8 mx-auto flex flex-col gap-4">
-      <p>
-        Wir sind der Gaming Club der Ostschweizer Fachhochschule. Bei uns wird
-        mit Leidenschaft Videospiele gespielt und sich darüber ausgetauscht.
-        Alle Arten von Gamern sind bei uns willkommen, egal auf welcher Konsole
-        du spielst, kompetitiv / nur zum Spass oder welche Gamegenre du magst.
-        Solange genug Interesse für ein Game vorhanden ist, wird es bei uns
-        gespielt. Zusätzlich veranstalten wir regelmässig Turniere und spielen
-        mit unseren kompetitiven Teams in den entsprechenden Ligen.
-      </p>
-      <p>
-        Hast du lust ein Teil unseres Clubs zu sein? Dann tritt unserem Discord
-        bei!
-      </p>
-      <a
-        href="https://discord.gg/UAWGz7gg5A"
-        class="block mx-auto mt-2 md:mt-8 mb-8 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6"
-      >
-        <img src="join_discord.svg" alt="join discord" />
-      </a>
-    </section>
+    <article class="home-page">
+      <Resource
+        value={newsResource}
+        onPending={() => <NewsTileSkeleton />}
+        onRejected={(error) => <>Error: {error.message}</>}
+        onResolved={(news) => <NewsTile {...news} />}
+      />
+      {renderMatchSection()}
+    </article>
   )
 })
 
 export const head: DocumentHead = {
-  title: 'OST ESports',
+  title: 'OST eSports',
 }

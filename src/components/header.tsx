@@ -1,14 +1,15 @@
 import { component$ } from '@builder.io/qwik'
+import Navigation from './navigation'
+import LoadingBar from './loading-bar'
+import { useLocation } from '@builder.io/qwik-city'
 
 export default component$(() => {
+  const { isNavigating } = useLocation()
+
   return (
-    <header>
-      <img
-        src="/logo_wide.png"
-        class="p-8 w-[30rem] mx-auto"
-        width="1780"
-        height="733"
-      />
+    <header class="relative">
+      <Navigation />
+      {isNavigating && <LoadingBar />}
     </header>
   )
 })

@@ -1,24 +1,55 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}', 'node_modules/preline/dist/*.js'],
   theme: {
     extend: {
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
       },
-      animation: {
-        fadeIn: 'fadeIn 2s ease-in forwards',
+      colors: {
+        'ost-black': '#191919',
+        'ost-violet': '#8C195F',
+        'ost-pink': '#D72864',
+        'light-white': '#f9f9f9',
       },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: 0 },
-          '100%': { opacity: 1 },
-        },
-      },
+    },
+    screens: {
+      xs: '319px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
     },
   },
   variants: {
     animation: ['motion-safe'],
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('preline/plugin'),
+    // expose colors as css variables
+    function ({ addBase, theme }) {
+      function extractColorVars(colorObj, colorGroup = '') {
+        return Object.keys(colorObj).reduce((vars, colorKey) => {
+          const value = colorObj[colorKey]
+          const cssVariable =
+            colorKey === 'DEFAULT'
+              ? `--color${colorGroup}`
+              : `--color${colorGroup}-${colorKey}`
+
+          const newVars =
+            typeof value === 'string'
+              ? { [cssVariable]: value }
+              : extractColorVars(value, `-${colorKey}`)
+
+          return { ...vars, ...newVars }
+        }, {})
+      }
+
+      addBase({
+        ':root': extractColorVars(theme('colors')),
+      })
+    },
+  ],
 }

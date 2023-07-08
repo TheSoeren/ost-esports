@@ -1,0 +1,17 @@
+.team-tile--pl {
+  @apply col-span-2;
+}
+
+.team-tile--pl .team-tile__player-section,
+.team-tile--pl .team-tile__match-section {
+  @apply sm:w-1/2;
+}
+
+.team-tile--pl .team-tile__match-section {
+  @apply mt-4 sm:mt-0;
+}
+
+.team-tile__name {
+  @apply text-3xl;
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,10 @@
+.gallery-images__container {
+  @apply columns-1 gap-3 my-3;
+  @apply sm:columns-2 gap-4;
+  @apply md:columns-3 md:gap-5;
+  @apply lg:columns-6 lg:gap-7;
+}
+
+.gallery-images__image {
+  @apply w-full cursor-pointer my-2 inline-block hover:scale-105 transition-transform rounded-lg;
+}

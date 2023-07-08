@@ -1,11 +1,13 @@
-import { component$, useStyles$ } from '@builder.io/qwik'
+import { component$ } from '@builder.io/qwik'
 import {
   QwikCityProvider,
   RouterOutlet,
   ServiceWorkerRegister,
 } from '@builder.io/qwik-city'
 import { RouterHead } from './components/router-head/router-head'
-import globalStyles from './global.css?inline'
+import { FaStylesheet } from 'qwik-fontawesome'
+
+import './global.css'
 
 export default component$(() => {
   /**
@@ -14,18 +16,19 @@ export default component$(() => {
    *
    * Dont remove the `<head>` and `<body>` elements.
    */
-  useStyles$(globalStyles)
-
   return (
     <QwikCityProvider>
       <head>
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
         <RouterHead />
+        <FaStylesheet />
       </head>
       <body lang="en">
         <RouterOutlet />
         <ServiceWorkerRegister />
+
+        <script src="/scripts/preline.js"></script>
       </body>
     </QwikCityProvider>
   )
