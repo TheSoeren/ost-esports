@@ -1,16 +1,9 @@
+import type { ClassList } from '@builder.io/qwik'
 import { component$ } from '@builder.io/qwik'
 
-export default component$(({ cssClass }: { cssClass?: string }) => (
-  <div
-    role="status"
-    class={`p-4 border border-gray-300 rounded shadow animate-pulse md:p-6 dark:border-gray-200 ${
-      cssClass ?? ''
-    }`}
-  >
-    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-200 w-48 mb-4"></div>
-    <div class="h-2 bg-gray-300 rounded-full dark:bg-gray-200 mb-2.5"></div>
-    <div class="h-2 bg-gray-300 rounded-full dark:bg-gray-200 mb-2.5"></div>
-    <div class="h-2 bg-gray-300 rounded-full dark:bg-gray-200"></div>
+export default component$(({ cssClass }: { cssClass?: ClassList }) => (
+  <div role="status" class={[`animate-pulse flex gap-10`, cssClass ?? '']}>
+    <div class="h-44 w-full bg-gray-300 rounded dark:border-gray-200"></div>
     <span class="sr-only">Loading...</span>
   </div>
 ))

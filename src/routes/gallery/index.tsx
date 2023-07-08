@@ -10,7 +10,7 @@ import type { Gallery } from '~/types/gallery'
 import styles from '~/css/gallery/index.css?inline'
 import GalleryTile from '~/components/gallery/gallery-tile'
 import GalleryTileSkeleton from '~/components/gallery/gallery-tile-skeleton'
-import usePocketbase from '~/hooks/usePocketbase'
+import usePocketbase from '~/hooks/usePocketBase'
 import usePagination from '~/hooks/usePagination'
 import Pagination from '~/components/elements/pagination'
 
@@ -31,19 +31,17 @@ export default component$(() => {
   return (
     <article>
       <Pagination {...pagination} />
-      <div class="gallery__container">
-        <Resource
-          value={teamsResource}
-          onPending={() => <GalleryTileSkeleton />}
-          onResolved={(galleries) => (
-            <>
-              {galleries.items.map((gallery) => (
-                <GalleryTile key={gallery.id} {...gallery} />
-              ))}
-            </>
-          )}
-        />
-      </div>
+      <Resource
+        value={teamsResource}
+        onPending={() => <GalleryTileSkeleton />}
+        onResolved={(galleries) => (
+          <div class="gallery__container">
+            {galleries.items.map((gallery) => (
+              <GalleryTile key={gallery.id} {...gallery} />
+            ))}
+          </div>
+        )}
+      />
       <Pagination {...pagination} />
     </article>
   )
