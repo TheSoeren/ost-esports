@@ -7,7 +7,7 @@ import {
 } from '@builder.io/qwik'
 import { Link, useLocation } from '@builder.io/qwik-city'
 import styles from '~/css/navigation.css?inline'
-import Burger from './elements/burger'
+import Burger from '~/components/elements/burger'
 import useClickOutside from '~/hooks/useClickOutside'
 
 export const navItems = [
