@@ -12,7 +12,7 @@ import type { NewsEntry, Team } from '~/types'
 import styles from '~/css/index.css?inline'
 import usePocketbase from '~/hooks/usePocketbase'
 import type { ListResult } from 'pocketbase'
-import Pocketbase from 'pocketbase'
+import PocketBase from 'pocketbase'
 import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
 import {
   LEAGUE_OF_LEGENDS,
@@ -30,7 +30,7 @@ interface UseTeamFetchingResponse {
  * remember to add a condition to the rendering of <PlMatchList/>.
  */
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
-  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
+  const pb = new PocketBase(import.meta.env.VITE_API_URL)
 
   const teams = await pb.collection('teams').getList<Team>(1, 30, {
     filter: `game="${LEAGUE_OF_LEGENDS}"`,

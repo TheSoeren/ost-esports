@@ -13,7 +13,7 @@ import {
 import BackButton from '~/components/elements/back-button'
 import type { ListResult } from 'pocketbase'
 import type { Team } from '~/types'
-import Pocketbase from 'pocketbase'
+import PocketBase from 'pocketbase'
 
 interface UseTeamFetchingResponse {
   teams: ListResult<Team>
@@ -22,7 +22,7 @@ interface UseTeamFetchingResponse {
 
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(
   async (requestEvent) => {
-    const pb = new Pocketbase(import.meta.env.VITE_API_URL)
+    const pb = new PocketBase(import.meta.env.VITE_API_URL)
 
     const teams = await pb.collection('teams').getList<Team>(1, 30, {
       filter: `game="${requestEvent.params.id}"`,
