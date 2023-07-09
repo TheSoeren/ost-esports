@@ -11,7 +11,7 @@
 
 @layer base {
   :root {
-    --primary: var(--color-ost-violet);
+    --primary: var(--color-ost-purple);
     --secondary: var(--color-ost-orange);
     --separator: #252c32;
   }
@@ -41,13 +41,13 @@
   }
 
   .btn-outline {
-    @apply bg-white text-ost-violet font-semibold py-1 px-3 border rounded h-fit border-ost-violet transition-colors;
-    @apply hover:border-transparent hover:text-white hover:bg-ost-violet;
+    @apply bg-white text-ost-purple font-semibold py-1 px-3 border rounded h-fit border-ost-purple transition-colors;
+    @apply hover:border-transparent hover:text-white hover:bg-ost-purple;
     @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-light-white;
   }
 
   .btn-outline--highlight {
-    @apply bg-ost-violet text-light-white;
+    @apply bg-ost-purple text-light-white;
   }
 
   .tile {
@@ -61,8 +61,8 @@
     background: linear-gradient(
       90deg,
       var(--color-ost-pink) 10%,
-      var(--color-ost-violet) 10%,
-      var(--color-ost-violet) 25%,
+      var(--color-ost-purple) 10%,
+      var(--color-ost-purple) 25%,
       var(--color-ost-black) 25%,
       var(--color-ost-black) 50%
     );

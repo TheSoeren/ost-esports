@@ -15,7 +15,7 @@ export default component$(({ icon, onClick$, cssClass }: IconButtonProps) => {
       type="button"
       onClick$={onClick$}
       class={[
-        'h-fit px-2 py-3 inline-flex items-center justify-center rounded-md transition-all text-white hover:bg-ost-violet',
+        'h-fit px-2 py-3 inline-flex items-center justify-center rounded-md transition-all text-white hover:bg-ost-purple',
         cssClass ?? '',
       ]}
     >

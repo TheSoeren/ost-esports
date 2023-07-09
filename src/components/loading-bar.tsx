@@ -13,8 +13,8 @@ export default component$(() => {
     background: linear-gradient(
       90deg,
       var(--color-ost-pink) 32%,
-      var(--color-ost-violet) 32%,
-      var(--color-ost-violet) 64%,
+      var(--color-ost-purple) 32%,
+      var(--color-ost-purple) 64%,
       var(--color-ost-black) 64%,
       var(--color-ost-black) 100%
     );

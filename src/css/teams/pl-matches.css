@@ -11,9 +11,9 @@
   @apply hover:border-ost-pink;
 }
 
-.pl-match--violet {
-  @apply border-l-ost-violet;
-  @apply hover:border-ost-violet;
+.pl-match--purple {
+  @apply border-l-ost-purple;
+  @apply hover:border-ost-purple;
 }
 
 .pl-match--black {
