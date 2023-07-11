@@ -59,7 +59,7 @@ export default component$(() => {
   })
 
   const renderMatchSection = () => {
-    const data = teamResource.value?.gameSpecificData
+    const data = teamResource.value.gameSpecificData
 
     if (isLeagueOfLegendsData(data)) {
       return (

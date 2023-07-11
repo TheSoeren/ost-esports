@@ -1,41 +1,32 @@
-import type { QRL } from '@builder.io/qwik'
 import { $, component$, useContext } from '@builder.io/qwik'
-import { type DocumentHead } from '@builder.io/qwik-city'
-import type { SubmitHandler } from '@modular-forms/qwik'
-import { formAction$, useForm, zodForm$, reset } from '@modular-forms/qwik'
+import { useNavigate, type DocumentHead } from '@builder.io/qwik-city'
+import { useForm, zodForm$, reset } from '@modular-forms/qwik'
 import { z } from 'zod'
 import { TextInput } from '~/components/form'
 import type { ClientResponseError } from 'pocketbase'
-import PocketBase from 'pocketbase'
 import type { Snackbar } from '~/contexts/SnackbarContext'
 import { SnackbarContext } from '~/contexts/SnackbarContext'
+import { AuthContext } from '~/contexts/AuthContext'
 
 export const loginSchema = z.object({
-  email: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
+  user: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
   password: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
 })
 type LoginForm = z.infer<typeof loginSchema>
 
-export const useFormAction = formAction$<LoginForm>(async (values) => {
-  const pb = new PocketBase(import.meta.env.VITE_API_URL)
-  const formValues = Object.values(values) as [string, string]
-
-  await pb.collection('users').authWithPassword(...formValues)
-}, zodForm$(loginSchema))
-
 export default component$(() => {
+  const navigate = useNavigate()
   const { enqueueSnackbar } = useContext(SnackbarContext)
+  const { login } = useContext(AuthContext)
   const [loginForm, { Form, Field }] = useForm<LoginForm>({
-    loader: { value: { email: '', password: '' } },
+    loader: { value: { user: '', password: '' } },
     validate: zodForm$(loginSchema),
   })
 
-  const handleSubmit: QRL<SubmitHandler<LoginForm>> = $(async (values) => {
-    const pb = new PocketBase(import.meta.env.VITE_API_URL)
-    const formValues = Object.values(values) as [string, string]
-
+  const handleSubmit = $(async (values: LoginForm) => {
     try {
-      await pb.collection('users').authWithPassword(...formValues)
+      await login(values.user, values.password)
+      navigate('/')
     } catch (error: unknown) {
       const responseError = error as ClientResponseError
       const snackbar: Snackbar = {
@@ -52,7 +43,6 @@ export default component$(() => {
       }
 
       enqueueSnackbar(snackbar)
-    } finally {
       reset(loginForm)
     }
   })
@@ -60,11 +50,11 @@ export default component$(() => {
   return (
     <section class="flex justify-center">
       <Form class="w-full sm:w-1/2" onSubmit$={handleSubmit}>
-        <Field name="email">
+        <Field name="user">
           {(field, props) => (
             <TextInput
               {...props}
-              type="email"
+              type="text"
               label="Username / Email"
               value={field.value}
               error={field.error}

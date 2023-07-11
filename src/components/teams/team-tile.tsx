@@ -4,7 +4,7 @@ import {
   useStylesScoped$,
   useTask$,
 } from '@builder.io/qwik'
-import type { Membership, Player, Team } from '~/types'
+import type { Membership, User, Team } from '~/types'
 import PlayerInfo from '~/components/teams/player-info'
 import styles from '~/css/teams/team-tile.css?inline'
 
@@ -13,7 +13,7 @@ export default component$(
     useStylesScoped$(styles)
 
     const sigMembership = useSignal<Membership[]>()
-    const sigPlayers = useSignal<Player[]>()
+    const sigPlayers = useSignal<User[]>()
 
     useTask$(({ track }) => {
       track(() => memberships)
@@ -22,7 +22,7 @@ export default component$(
         (m: Membership) => m.team === id
       )
       sigPlayers.value = sigMembership.value?.map(
-        (m: Membership) => m.expand['user'] as Player
+        (m: Membership) => m.expand['user'] as User
       )
     })
 

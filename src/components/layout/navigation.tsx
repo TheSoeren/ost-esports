@@ -1,13 +1,15 @@
 import {
   $,
   component$,
+  useContext,
   useSignal,
   useStyles$,
   useTask$,
 } from '@builder.io/qwik'
 import { Link, useLocation } from '@builder.io/qwik-city'
-import styles from '~/css/navigation.css?inline'
 import Burger from '~/components/elements/burger'
+import { AuthContext } from '~/contexts/AuthContext'
+import styles from '~/css/navigation.css?inline'
 import useClickOutside from '~/hooks/useClickOutside'
 
 export const navItems = [
@@ -19,6 +21,7 @@ export const navItems = [
 
 export default component$(() => {
   useStyles$(styles)
+  const { authenticated } = useContext(AuthContext)
   const location = useLocation()
   const isOpen = useSignal(false)
   const navRef = useSignal<HTMLElement>()
@@ -27,7 +30,7 @@ export default component$(() => {
     isOpen.value = false
   })
 
-  // Handle automatic menu closing
+  // Handle automatic navigation menu closing
   useClickOutside(navRef, closeMenu)
   useTask$(({ track }) => {
     track(() => location.isNavigating)
@@ -79,6 +82,20 @@ export default component$(() => {
               {item.label.toUpperCase()}
             </Link>
           ))}
+
+          {authenticated.value ? (
+            <div>PROFILE</div>
+          ) : (
+            <Link
+              href="/login"
+              class={[
+                'nav-item',
+                urlMatcher('/login') ? 'nav-item--highlight' : '',
+              ]}
+            >
+              LOGIN
+            </Link>
+          )}
         </nav>
       </section>
     </section>

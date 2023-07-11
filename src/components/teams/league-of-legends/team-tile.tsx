@@ -1,4 +1,4 @@
-import type { Membership, Player, Team } from '~/types'
+import type { Membership, User, Team } from '~/types'
 import PlayerInfo from '~/components/teams/league-of-legends/player-info'
 import styles from '~/css/teams/team-tile.css?inline'
 import PlMatchList from './pl-match-list'
@@ -18,7 +18,7 @@ export default component$(
     const teamResource = useTeamData()
 
     const sigMembership = useSignal<Membership[]>()
-    const sigPlayers = useSignal<Player[]>()
+    const sigPlayers = useSignal<User[]>()
     const plTeam = useSignal<PlTeamDetailed>()
 
     useTask$(({ track }) => {
@@ -36,7 +36,7 @@ export default component$(
         (m: Membership) => m.team === id
       )
       sigPlayers.value = sigMembership.value?.map(
-        (m: Membership) => m.expand['user'] as Player
+        (m: Membership) => m.expand['user'] as User
       )
     })
 

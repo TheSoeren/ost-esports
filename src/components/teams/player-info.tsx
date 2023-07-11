@@ -1,8 +1,8 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik'
-import type { Player } from '~/types'
+import type { User } from '~/types'
 import styles from '~/css/teams/player-info.css?inline'
 
-export default component$(({ name, username }: Player) => {
+export default component$(({ name, username }: User) => {
   useStylesScoped$(styles)
 
   return (
