@@ -9,7 +9,7 @@ import {
   useTask$,
 } from '@builder.io/qwik'
 import type { PlTeamDetailed } from '~/types/primeleague'
-import { useTeamData } from '~/routes/games/[id]'
+import { useTeamData } from '~/routes/public/games/[id]'
 
 export default component$(
   ({ id, name, expand: { ['membership(team)']: memberships } }: Team) => {

@@ -49,6 +49,7 @@ export const AuthProvider = component$(() => {
   useVisibleTask$(async () => {
     const qrlPb = await createPocketbase(updateAuthStore)
     authenticated.value = qrlPb.authStore.isValid
+    roles.value = qrlPb.authStore.model?.roles ?? []
   })
 
   const login = $(async (user: string, password: string) => {

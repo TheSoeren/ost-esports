@@ -26,7 +26,7 @@ export default component$(() => {
   const handleSubmit = $(async (values: LoginForm) => {
     try {
       await login(values.user, values.password)
-      navigate('/')
+      navigate('/profile')
     } catch (error: unknown) {
       const responseError = error as ClientResponseError
       const snackbar: Snackbar = {

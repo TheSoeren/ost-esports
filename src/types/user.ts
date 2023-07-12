@@ -1,7 +1,7 @@
 import type { Record } from './pocketbase'
 
 const userRoles = ['editor', 'captain'] as const
-export type UserRole = typeof userRoles
+export type UserRole = (typeof userRoles)[number]
 
 export interface User extends Record {
   id: string

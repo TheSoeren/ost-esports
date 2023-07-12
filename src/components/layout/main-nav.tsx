@@ -9,10 +9,11 @@ import {
 import { Link, useLocation } from '@builder.io/qwik-city'
 import Burger from '~/components/elements/burger'
 import { AuthContext } from '~/contexts/AuthContext'
-import styles from '~/css/navigation.css?inline'
+import styles from '~/css/layout/main-nav.css?inline'
 import useClickOutside from '~/hooks/useClickOutside'
+import type { NavItem } from '~/types/navigation'
 
-export const navItems = [
+export const navItems: NavItem[] = [
   { label: 'News', href: '/news' },
   { label: 'Teams', href: '/games' },
   { label: 'Galerie', href: '/gallery' },
@@ -84,7 +85,15 @@ export default component$(() => {
           ))}
 
           {authenticated.value ? (
-            <div>PROFILE</div>
+            <Link
+              href="/profile"
+              class={[
+                'nav-item',
+                urlMatcher('/profile') ? 'nav-item--highlight' : '',
+              ]}
+            >
+              PROFILE
+            </Link>
           ) : (
             <Link
               href="/login"
