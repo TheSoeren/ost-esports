@@ -17,7 +17,7 @@ export default component$(({ image, name, ...record }: Game) => {
     >
       <Link
         href={record.id}
-        class="absolute top-0 left-0 h-full w-full rounded-lg"
+        class="absolute top-0 left-0 h-full w-full rounded"
       >
         <img
           src={pb.files.getUrl(record, image)}

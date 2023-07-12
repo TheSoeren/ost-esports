@@ -28,7 +28,10 @@ export default component$(({ name, id }: Gallery) => {
     <section
       class={['gallery__tile', random() ? 'hover:-rotate-1' : 'hover:rotate-1']}
     >
-      <Link href={id} class="absolute top-0 left-0 h-full w-full rounded-lg">
+      <Link
+        href={record.id}
+        class="absolute top-0 left-0 h-full w-full rounded"
+      >
         <div class="gallery__tile-backdrop">
           <span class="gallery__tile-backdrop-text">{name}</span>
         </div>

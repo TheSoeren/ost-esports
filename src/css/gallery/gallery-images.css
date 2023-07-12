@@ -5,5 +5,5 @@
 }
 
 .gallery-images__image {
-  @apply w-full my-auto hover:scale-105 transition-transform rounded-lg;
+  @apply w-full cursor-pointer my-2 inline-block hover:scale-105 transition-transform rounded;
 }
