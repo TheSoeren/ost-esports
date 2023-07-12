@@ -1,16 +1,13 @@
 import { component$, Slot } from '@builder.io/qwik'
-
-import Footer from '~/components/footer'
-import Header from '~/components/header'
+import { AuthProvider } from '~/contexts/AuthContext'
+import { SnackbarProvider } from '~/contexts/SnackbarContext'
 
 export default component$(() => {
   return (
-    <section class="flex flex-col min-h-screen">
-      <Header />
-      <main class="page-content">
+    <SnackbarProvider>
+      <AuthProvider>
         <Slot />
-      </main>
-      <Footer />
-    </section>
+      </AuthProvider>
+    </SnackbarProvider>
   )
 })

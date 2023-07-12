@@ -11,7 +11,6 @@ function useClickOutside(
       if (!ref.value) {
         return
       }
-
       const target = event.target as HTMLElement
       if (!ref.value.contains(target)) {
         onClickOut()

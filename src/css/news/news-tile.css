@@ -1,9 +1,9 @@
-.news-tile {
-  @apply relative p-5;
+.news-tile__header {
+  @apply flex justify-between mb-4;
 }
 
-.news-tile__header {
-  @apply flex justify-between pb-4;
+.news-tile:first-of-type {
+  @apply sm:col-span-2;
 }
 
 .news-tile__title {
@@ -15,8 +15,8 @@
   display: -webkit-box;
 }
 
-.news-tile:first-of-type {
-  @apply sm:col-span-2;
+.news-tile__teaser {
+  @apply line-clamp-4;
 }
 
 .news-tile__link {

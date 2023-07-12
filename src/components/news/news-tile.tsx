@@ -9,12 +9,12 @@ export default component$(({ id, title, teaser }: NewsEntry) => {
   return (
     <section class="tile news-tile">
       <div class="news-tile__header">
-        <div class="news-tile__title">{title}</div>
+        <h2 class="news-tile__title">{title}</h2>
         <Link href={'/news/' + id} class="btn-outline news-tile__link">
           Weiterlesen
         </Link>
       </div>
-      <div>{teaser}</div>
+      <div class="news-tile__teaser">{teaser}</div>
     </section>
   )
 })

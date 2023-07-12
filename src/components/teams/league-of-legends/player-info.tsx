@@ -1,15 +1,16 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik'
-import type { Membership, Player } from '~/types'
+import type { Membership, User } from '~/types'
 import styles from '~/css/teams/player-info.css?inline'
-import pb from '~/pocketbase'
+import usePocketbase from '~/hooks/usePocketbase'
 
 interface PlayerInfo {
   membership: Membership
-  player: Player
+  player: User
 }
 
 export default component$(({ player, membership }: PlayerInfo) => {
   useStylesScoped$(styles)
+  const pb = usePocketbase()
 
   return (
     <section class="player-info">
@@ -19,7 +20,7 @@ export default component$(({ player, membership }: PlayerInfo) => {
         alt="Role Icon"
       />
       <div class="player-info__text">
-        {player.name ? player.name : player.username}
+        {player.gamertag ? player.gamertag : player.username}
       </div>
     </section>
   )

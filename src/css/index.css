@@ -1,0 +1,8 @@
+.home-page {
+  @apply flex flex-col gap-5;
+}
+
+.match-section {
+  @apply grid grid-cols-1 gap-3;
+  @apply md:grid-cols-2 lg:grid-cols-3;
+}

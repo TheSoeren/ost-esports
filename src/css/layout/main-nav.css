@@ -1,0 +1,54 @@
+.main-nav {
+  @apply flex flex-col items-center gap-2 px-8 py-4 border-b-[1px] border-ost-black bg-pink-50;
+  @apply sm:flex-row;
+}
+
+.menu-toggle {
+  @apply block;
+  @apply sm:hidden;
+}
+
+.brand-container {
+  @apply flex justify-between w-full;
+  @apply sm:w-auto;
+}
+
+.navigation {
+  @apply flex-col w-full items-end;
+  @apply sm:justify-evenly sm:flex-1 sm:flex-row;
+}
+
+.logo {
+  @apply shrink-0;
+}
+
+.nav-item {
+  @apply relative text-lg p-2 font-bold;
+}
+
+.nav-item::after {
+  content: '';
+  @apply absolute left-0 bottom-0 w-full h-1 transition-all;
+  background: linear-gradient(
+    90deg,
+    var(--color-ost-pink) 10%,
+    var(--color-ost-purple) 10%,
+    var(--color-ost-purple) 25%,
+    var(--color-ost-black) 25%,
+    var(--color-ost-black) 50%
+  );
+  background-size: 200%;
+  opacity: 0;
+}
+
+.nav-item:hover::after {
+  opacity: 1;
+}
+
+.nav-item--highlight::after {
+  opacity: 1;
+}
+
+.nav-item--highlight:hover::after {
+  background-size: 120%;
+}
