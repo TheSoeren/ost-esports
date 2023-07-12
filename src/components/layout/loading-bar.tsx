@@ -1,20 +1,27 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik'
+import { useLocation } from '@builder.io/qwik-city'
 
-export default component$(() => {
+interface LoadingBarProps {
+  bottom?: boolean
+}
+
+export default component$(({ bottom }: LoadingBarProps) => {
+  const { isNavigating } = useLocation()
+
   useStylesScoped$(`
   .loading-bar::after {
     content: '';
     position: absolute;
-    bottom: 0;
     left: 0;
     right: 0;
     height: 5px;
+    z-index: 40;
     animation: loading 3s linear infinite;
     background: linear-gradient(
       90deg,
       var(--color-ost-pink) 32%,
-      var(--color-ost-violet) 32%,
-      var(--color-ost-violet) 64%,
+      var(--color-ost-purple) 32%,
+      var(--color-ost-purple) 64%,
       var(--color-ost-black) 64%,
       var(--color-ost-black) 100%
     );
@@ -45,5 +52,12 @@ export default component$(() => {
     }
   }
   `)
-  return <div class="loading-bar"></div>
+
+  return (
+    <>
+      {isNavigating ? (
+        <div class={['loading-bar', bottom ? 'after:bottom-0' : 'top-0']}></div>
+      ) : null}
+    </>
+  )
 })

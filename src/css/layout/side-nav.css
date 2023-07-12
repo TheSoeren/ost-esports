@@ -1,0 +1,16 @@
+.side-nav {
+  @apply fixed top-0 left-0 z-30 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0;
+}
+
+.side-nav__content {
+  @apply h-full px-3 py-4 overflow-y-auto bg-pink-50 border-r-[1px] text-ost-black border-ost-black flex flex-col gap-1 transition-all;
+}
+
+.side-nav__item {
+  @apply px-2 py-1 rounded;
+}
+
+.side-nav__item:hover,
+.side-nav__item--highlight {
+  @apply bg-gray-200;
+}

@@ -13,6 +13,7 @@ import GalleryTileSkeleton from '~/components/gallery/gallery-tile-skeleton'
 import usePocketbase from '~/hooks/usePocketbase'
 import usePagination from '~/hooks/usePagination'
 import Pagination from '~/components/elements/pagination'
+import { Collection } from '~/types'
 
 export default component$(() => {
   useStylesScoped$(styles)
@@ -21,7 +22,7 @@ export default component$(() => {
 
   const teamsResource = useResource$<ListResult<Gallery>>(async () => {
     const response = await pb
-      .collection('galleries')
+      .collection(Collection.GALLERIES)
       .getList<Gallery>(pagination.page.value, pagination.perPage.value)
     pagination.setTotalPages(response.totalPages)
 

@@ -11,7 +11,7 @@
 
 @layer base {
   :root {
-    --primary: var(--color-ost-violet);
+    --primary: var(--color-ost-purple);
     --secondary: var(--color-ost-orange);
     --separator: #252c32;
   }
@@ -36,18 +36,68 @@
 }
 
 @layer utilities {
-  .page-content {
+  .public-content {
     @apply container mx-auto my-5;
   }
 
+  .guarded-container {
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    /* max-with minus sidebar margin (288px) */
+    .guarded-container {
+      max-width: 352px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .guarded-container {
+      /* max-with minus sidebar margin (288px) */
+      max-width: 480px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .guarded-container {
+      /* max-with minus sidebar margin (288px) */
+      max-width: 736px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .guarded-container {
+      /* max-with minus sidebar margin (288px) */
+      max-width: 992px;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .guarded-container {
+      /* max-with minus sidebar margin (288px) */
+      max-width: 1248px;
+    }
+  }
+
+  .guarded-content {
+    @apply guarded-container mx-auto my-5;
+    @apply sm:ml-72;
+  }
+
   .btn-outline {
-    @apply bg-white text-ost-violet font-semibold py-1 px-3 border rounded h-fit border-ost-violet transition-colors;
-    @apply hover:border-transparent hover:text-white hover:bg-ost-violet;
-    @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-light-white;
+    @apply text-ost-purple font-semibold py-1 px-3 border rounded h-fit border-ost-purple transition-colors;
+    @apply hover:border-transparent hover:text-white hover:bg-ost-purple;
+    @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-transparent;
   }
 
   .btn-outline--highlight {
-    @apply bg-ost-violet text-light-white;
+    @apply bg-ost-purple text-light-white;
+  }
+
+  .btn-link {
+    @apply text-ost-purple font-semibold py-1 px-3 rounded h-fit transition-colors;
+    @apply hover:bg-ost-purple/5;
+    @apply disabled:text-pink-200 disabled:hover:bg-transparent;
   }
 
   .tile {
@@ -61,8 +111,8 @@
     background: linear-gradient(
       90deg,
       var(--color-ost-pink) 10%,
-      var(--color-ost-violet) 10%,
-      var(--color-ost-violet) 25%,
+      var(--color-ost-purple) 10%,
+      var(--color-ost-purple) 25%,
       var(--color-ost-black) 25%,
       var(--color-ost-black) 50%
     );

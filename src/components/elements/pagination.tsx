@@ -6,7 +6,7 @@ import {
 } from '@builder.io/qwik'
 import { FaIcon } from 'qwik-fontawesome'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
-import styles from '~/css/pagination.css?inline'
+import styles from '~/css/elements/pagination.css?inline'
 
 export default component$((pagination: any) => {
   useStylesScoped$(styles)

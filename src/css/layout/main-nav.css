@@ -32,8 +32,8 @@
   background: linear-gradient(
     90deg,
     var(--color-ost-pink) 10%,
-    var(--color-ost-violet) 10%,
-    var(--color-ost-violet) 25%,
+    var(--color-ost-purple) 10%,
+    var(--color-ost-purple) 25%,
     var(--color-ost-black) 25%,
     var(--color-ost-black) 50%
   );

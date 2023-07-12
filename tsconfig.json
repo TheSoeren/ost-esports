@@ -18,6 +18,8 @@
     "noEmit": true,
     "types": ["node", "vite/client"],
     "paths": {
+      "~/routes/public/*": ["./src/routes/(public-website)/*"],
+      "~/routes/guarded/*": ["./src/routes/(auth-guarded)/*"],
       "~/*": ["./src/*"]
     }
   },

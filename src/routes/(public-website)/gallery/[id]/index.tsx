@@ -7,13 +7,13 @@ import {
 } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
 import type { ListResult } from 'pocketbase'
-import type { GalleryImage } from '~/types'
+import { Collection, type GalleryImage } from '~/types'
 import BackButton from '~/components/elements/back-button'
 import styles from '~/css/gallery/gallery-images.css?inline'
 import usePagination from '~/hooks/usePagination'
 import Pagination from '~/components/elements/pagination'
 import GalleryListSkeleton from '~/components/gallery/gallery-list-skeleton'
-import Modal from '~/components/modal'
+import Modal from '~/components/elements/modal'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import IconButton from '~/components/elements/icon-button'
 import usePocketbase from '~/hooks/usePocketbase'
@@ -38,7 +38,7 @@ export default component$(() => {
       track(() => pagination.page.value)
 
       const response = await pb
-        .collection('gallery_images')
+        .collection(Collection.GALLERY_IMAGES)
         .getList<GalleryImage>(
           pagination.page.value,
           pagination.perPage.value,

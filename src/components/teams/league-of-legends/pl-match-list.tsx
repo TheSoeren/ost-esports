@@ -30,7 +30,7 @@ export default component$(({ matches, cssClass, teamName }: Props) => {
       return 'pl-match--pink'
     }
 
-    return 'pl-match--violet'
+    return 'pl-match--purple'
   }
 
   return (
