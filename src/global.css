@@ -87,11 +87,17 @@
   .btn-outline {
     @apply text-ost-purple font-semibold py-1 px-3 border rounded h-fit border-ost-purple transition-colors;
     @apply hover:border-transparent hover:text-white hover:bg-ost-purple;
-    @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-light-white;
+    @apply disabled:border-pink-200 disabled:text-pink-200 disabled:hover:bg-transparent;
   }
 
   .btn-outline--highlight {
     @apply bg-ost-purple text-light-white;
+  }
+
+  .btn-link {
+    @apply text-ost-purple font-semibold py-1 px-3 rounded h-fit transition-colors;
+    @apply hover:bg-ost-purple/5;
+    @apply disabled:text-pink-200 disabled:hover:bg-transparent;
   }
 
   .tile {

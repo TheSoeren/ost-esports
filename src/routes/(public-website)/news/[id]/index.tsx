@@ -6,7 +6,7 @@ import {
 } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
 import BackButton from '~/components/elements/back-button'
-import type { NewsEntry } from '~/types'
+import { Collection, type NewsEntry } from '~/types'
 import styles from '~/css/news/news-detail.css?inline'
 import NewsEntrySkeleton from '~/components/news/news-entry-skeleton'
 import usePocketbase from '~/hooks/usePocketbase'
@@ -17,7 +17,9 @@ export default component$(() => {
 
   const { params } = useLocation()
   const newsResource = useResource$<NewsEntry>(async () => {
-    const response = await pb.collection('news').getOne<NewsEntry>(params.id)
+    const response = await pb
+      .collection(Collection.NEWS)
+      .getOne<NewsEntry>(params.id)
 
     return structuredClone(response)
   })

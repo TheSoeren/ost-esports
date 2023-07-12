@@ -1,12 +1,13 @@
-import { $, component$, useContext } from '@builder.io/qwik'
+import { $, component$, useContext, useVisibleTask$ } from '@builder.io/qwik'
 import { useNavigate, type DocumentHead } from '@builder.io/qwik-city'
-import { useForm, zodForm$, reset } from '@modular-forms/qwik'
-import { z } from 'zod'
-import { TextInput } from '~/components/form'
+import { reset, useForm, zodForm$ } from '@modular-forms/qwik'
 import type { ClientResponseError } from 'pocketbase'
+import { z } from 'zod'
+import LoadingBackdrop from '~/components/elements/loading-backdrop'
+import { TextInput } from '~/components/form'
+import { AuthContext } from '~/contexts/AuthContext'
 import type { Snackbar } from '~/contexts/SnackbarContext'
 import { SnackbarContext } from '~/contexts/SnackbarContext'
-import { AuthContext } from '~/contexts/AuthContext'
 
 export const loginSchema = z.object({
   user: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
@@ -17,16 +18,23 @@ type LoginForm = z.infer<typeof loginSchema>
 export default component$(() => {
   const navigate = useNavigate()
   const { enqueueSnackbar } = useContext(SnackbarContext)
-  const { login } = useContext(AuthContext)
+  const { login, authenticated } = useContext(AuthContext)
   const [loginForm, { Form, Field }] = useForm<LoginForm>({
     loader: { value: { user: '', password: '' } },
     validate: zodForm$(loginSchema),
   })
 
+  useVisibleTask$(({ track }) => {
+    track(() => authenticated.value)
+
+    if (authenticated.value) {
+      navigate('/profile')
+    }
+  })
+
   const handleSubmit = $(async (values: LoginForm) => {
     try {
       await login(values.user, values.password)
-      navigate('/profile')
     } catch (error: unknown) {
       const responseError = error as ClientResponseError
       const snackbar: Snackbar = {
@@ -48,37 +56,44 @@ export default component$(() => {
   })
 
   return (
-    <section class="flex justify-center">
-      <Form class="w-full sm:w-1/2" onSubmit$={handleSubmit}>
-        <Field name="user">
-          {(field, props) => (
-            <TextInput
-              {...props}
-              type="text"
-              label="Username / Email"
-              value={field.value}
-              error={field.error}
-              required
-            />
-          )}
-        </Field>
-        <Field name="password">
-          {(field, props) => (
-            <TextInput
-              {...props}
-              type="password"
-              label="Passwort"
-              value={field.value}
-              error={field.error}
-              required
-            />
-          )}
-        </Field>
-        <button type="submit" class="btn-outline block ml-auto">
-          Login
-        </button>
-      </Form>
-    </section>
+    <>
+      <section class="flex justify-center">
+        <Form class="w-full sm:w-1/2" onSubmit$={handleSubmit}>
+          <Field name="user">
+            {(field, props) => (
+              <TextInput
+                {...props}
+                type="text"
+                label="Username / Email"
+                value={field.value}
+                error={field.error}
+                required
+              />
+            )}
+          </Field>
+          <Field name="password">
+            {(field, props) => (
+              <TextInput
+                {...props}
+                type="password"
+                label="Passwort"
+                value={field.value}
+                error={field.error}
+                required
+              />
+            )}
+          </Field>
+          <button
+            type="submit"
+            class="btn-outline block ml-auto"
+            disabled={loginForm.submitting || !loginForm.dirty}
+          >
+            Login
+          </button>
+        </Form>
+      </section>
+      {loginForm.submitting && <LoadingBackdrop />}
+    </>
   )
 })
 

@@ -20,7 +20,7 @@ export default component$(({ player, membership }: PlayerInfo) => {
         alt="Role Icon"
       />
       <div class="player-info__text">
-        {player.name ? player.name : player.username}
+        {player.gamertag ? player.gamertag : player.username}
       </div>
     </section>
   )

@@ -1,3 +1,4 @@
+import type { QRL } from '@builder.io/qwik'
 import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import type { IconProp } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -18,18 +19,29 @@ export const icon: IconMapping = {
   error: faCircleExclamation,
 }
 
-export default component$(({ type, title, message }: Snackbar) => {
+interface SnackbarProps {
+  snackbar: Snackbar
+  onClick$: QRL<() => void>
+}
+
+export default component$(({ snackbar, onClick$ }: SnackbarProps) => {
   useStylesScoped$(styles)
 
   return (
-    <div class={`snackbar snackbar--${type}`} role="alert">
+    <div
+      class={`snackbar snackbar--${snackbar.type}`}
+      role="alert"
+      onClick$={onClick$}
+    >
       <div class="flex">
         <div class="flex-shrink-0">
-          <FaIcon icon={icon[type]} />
+          <FaIcon icon={icon[snackbar.type]} />
         </div>
         <div class="ml-4">
-          <h3 class="text-sm font-semibold">{title}</h3>
-          {message && <div class="snackbar__message">{message}</div>}
+          <h3 class="text-sm font-semibold">{snackbar.title}</h3>
+          {snackbar.message && (
+            <div class="snackbar__message">{snackbar.message}</div>
+          )}
         </div>
       </div>
     </div>

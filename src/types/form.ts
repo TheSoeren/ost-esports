@@ -12,6 +12,7 @@ export type TextInputProps = {
   value: string | undefined
   error: string
   required?: boolean
+  autofocus?: boolean
   ref: PropFunction<(element: Element) => void>
   onInput$: PropFunction<(event: Event, element: HTMLInputElement) => void>
   onChange$: PropFunction<

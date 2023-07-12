@@ -5,7 +5,7 @@ import {
   useStylesScoped$,
 } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-import type { NewsEntry } from '~/types'
+import { Collection, type NewsEntry } from '~/types'
 import NewsTile from '~/components/news/news-tile'
 import styles from '~/css/news/index.css?inline'
 import Pagination from '~/components/elements/pagination'
@@ -24,7 +24,7 @@ export default component$(() => {
       track(() => pagination.page.value)
 
       const response = await pb
-        .collection('news')
+        .collection(Collection.NEWS)
         .getList<NewsEntry>(pagination.page.value, pagination.perPage.value, {
           sort: '-publishDate',
         })

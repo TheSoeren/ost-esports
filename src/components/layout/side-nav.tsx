@@ -13,7 +13,7 @@ import {
   faUsersRectangle,
 } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
-import { AuthContext } from '~/contexts/AuthContext'
+import { AuthContext, isUserObject } from '~/contexts/AuthContext'
 import styles from '~/css/layout/side-nav.css?inline'
 import type { UserRole } from '~/types'
 import type { SideNavItem } from '~/types/navigation'
@@ -49,7 +49,7 @@ export default component$(() => {
   useStyles$(styles)
 
   const navItems = useStore<SideNavItem[]>(structuredClone(basicNavItems))
-  const { authenticated, roles, logout } = useContext(AuthContext)
+  const { authenticated, authUser, logout } = useContext(AuthContext)
   const location = useLocation()
 
   const urlMatcher = (url: string) =>
@@ -57,14 +57,15 @@ export default component$(() => {
 
   useTask$(({ track }) => {
     track(() => authenticated.value)
-    track(() => roles.value)
 
-    navItems.splice(
-      0,
-      navItems.length,
-      ...basicNavItems,
-      ...roles.value.flatMap((role) => navRoleMapping[role])
-    )
+    let navRoleItems: SideNavItem[] = []
+    if (isUserObject(authUser)) {
+      navRoleItems = authUser.value.roles.flatMap(
+        (role) => navRoleMapping[role]
+      )
+    }
+
+    navItems.splice(0, navItems.length, ...basicNavItems, ...navRoleItems)
   })
 
   return (

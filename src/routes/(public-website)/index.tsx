@@ -8,7 +8,7 @@ import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
 import NewsTile from '~/components/news/news-tile'
 import NewsTileSkeleton from '~/components/news/news-tile-skeleton'
 import PlMatchList from '~/components/teams/league-of-legends/pl-match-list'
-import type { NewsEntry, Team } from '~/types'
+import { Collection, type NewsEntry, type Team } from '~/types'
 import styles from '~/css/index.css?inline'
 import usePocketbase from '~/hooks/usePocketbase'
 import type { ListResult } from 'pocketbase'
@@ -32,7 +32,7 @@ interface UseTeamFetchingResponse {
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
   const pb = new PocketBase(import.meta.env.VITE_API_URL)
 
-  const teams = await pb.collection('teams').getList<Team>(1, 30, {
+  const teams = await pb.collection(Collection.TEAMS).getList<Team>(1, 30, {
     filter: `game="${LEAGUE_OF_LEGENDS}"`,
     expand: 'membership(team).user',
     $cancelKey: LEAGUE_OF_LEGENDS,
@@ -50,7 +50,7 @@ export default component$(() => {
   const teamResource = useTeamData()
   const newsResource = useResource$<NewsEntry>(async () => {
     const response = await pb
-      .collection('news')
+      .collection(Collection.NEWS)
       .getFirstListItem<NewsEntry>('', {
         sort: '-publishDate',
       })

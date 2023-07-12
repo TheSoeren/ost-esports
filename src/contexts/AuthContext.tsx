@@ -13,16 +13,30 @@ import Pocketbase, {
   ClientResponseError,
   type RecordAuthResponse,
 } from 'pocketbase'
-import type { Record, UserRole, User } from '~/types'
+import { Collection, type Record, type User } from '~/types'
 
 // We know user is always of type User, but somehow I can't get the typing to work
 type OnChangeFunc = (token: string, user: unknown) => void
 
 interface AuthContext {
   authenticated: Signal<boolean>
-  roles: Signal<UserRole[]>
+  authUser: Signal<User | null>
   login(user: string, password: string): Promise<RecordAuthResponse<Record>>
   logout(): void
+}
+
+export const isUserObject = (
+  data: Signal<User | null>
+): data is Signal<User> => {
+  if (!data || !data.value) {
+    return false
+  }
+
+  if ('id' in data.value) {
+    return true
+  }
+
+  return false
 }
 
 export const AuthContext = createContextId<AuthContext>('auth-context')
@@ -40,16 +54,20 @@ export const createPocketbase = $((onChangeHandler?: QRL<OnChangeFunc>) => {
 
 export const AuthProvider = component$(() => {
   const authenticated = useSignal<boolean>(false)
-  const roles = useSignal<UserRole[]>([])
+  const authUser = useSignal<User | null>(null)
+
   const updateAuthStore = $((token: string, user: User) => {
     authenticated.value = !!token
-    roles.value = user.roles
+    noSerialize(user)
+    authUser.value = user
   }) as QRL<OnChangeFunc>
 
   useVisibleTask$(async () => {
     const qrlPb = await createPocketbase(updateAuthStore)
     authenticated.value = qrlPb.authStore.isValid
-    roles.value = qrlPb.authStore.model?.roles ?? []
+    const temp = qrlPb.authStore?.model as Record as User
+    noSerialize(temp)
+    authUser.value = temp ?? null
   })
 
   const login = $(async (user: string, password: string) => {
@@ -57,7 +75,7 @@ export const AuthProvider = component$(() => {
 
     try {
       const authRecord = await qrlPb
-        .collection('users')
+        .collection(Collection.USERS)
         .authWithPassword(user, password)
 
       return authRecord
@@ -73,7 +91,7 @@ export const AuthProvider = component$(() => {
 
   useContextProvider(AuthContext, {
     authenticated,
-    roles,
+    authUser,
     login,
     logout,
   })

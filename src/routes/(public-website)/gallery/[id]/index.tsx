@@ -7,7 +7,7 @@ import {
 } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
 import type { ListResult } from 'pocketbase'
-import type { GalleryImage } from '~/types'
+import { Collection, type GalleryImage } from '~/types'
 import BackButton from '~/components/elements/back-button'
 import styles from '~/css/gallery/gallery-images.css?inline'
 import usePagination from '~/hooks/usePagination'
@@ -38,7 +38,7 @@ export default component$(() => {
       track(() => pagination.page.value)
 
       const response = await pb
-        .collection('gallery_images')
+        .collection(Collection.GALLERY_IMAGES)
         .getList<GalleryImage>(
           pagination.page.value,
           pagination.perPage.value,

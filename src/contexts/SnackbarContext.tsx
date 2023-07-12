@@ -67,7 +67,11 @@ export const SnackbarProvider = component$(() => {
     <>
       <section class="absolute right-3 top-3 z-50 max-w-sm">
         {queue.map((snackbar) => (
-          <Snackbar key={snackbar.id} {...snackbar} />
+          <Snackbar
+            key={snackbar.id}
+            snackbar={snackbar}
+            onClick$={() => dequeueSnackbar(snackbar.id)}
+          />
         ))}
       </section>
       <Slot />

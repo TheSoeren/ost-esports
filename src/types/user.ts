@@ -7,8 +7,7 @@ export interface User extends Record {
   id: string
   username: string
   email?: string
-  name?: string
-  avatar?: string
+  gamertag?: string
   roles: UserRole[]
   created: string
   updated: string
