@@ -49,6 +49,7 @@ export default component$(() => {
 
     try {
       await qrlPb.collection(Collection.USERS).update(authUser.value.id, values)
+      reset(profileForm, { initialValues: values })
     } catch (error: unknown) {
       enqueueSnackbar({
         type: 'error',
