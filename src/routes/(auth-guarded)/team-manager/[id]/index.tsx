@@ -6,7 +6,7 @@ export default component$(() => {
 
   return (
     <section>
-      <h1 class="dashboard-title">Team Bearbeiten</h1>
+      <h1 class="dashboard-title">Team Bearbeiten: {params.id}</h1>
     </section>
   )
 })

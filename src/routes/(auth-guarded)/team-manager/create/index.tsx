@@ -11,7 +11,7 @@ export const teamSchema = z.object({
 export type TeamForm = z.infer<typeof teamSchema>
 
 export default component$(() => {
-  const [teamForm, { Form, Field }] = useForm<TeamForm>({
+  const [, { Form, Field }] = useForm<TeamForm>({
     loader: {
       value: {
         name: '',
