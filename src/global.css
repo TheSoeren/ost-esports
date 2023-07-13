@@ -101,7 +101,7 @@
   }
 
   .tile {
-    @apply relative p-5 rounded-b-md;
+    @apply relative p-5 rounded-b;
     background: linear-gradient(180deg, transparent 25%, #fdf2f8 100%);
   }
 

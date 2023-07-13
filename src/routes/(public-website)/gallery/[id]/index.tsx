@@ -75,23 +75,23 @@ export default component$(() => {
               <div class="flex justify-around">
                 <IconButton
                   icon={faAngleLeft}
+                  class="w-full rounded-none rounded-tl"
                   onClick$={() => {
                     modalImage.value = circularSubtract(
                       modalImage.value,
                       galleryImages.items.length
                     )
                   }}
-                  cssClass="w-full rounded-none rounded-tl"
                 />
                 <IconButton
                   icon={faAngleRight}
+                  class="w-full rounded-none rounded-tr"
                   onClick$={() => {
                     modalImage.value = circularAdd(
                       modalImage.value,
                       galleryImages.items.length
                     )
                   }}
-                  cssClass="w-full rounded-none rounded-tr"
                 />
               </div>
               <img

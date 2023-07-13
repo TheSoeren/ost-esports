@@ -6,20 +6,22 @@ import { FaIcon } from 'qwik-fontawesome'
 interface IconButtonProps {
   icon: IconProp
   onClick$: QRL<() => void>
-  cssClass?: ClassList
+  class?: ClassList
 }
 
-export default component$(({ icon, onClick$, cssClass }: IconButtonProps) => {
-  return (
-    <button
-      type="button"
-      onClick$={onClick$}
-      class={[
-        'h-fit px-2 py-3 inline-flex items-center justify-center rounded-md transition-all text-white hover:bg-ost-purple',
-        cssClass ?? '',
-      ]}
-    >
-      <FaIcon icon={icon} fixedWidth />
-    </button>
-  )
-})
+export default component$(
+  ({ icon, onClick$, class: className }: IconButtonProps) => {
+    return (
+      <button
+        type="button"
+        onClick$={onClick$}
+        class={[
+          'h-fit px-2 py-3 inline-flex items-center justify-center rounded transition-all text-white hover:bg-ost-purple',
+          className ?? '',
+        ]}
+      >
+        <FaIcon icon={icon} fixedWidth />
+      </button>
+    )
+  }
+)
