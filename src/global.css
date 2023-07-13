@@ -122,4 +122,8 @@
   .tile:hover::before {
     background-size: 120%;
   }
+
+  .dashboard-title {
+    @apply text-3xl mb-4 border-b-ost-purple border-b-2;
+  }
 }

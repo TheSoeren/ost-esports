@@ -63,8 +63,9 @@ export default component$(() => {
   })
 
   return (
-    <section class="">
-      <Form class="w-full" onSubmit$={handleSubmit}>
+    <section>
+      <h1 class="dashboard-title">Profil</h1>
+      <Form onSubmit$={handleSubmit}>
         <Field name="gamertag">
           {(field, props) => (
             <TextInput

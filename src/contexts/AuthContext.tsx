@@ -21,6 +21,7 @@ type OnChangeFunc = (token: string, user: unknown) => void
 interface AuthContext {
   authenticated: Signal<boolean>
   authUser: Signal<User | null>
+  pocketbase(): Promise<Pocketbase>
   login(user: string, password: string): Promise<RecordAuthResponse<Record>>
   logout(): void
 }
@@ -89,9 +90,14 @@ export const AuthProvider = component$(() => {
     qrlPb.authStore.clear()
   })
 
+  const pocketbase = $(async () => {
+    return await createPocketbase(updateAuthStore)
+  })
+
   useContextProvider(AuthContext, {
     authenticated,
     authUser,
+    pocketbase,
     login,
     logout,
   })

@@ -72,7 +72,7 @@ export default component$(() => {
     <>
       <button
         type="button"
-        class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
+        class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
       >
         <svg
           class="w-6 h-6"

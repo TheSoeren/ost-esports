@@ -18,7 +18,7 @@ export default component$(({ name, coverImage, ...record }: Gallery) => {
     >
       <Link
         href={record.id}
-        class="absolute top-0 left-0 h-full w-full rounded-lg"
+        class="absolute top-0 left-0 h-full w-full rounded"
       >
         <div class="gallery__tile-backdrop">
           <span class="gallery__tile-backdrop-text">{name}</span>

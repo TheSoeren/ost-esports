@@ -81,7 +81,7 @@ export default component$(() => {
                       galleryImages.items.length
                     )
                   }}
-                  cssClass="w-full rounded-none rounded-tl-lg"
+                  cssClass="w-full rounded-none rounded-tl"
                 />
                 <IconButton
                   icon={faAngleRight}
@@ -91,7 +91,7 @@ export default component$(() => {
                       galleryImages.items.length
                     )
                   }}
-                  cssClass="w-full rounded-none rounded-tr-lg"
+                  cssClass="w-full rounded-none rounded-tr"
                 />
               </div>
               <img
