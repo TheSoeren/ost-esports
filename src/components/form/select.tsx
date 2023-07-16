@@ -11,7 +11,7 @@ import InputLabel from './input-label'
 import { FaIcon } from 'qwik-fontawesome'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 
-interface SelectValue {
+export interface SelectValue {
   label: string
   value: string
 }

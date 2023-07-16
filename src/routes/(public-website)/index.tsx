@@ -15,10 +15,10 @@ import type { ListResult } from 'pocketbase'
 import PocketBase from 'pocketbase'
 import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
 import {
-  LEAGUE_OF_LEGENDS,
   getGameSpecificData,
   isLeagueOfLegendsData,
 } from '~/data/teams/team-tile-mapping'
+import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
 
 interface UseTeamFetchingResponse {
   teams: ListResult<Team>

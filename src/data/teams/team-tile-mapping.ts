@@ -3,8 +3,7 @@ import LolTeamTile from '~/components/teams/league-of-legends/team-tile'
 import type { ListResult } from 'pocketbase'
 import type { Team } from '~/types'
 import type { PlTeamDetailed } from '~/types/primeleague'
-
-export const LEAGUE_OF_LEGENDS = '24n3v5bb5x7yixv'
+import { LEAGUE_OF_LEGENDS } from '../games/game-id'
 
 const componentMapping = {
   [LEAGUE_OF_LEGENDS]: LolTeamTile,
@@ -42,11 +41,25 @@ const dataMapping: DataMapping = {
   [LEAGUE_OF_LEGENDS]: leagueOfLegendsData,
 }
 
+const isKeyOfDataMapping = (
+  gameId: string
+): gameId is keyof typeof dataMapping => {
+  if (gameId in dataMapping) {
+    return true
+  }
+
+  return false
+}
+
 export async function getGameSpecificData(
   teams: ListResult<Team>,
   gameId: string
 ) {
-  return await dataMapping[gameId](teams)
+  if (isKeyOfDataMapping(gameId)) {
+    return dataMapping[gameId](teams)
+  }
+
+  return {}
 }
 
 export const isLeagueOfLegendsData = (
