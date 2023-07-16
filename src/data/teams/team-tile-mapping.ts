@@ -31,7 +31,7 @@ interface LoLSpecificData {
   plTeamList: PlTeamDetailed[]
 }
 
-export type ResolvedGameSpecificData = LoLSpecificData // | ValorantSpecificData etc...
+export type ResolvedGameSpecificData = LoLSpecificData | {} // | ValorantSpecificData etc...
 type GameDataFunction = (
   teams: ListResult<Team>
 ) => Promise<ResolvedGameSpecificData>
