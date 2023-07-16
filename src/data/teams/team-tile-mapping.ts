@@ -27,7 +27,7 @@ export function getTeamTile(gameId: string) {
   return TeamTile
 }
 
-interface LoLSpecificData {
+export interface LoLSpecificData {
   plTeamList: PlTeamDetailed[]
 }
 
