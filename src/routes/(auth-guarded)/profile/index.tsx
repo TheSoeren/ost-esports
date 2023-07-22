@@ -48,7 +48,16 @@ export default component$(() => {
     if (!authUser.value) return
 
     try {
-      await qrlPb.collection(Collection.USERS).update(authUser.value.id, values)
+      await qrlPb
+        .collection(Collection.USERS)
+        .update<User>(authUser.value.id, values)
+
+      enqueueSnackbar({
+        type: 'success',
+        title: 'Daten erfolgreich aktualisiert',
+        duration: 3000,
+      })
+
       reset(profileForm, { initialValues: values })
     } catch (error: unknown) {
       enqueueSnackbar({
@@ -63,8 +72,9 @@ export default component$(() => {
   })
 
   return (
-    <section class="">
-      <Form class="w-full" onSubmit$={handleSubmit}>
+    <section>
+      <h1 class="dashboard-title">Profil</h1>
+      <Form onSubmit$={handleSubmit}>
         <Field name="gamertag">
           {(field, props) => (
             <TextInput
@@ -82,7 +92,7 @@ export default component$(() => {
           class="btn-outline block ml-auto"
           disabled={profileForm.submitting || !profileForm.dirty}
         >
-          Save
+          Speichern
         </button>
       </Form>
     </section>
@@ -90,5 +100,5 @@ export default component$(() => {
 })
 
 export const head: DocumentHead = {
-  title: 'Dashboard | Profile',
+  title: 'Dashboard | Profil',
 }

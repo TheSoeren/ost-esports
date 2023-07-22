@@ -1,1 +1,5 @@
 export { default as TextInput } from './text-input'
+export { default as Expandable } from './expandable'
+export { default as Checkbox } from './checkbox'
+export { default as InputError } from './input-error'
+export { default as Select } from './select'

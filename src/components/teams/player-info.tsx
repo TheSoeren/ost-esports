@@ -7,11 +7,7 @@ export default component$(({ gamertag, username }: User) => {
 
   return (
     <section class="player-info">
-      <img
-        class="player-info__icon"
-        src="/profile.webp"
-        alt="Profile Picture"
-      />
+      <img class="player-info__icon" src="/profile.webp" alt="Profilbild" />
       <div class="player-info__text">{gamertag ? gamertag : username}</div>
     </section>
   )

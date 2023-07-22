@@ -1,4 +1,3 @@
-import type { QRL } from '@builder.io/qwik'
 import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import type { IconProp } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -21,7 +20,7 @@ export const icon: IconMapping = {
 
 interface SnackbarProps {
   snackbar: Snackbar
-  onClick$: QRL<() => void>
+  onClick$(): void
 }
 
 export default component$(({ snackbar, onClick$ }: SnackbarProps) => {

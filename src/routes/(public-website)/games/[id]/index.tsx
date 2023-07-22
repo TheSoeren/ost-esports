@@ -25,7 +25,7 @@ export const useTeamData = routeLoader$<UseTeamFetchingResponse>(
     const pb = new PocketBase(import.meta.env.VITE_API_URL)
 
     const teams = await pb.collection(Collection.TEAMS).getList<Team>(1, 30, {
-      filter: `game="${requestEvent.params.id}"`,
+      filter: `game="${requestEvent.params.id}" && hidden=false`,
       expand: 'membership(team).user',
       $cancelKey: requestEvent.params.id,
     })

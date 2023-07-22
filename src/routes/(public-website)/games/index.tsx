@@ -16,7 +16,9 @@ export default component$(() => {
   const pb = usePocketbase()
 
   const gamesResource = useResource$<Game[]>(async () => {
-    const response: Game[] = await pb.collection(Collection.GAMES).getFullList()
+    const response: Game[] = await pb.collection(Collection.GAMES).getFullList({
+      filter: `hidden=false`,
+    })
 
     return structuredClone(response)
   })

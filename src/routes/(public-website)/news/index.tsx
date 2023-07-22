@@ -28,7 +28,7 @@ export default component$(() => {
         .getList<NewsEntry>(pagination.page.value, pagination.perPage.value, {
           sort: '-publishDate',
         })
-      pagination.setTotalPages(response.totalPages)
+      pagination.setTotalPages$(response.totalPages)
 
       return structuredClone(response)
     }

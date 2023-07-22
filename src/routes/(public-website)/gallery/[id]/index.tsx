@@ -46,7 +46,7 @@ export default component$(() => {
             filter: `gallery="${params.id}"`,
           }
         )
-      pagination.setTotalPages(response.totalPages)
+      pagination.setTotalPages$(response.totalPages)
 
       return structuredClone(response)
     }
@@ -75,23 +75,23 @@ export default component$(() => {
               <div class="flex justify-around">
                 <IconButton
                   icon={faAngleLeft}
+                  class="w-full rounded-none rounded-tl"
                   onClick$={() => {
                     modalImage.value = circularSubtract(
                       modalImage.value,
                       galleryImages.items.length
                     )
                   }}
-                  cssClass="w-full rounded-none rounded-tl-lg"
                 />
                 <IconButton
                   icon={faAngleRight}
+                  class="w-full rounded-none rounded-tr"
                   onClick$={() => {
                     modalImage.value = circularAdd(
                       modalImage.value,
                       galleryImages.items.length
                     )
                   }}
-                  cssClass="w-full rounded-none rounded-tr-lg"
                 />
               </div>
               <img

@@ -3,8 +3,7 @@ import LolTeamTile from '~/components/teams/league-of-legends/team-tile'
 import type { ListResult } from 'pocketbase'
 import type { Team } from '~/types'
 import type { PlTeamDetailed } from '~/types/primeleague'
-
-export const LEAGUE_OF_LEGENDS = '24n3v5bb5x7yixv'
+import { LEAGUE_OF_LEGENDS } from '../games/game-id'
 
 const componentMapping = {
   [LEAGUE_OF_LEGENDS]: LolTeamTile,
@@ -28,11 +27,11 @@ export function getTeamTile(gameId: string) {
   return TeamTile
 }
 
-interface LoLSpecificData {
+export interface LoLSpecificData {
   plTeamList: PlTeamDetailed[]
 }
 
-export type ResolvedGameSpecificData = LoLSpecificData // | ValorantSpecificData etc...
+export type ResolvedGameSpecificData = LoLSpecificData | {} // | ValorantSpecificData etc...
 type GameDataFunction = (
   teams: ListResult<Team>
 ) => Promise<ResolvedGameSpecificData>
@@ -42,11 +41,25 @@ const dataMapping: DataMapping = {
   [LEAGUE_OF_LEGENDS]: leagueOfLegendsData,
 }
 
+const isKeyOfDataMapping = (
+  gameId: string
+): gameId is keyof typeof dataMapping => {
+  if (gameId in dataMapping) {
+    return true
+  }
+
+  return false
+}
+
 export async function getGameSpecificData(
   teams: ListResult<Team>,
   gameId: string
 ) {
-  return await dataMapping[gameId](teams)
+  if (isKeyOfDataMapping(gameId)) {
+    return dataMapping[gameId](teams)
+  }
+
+  return {}
 }
 
 export const isLeagueOfLegendsData = (
@@ -63,8 +76,8 @@ async function leagueOfLegendsData(
   teams: ListResult<Team>
 ): Promise<LoLSpecificData> {
   const registeredTeams = teams.items
-    .filter((team) => !!(team.gameSpecificData.plTeamId as number))
-    .map((team) => team.gameSpecificData.plTeamId as number)
+    .filter((team) => !!team.gameSpecificData?.plTeamId)
+    .map((team) => team.gameSpecificData.plTeamId)
 
   const plTeamList = await Promise.all(
     registeredTeams.map((plTeamId: number) =>
@@ -73,7 +86,7 @@ async function leagueOfLegendsData(
   ).then((responses) => Promise.all(responses.map((res) => res.json())))
 
   if (plTeamList.length) {
-    return { plTeamList }
+    return { plTeamList: plTeamList.filter((plTeam) => !!plTeam.id) }
   }
 
   return { plTeamList: [] }

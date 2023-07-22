@@ -101,7 +101,7 @@
   }
 
   .tile {
-    @apply relative p-5 rounded-b-md;
+    @apply relative p-5 rounded-b;
     background: linear-gradient(180deg, transparent 25%, #fdf2f8 100%);
   }
 
@@ -121,5 +121,9 @@
 
   .tile:hover::before {
     background-size: 120%;
+  }
+
+  .dashboard-title {
+    @apply text-3xl mb-4 border-b-ost-purple border-b-2;
   }
 }

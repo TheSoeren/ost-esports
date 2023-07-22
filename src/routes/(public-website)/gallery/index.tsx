@@ -24,7 +24,7 @@ export default component$(() => {
     const response = await pb
       .collection(Collection.GALLERIES)
       .getList<Gallery>(pagination.page.value, pagination.perPage.value)
-    pagination.setTotalPages(response.totalPages)
+    pagination.setTotalPages$(response.totalPages)
 
     return structuredClone(response)
   })
