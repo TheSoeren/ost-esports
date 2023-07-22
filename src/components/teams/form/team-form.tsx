@@ -7,7 +7,8 @@ import {
   useStore,
   useTask$,
 } from '@builder.io/qwik'
-import { FormStore, getValue, useForm, zodForm$ } from '@modular-forms/qwik'
+import type { FormStore } from '@modular-forms/qwik'
+import { getValue, useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
 import { getGameSpecificForm } from '~/data/games/game-form-mapping'
 import usePocketbase from '~/hooks/usePocketbase'
@@ -28,6 +29,10 @@ export const teamSchema = z.object({
 })
 export type TeamFormSchema = z.infer<typeof teamSchema>
 
+interface SubformObject {
+  element: Component<GameSpecificForm>
+}
+
 interface TeamFormProps {
   team?: Team
   edit?: boolean
@@ -35,131 +40,148 @@ interface TeamFormProps {
     values: TeamFormSchema,
     form: FormStore<TeamFormSchema, undefined>
   ): void
+  onDelete$?(): void
 }
 
-export default component$(({ team, edit, onSubmit$ }: TeamFormProps) => {
-  const pb = usePocketbase()
-  const gameSpecificForm = useStore<{
-    element: Component<GameSpecificForm>
-  }>({
-    element: EmptyGameForm,
-  })
-  const gamesResource = useResource$<SelectValue[]>(async () => {
-    const response: Game[] = await pb.collection(Collection.GAMES).getFullList()
+export default component$(
+  ({ team, edit, onSubmit$, onDelete$ }: TeamFormProps) => {
+    const pb = usePocketbase()
+    const gameSpecificForm = useStore<SubformObject>({
+      element: EmptyGameForm,
+    })
+    const gamesResource = useResource$<SelectValue[]>(async () => {
+      const response: Game[] = await pb
+        .collection(Collection.GAMES)
+        .getFullList()
 
-    return response.map((game) => ({
-      label: game.name,
-      value: game.id,
-    }))
-  })
+      return response.map((game) => ({
+        label: game.name,
+        value: game.id,
+      }))
+    })
 
-  const usersResource = useResource$<SelectValue[]>(async () => {
-    if (!edit) return []
+    const usersResource = useResource$<SelectValue[]>(async () => {
+      if (!edit) return []
 
-    const response: User[] = await pb.collection(Collection.USERS).getFullList()
+      const response: User[] = await pb
+        .collection(Collection.USERS)
+        .getFullList()
 
-    return response.map((user) => ({
-      label: user.gamertag ? user.gamertag : user.username,
-      value: user.id,
-    }))
-  })
+      return response.map((user) => ({
+        label: user.gamertag ? user.gamertag : user.username,
+        value: user.id,
+      }))
+    })
 
-  const [teamForm, { Form, Field }] = useForm<TeamFormSchema>({
-    loader: {
-      value: team ?? {
-        name: '',
-        captain: '',
-        game: '',
-        hidden: false,
-        gameSpecificData: {
-          plTeamId: undefined,
+    const [teamForm, { Form, Field }] = useForm<TeamFormSchema>({
+      loader: {
+        value: team ?? {
+          name: '',
+          captain: '',
+          game: '',
+          hidden: false,
+          gameSpecificData: {
+            plTeamId: undefined,
+          },
         },
       },
-    },
-    validate: zodForm$(teamSchema),
-  })
+      validate: zodForm$(teamSchema),
+    })
 
-  useTask$(async ({ track }) => {
-    track(() => getValue(teamForm, 'game'))
-    const game = getValue(teamForm, 'game')
+    useTask$(async ({ track }) => {
+      track(() => getValue(teamForm, 'game'))
+      const game = getValue(teamForm, 'game')
 
-    gameSpecificForm.element = await getGameSpecificForm(game)
-  })
+      gameSpecificForm.element = await getGameSpecificForm(game)
+    })
 
-  const submitHandler$ = $((values: TeamFormSchema) => {
-    onSubmit$(values, teamForm)
-  })
+    const submitHandler$ = $((values: TeamFormSchema) => {
+      onSubmit$(values, teamForm)
+    })
 
-  return (
-    <Form onSubmit$={submitHandler$}>
-      <Field name="name" type="string">
-        {(field, props) => (
-          <TextInput
-            {...props}
-            type="text"
-            label="Name"
-            value={field.value}
-            error={field.error}
-            required
-          />
+    return (
+      <Form onSubmit$={submitHandler$}>
+        <Field name="name" type="string">
+          {(field, props) => (
+            <TextInput
+              {...props}
+              type="text"
+              label="Name"
+              value={field.value}
+              error={field.error}
+              required
+            />
+          )}
+        </Field>
+        {edit && (
+          <Field name="captain" type="string">
+            {(field, props) => (
+              <Resource
+                value={usersResource}
+                onRejected={(error) => <>Error: {error.message}</>}
+                onResolved={(users) => (
+                  <Select
+                    {...props}
+                    label="Captain"
+                    value={field.value}
+                    error={field.error}
+                    options={users}
+                    required
+                  />
+                )}
+              />
+            )}
+          </Field>
         )}
-      </Field>
-      {edit && (
-        <Field name="captain" type="string">
+        <Field name="game">
           {(field, props) => (
             <Resource
-              value={usersResource}
+              value={gamesResource}
               onRejected={(error) => <>Error: {error.message}</>}
-              onResolved={(users) => (
+              onResolved={(games) => (
                 <Select
                   {...props}
-                  label="Captain"
+                  label="Game"
                   value={field.value}
                   error={field.error}
-                  options={users}
+                  options={games}
                   required
                 />
               )}
             />
           )}
         </Field>
-      )}
-      <Field name="game">
-        {(field, props) => (
-          <Resource
-            value={gamesResource}
-            onRejected={(error) => <>Error: {error.message}</>}
-            onResolved={(games) => (
-              <Select
-                {...props}
-                label="Game"
-                value={field.value}
-                error={field.error}
-                options={games}
-                required
-              />
-            )}
-          />
-        )}
-      </Field>
-      <gameSpecificForm.element of={teamForm} edit={edit} />
-      <Field name="hidden" type="boolean">
-        {(field, props) => (
-          <Checkbox
-            {...props}
-            label="Hidden"
-            checked={field.value}
-            error={field.error}
-          />
-        )}
-      </Field>
-      <button
-        type="submit"
-        class="btn-outline block ml-auto"
-        disabled={teamForm.submitting || !teamForm.dirty}
-      >
-        Save
-      </button>
-    </Form>
-  )
-})
+        <gameSpecificForm.element of={teamForm} edit={edit} />
+        <Field name="hidden" type="boolean">
+          {(field, props) => (
+            <Checkbox
+              {...props}
+              label="Hidden"
+              checked={field.value}
+              error={field.error}
+            />
+          )}
+        </Field>
+        <section class="flex justify-end gap-2 items-center">
+          {edit && (
+            <button
+              type="button"
+              class="btn-link"
+              disabled={teamForm.dirty}
+              onClick$={onDelete$}
+            >
+              Löschen
+            </button>
+          )}
+          <button
+            type="submit"
+            class="btn-outline block"
+            disabled={teamForm.submitting || !teamForm.dirty}
+          >
+            Speichern
+          </button>
+        </section>
+      </Form>
+    )
+  }
+)

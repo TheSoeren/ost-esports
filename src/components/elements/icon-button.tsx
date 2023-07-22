@@ -1,11 +1,11 @@
-import type { ClassList, QRL } from '@builder.io/qwik'
+import type { ClassList } from '@builder.io/qwik'
 import { component$ } from '@builder.io/qwik'
 import type { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FaIcon } from 'qwik-fontawesome'
 
 interface IconButtonProps {
   icon: IconProp
-  onClick$: QRL<() => void>
+  onClick$(): void
   class?: ClassList
 }
 

@@ -92,7 +92,7 @@ export default component$(() => {
           class="btn-outline block ml-auto"
           disabled={profileForm.submitting || !profileForm.dirty}
         >
-          Save
+          Speichern
         </button>
       </Form>
     </section>

@@ -7,8 +7,9 @@ import {
 import { FaIcon } from 'qwik-fontawesome'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import styles from '~/css/elements/pagination.css?inline'
+import type { PaginationReturn } from '~/hooks/usePagination'
 
-export default component$((pagination: any) => {
+export default component$((pagination: PaginationReturn) => {
   useStylesScoped$(styles)
 
   // Redundant state, because total pages wouldn't correctly update on first render
@@ -30,7 +31,7 @@ export default component$((pagination: any) => {
       <button
         class="btn-outline pagination-button__left"
         disabled={pagination.page.value === 1}
-        onClick$={pagination.previousPage}
+        onClick$={pagination.previousPage$}
       >
         <FaIcon icon={faAngleLeft} class="mr-1" fixedWidth />
       </button>
@@ -41,7 +42,7 @@ export default component$((pagination: any) => {
             'btn-outline pagination-button__pages',
             pagination.page.value === pageNr && 'btn-outline--highlight',
           ]}
-          onClick$={() => pagination.setPage(pageNr)}
+          onClick$={() => pagination.setPage$(pageNr)}
         >
           {pageNr}
         </button>
@@ -49,7 +50,7 @@ export default component$((pagination: any) => {
       <button
         class="btn-outline pagination-button__right"
         disabled={pagination.page.value === pagination.totalPages.value}
-        onClick$={pagination.nextPage}
+        onClick$={pagination.nextPage$}
       >
         <FaIcon icon={faAngleRight} class="mr-1" fixedWidth />
       </button>

@@ -46,7 +46,7 @@ export default component$(() => {
             filter: `gallery="${params.id}"`,
           }
         )
-      pagination.setTotalPages(response.totalPages)
+      pagination.setTotalPages$(response.totalPages)
 
       return structuredClone(response)
     }
