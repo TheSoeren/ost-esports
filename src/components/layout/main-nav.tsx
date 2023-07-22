@@ -92,7 +92,7 @@ export default component$(() => {
                 urlMatcher('/profile') ? 'nav-item--highlight' : '',
               ]}
             >
-              PROFILE
+              DASHBOARD
             </Link>
           ) : (
             <Link

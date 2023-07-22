@@ -35,12 +35,14 @@ interface TextInputProps {
 export default component$(
   ({ label, value, error, ...props }: TextInputProps) => {
     const { name, required } = props
+
     const input = useSignal<string | number>()
     useTask$(({ track }) => {
       if (!Number.isNaN(track(() => value))) {
         input.value = value
       }
     })
+
     return (
       <div class={[error ? 'mb-3' : 'mb-6', props.class]}>
         <InputLabel name={name} label={label} required={required} />
