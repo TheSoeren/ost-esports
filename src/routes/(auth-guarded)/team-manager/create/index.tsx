@@ -5,10 +5,12 @@ import Pocketbase from 'pocketbase'
 import { AuthContext } from '~/contexts/AuthContext'
 import { Collection } from '~/types'
 import { SnackbarContext } from '~/contexts/SnackbarContext'
+import { useNavigate } from '@builder.io/qwik-city'
 
 export default component$(() => {
   const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
+  const navigate = useNavigate()
 
   const handleSubmit = $(async (values: TeamFormSchema) => {
     const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
@@ -18,10 +20,17 @@ export default component$(() => {
         throw new Error('Not authenticated!')
       }
 
-      await qrlPb.collection(Collection.TEAMS).create({
+      const team = await qrlPb.collection(Collection.TEAMS).create({
         ...values,
         captain: authUser.value.id,
       })
+
+      enqueueSnackbar({
+        type: 'success',
+        title: 'Team erfolgreich erstellt',
+        duration: 3000,
+      })
+      navigate(`/team-manager/${team.id}`)
     } catch (error: unknown) {
       enqueueSnackbar({
         type: 'error',

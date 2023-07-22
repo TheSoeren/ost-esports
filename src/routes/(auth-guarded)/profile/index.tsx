@@ -48,7 +48,16 @@ export default component$(() => {
     if (!authUser.value) return
 
     try {
-      await qrlPb.collection(Collection.USERS).update(authUser.value.id, values)
+      await qrlPb
+        .collection(Collection.USERS)
+        .update<User>(authUser.value.id, values)
+
+      enqueueSnackbar({
+        type: 'success',
+        title: 'Daten erfolgreich aktualisiert',
+        duration: 3000,
+      })
+
       reset(profileForm, { initialValues: values })
     } catch (error: unknown) {
       enqueueSnackbar({

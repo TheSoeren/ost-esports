@@ -10,6 +10,7 @@ export type GameSpecificData = LeagueOfLegendsData // | ValorantData | CsData et
 
 export interface Team extends PbRecord {
   name: string
+  captain: string
   game: string
   hidden: boolean
   gameSpecificData: GameSpecificData
@@ -23,4 +24,5 @@ export interface Membership extends PbRecord {
 
 export interface GameSpecificForm {
   of: FormStore<TeamFormSchema, TeamFormSchema>
+  edit?: boolean
 }

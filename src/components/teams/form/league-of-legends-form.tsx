@@ -1,9 +1,9 @@
 import { component$, useTask$ } from '@builder.io/qwik'
-import { Field, getValue, setValue } from '@modular-forms/qwik'
+import { Field, getValue, reset, setValue } from '@modular-forms/qwik'
 import { TextInput } from '~/components/form'
 import type { GameSpecificForm } from '~/types'
 
-export default component$(({ of }: GameSpecificForm) => {
+export default component$(({ of, edit }: GameSpecificForm) => {
   useTask$(({ track }) => {
     const plTeamId = track(() => getValue(of, 'gameSpecificData.plTeamId'))
 
@@ -12,10 +12,16 @@ export default component$(({ of }: GameSpecificForm) => {
     }
   })
 
+  useTask$(() => {
+    if (edit) {
+      // reset because initial value won't be displayed when form field is rendered too late
+      reset(of)
+    }
+  })
+
   return (
     <Field of={of} name={'gameSpecificData.plTeamId'} type="number">
       {(field, props) => {
-        console.log('Field Value', field.value)
         return (
           <TextInput
             {...props}

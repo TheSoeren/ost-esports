@@ -76,8 +76,8 @@ async function leagueOfLegendsData(
   teams: ListResult<Team>
 ): Promise<LoLSpecificData> {
   const registeredTeams = teams.items
-    .filter((team) => !!(team.gameSpecificData.plTeamId as number))
-    .map((team) => team.gameSpecificData.plTeamId as number)
+    .filter((team) => !!team.gameSpecificData?.plTeamId)
+    .map((team) => team.gameSpecificData.plTeamId)
 
   const plTeamList = await Promise.all(
     registeredTeams.map((plTeamId: number) =>
@@ -86,7 +86,7 @@ async function leagueOfLegendsData(
   ).then((responses) => Promise.all(responses.map((res) => res.json())))
 
   if (plTeamList.length) {
-    return { plTeamList }
+    return { plTeamList: plTeamList.filter((plTeam) => !!plTeam.id) }
   }
 
   return { plTeamList: [] }

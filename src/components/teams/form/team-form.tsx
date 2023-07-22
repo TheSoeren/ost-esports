@@ -1,16 +1,17 @@
 import type { Component } from '@builder.io/qwik'
 import {
+  $,
   Resource,
   component$,
   useResource$,
   useStore,
   useTask$,
 } from '@builder.io/qwik'
-import { getValue, useForm, zodForm$ } from '@modular-forms/qwik'
+import { FormStore, getValue, useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
 import { getGameSpecificForm } from '~/data/games/game-form-mapping'
 import usePocketbase from '~/hooks/usePocketbase'
-import type { Game, GameSpecificForm } from '~/types'
+import type { Game, GameSpecificForm, Team, User } from '~/types'
 import { Collection } from '~/types'
 import { Checkbox, Select, TextInput } from '../../form'
 import type { SelectValue } from '../../form/select'
@@ -18,6 +19,7 @@ import EmptyGameForm from './empty-game-form'
 
 export const teamSchema = z.object({
   name: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
+  captain: z.string().optional(),
   game: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
   gameSpecificData: z.object({
     plTeamId: z.number().optional(),
@@ -27,10 +29,15 @@ export const teamSchema = z.object({
 export type TeamFormSchema = z.infer<typeof teamSchema>
 
 interface TeamFormProps {
-  onSubmit$(values: TeamFormSchema): void
+  team?: Team
+  edit?: boolean
+  onSubmit$(
+    values: TeamFormSchema,
+    form: FormStore<TeamFormSchema, undefined>
+  ): void
 }
 
-export default component$(({ onSubmit$ }: TeamFormProps) => {
+export default component$(({ team, edit, onSubmit$ }: TeamFormProps) => {
   const pb = usePocketbase()
   const gameSpecificForm = useStore<{
     element: Component<GameSpecificForm>
@@ -46,10 +53,22 @@ export default component$(({ onSubmit$ }: TeamFormProps) => {
     }))
   })
 
+  const usersResource = useResource$<SelectValue[]>(async () => {
+    if (!edit) return []
+
+    const response: User[] = await pb.collection(Collection.USERS).getFullList()
+
+    return response.map((user) => ({
+      label: user.gamertag ? user.gamertag : user.username,
+      value: user.id,
+    }))
+  })
+
   const [teamForm, { Form, Field }] = useForm<TeamFormSchema>({
     loader: {
-      value: {
+      value: team ?? {
         name: '',
+        captain: '',
         game: '',
         hidden: false,
         gameSpecificData: {
@@ -67,8 +86,12 @@ export default component$(({ onSubmit$ }: TeamFormProps) => {
     gameSpecificForm.element = await getGameSpecificForm(game)
   })
 
+  const submitHandler$ = $((values: TeamFormSchema) => {
+    onSubmit$(values, teamForm)
+  })
+
   return (
-    <Form onSubmit$={onSubmit$}>
+    <Form onSubmit$={submitHandler$}>
       <Field name="name" type="string">
         {(field, props) => (
           <TextInput
@@ -81,6 +104,26 @@ export default component$(({ onSubmit$ }: TeamFormProps) => {
           />
         )}
       </Field>
+      {edit && (
+        <Field name="captain" type="string">
+          {(field, props) => (
+            <Resource
+              value={usersResource}
+              onRejected={(error) => <>Error: {error.message}</>}
+              onResolved={(users) => (
+                <Select
+                  {...props}
+                  label="Captain"
+                  value={field.value}
+                  error={field.error}
+                  options={users}
+                  required
+                />
+              )}
+            />
+          )}
+        </Field>
+      )}
       <Field name="game">
         {(field, props) => (
           <Resource
@@ -99,13 +142,22 @@ export default component$(({ onSubmit$ }: TeamFormProps) => {
           />
         )}
       </Field>
-      <gameSpecificForm.element of={teamForm} />
+      <gameSpecificForm.element of={teamForm} edit={edit} />
       <Field name="hidden" type="boolean">
         {(field, props) => (
-          <Checkbox {...props} label="Hidden" error={field.error} />
+          <Checkbox
+            {...props}
+            label="Hidden"
+            checked={field.value}
+            error={field.error}
+          />
         )}
       </Field>
-      <button type="submit" class="btn-outline block ml-auto">
+      <button
+        type="submit"
+        class="btn-outline block ml-auto"
+        disabled={teamForm.submitting || !teamForm.dirty}
+      >
         Save
       </button>
     </Form>
