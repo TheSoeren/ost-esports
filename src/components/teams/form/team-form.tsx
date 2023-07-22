@@ -141,7 +141,7 @@ export default component$(
               onResolved={(games) => (
                 <Select
                   {...props}
-                  label="Game"
+                  label="Spiel"
                   value={field.value}
                   error={field.error}
                   options={games}
@@ -156,7 +156,7 @@ export default component$(
           {(field, props) => (
             <Checkbox
               {...props}
-              label="Hidden"
+              label="Versteckt"
               checked={field.value}
               error={field.error}
             />

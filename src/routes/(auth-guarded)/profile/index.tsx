@@ -100,5 +100,5 @@ export default component$(() => {
 })
 
 export const head: DocumentHead = {
-  title: 'Dashboard | Profile',
+  title: 'Dashboard | Profil',
 }

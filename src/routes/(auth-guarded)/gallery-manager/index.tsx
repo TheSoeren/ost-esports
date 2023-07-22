@@ -6,5 +6,5 @@ export default component$(() => {
 })
 
 export const head: DocumentHead = {
-  title: 'Dashboard | Gallery Manager',
+  title: 'Dashboard | Galerie Manager',
 }
