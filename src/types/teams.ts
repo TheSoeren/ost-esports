@@ -1,3 +1,5 @@
+import type { FormStore } from '@modular-forms/qwik'
+import type { TeamFormSchema } from '~/components/teams/form/team-form'
 import type { Record as PbRecord } from './pocketbase'
 
 interface LeagueOfLegendsData {
@@ -8,6 +10,7 @@ export type GameSpecificData = LeagueOfLegendsData // | ValorantData | CsData et
 
 export interface Team extends PbRecord {
   name: string
+  captain: string
   game: string
   hidden: boolean
   gameSpecificData: GameSpecificData
@@ -19,13 +22,7 @@ export interface Membership extends PbRecord {
   roleIcon: string
 }
 
-export interface Player extends PbRecord {
-  id: string
-  username: string
-  email?: string
-  name?: string
-  avatar?: string
-  created: string
-  updated: string
-  verified: boolean
+export interface GameSpecificForm {
+  of: FormStore<TeamFormSchema, TeamFormSchema>
+  edit?: boolean
 }

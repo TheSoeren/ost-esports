@@ -11,3 +11,12 @@ export interface Record extends BaseModel {
     [key: string]: Record | Record[]
   }
 }
+
+export enum Collection {
+  USERS = 'users',
+  TEAMS = 'teams',
+  NEWS = 'news',
+  GALLERIES = 'galleries',
+  GALLERY_IMAGES = 'gallery_images',
+  GAMES = 'games',
+}

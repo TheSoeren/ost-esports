@@ -1,4 +1,4 @@
-import type { Membership, Player, Team } from '~/types'
+import type { Membership, User, Team } from '~/types'
 import PlayerInfo from '~/components/teams/league-of-legends/player-info'
 import styles from '~/css/teams/team-tile.css?inline'
 import PlMatchList from './pl-match-list'
@@ -9,7 +9,8 @@ import {
   useTask$,
 } from '@builder.io/qwik'
 import type { PlTeamDetailed } from '~/types/primeleague'
-import { useTeamData } from '~/routes/games/[id]'
+import { useTeamData } from '~/routes/public/games/[id]'
+import type { LoLSpecificData } from '~/data/teams/team-tile-mapping'
 
 export default component$(
   ({ id, name, expand: { ['membership(team)']: memberships } }: Team) => {
@@ -18,13 +19,15 @@ export default component$(
     const teamResource = useTeamData()
 
     const sigMembership = useSignal<Membership[]>()
-    const sigPlayers = useSignal<Player[]>()
+    const sigPlayers = useSignal<User[]>()
     const plTeam = useSignal<PlTeamDetailed>()
 
     useTask$(({ track }) => {
       track(() => teamResource.value.gameSpecificData)
+      const gameSpecificData = teamResource.value
+        .gameSpecificData as LoLSpecificData
 
-      plTeam.value = teamResource.value.gameSpecificData.plTeamList.find(
+      plTeam.value = gameSpecificData.plTeamList.find(
         (plTeam) => plTeam.name === name
       )
     })
@@ -36,7 +39,7 @@ export default component$(
         (m: Membership) => m.team === id
       )
       sigPlayers.value = sigMembership.value?.map(
-        (m: Membership) => m.expand['user'] as Player
+        (m: Membership) => m.expand['user'] as User
       )
     })
 

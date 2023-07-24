@@ -1,5 +1,5 @@
 .games__tile {
-  @apply relative rounded-lg transition-all shadow-lg hover:shadow-2xl hover:scale-105;
+  @apply relative rounded transition-all shadow-lg hover:shadow-2xl hover:scale-105;
 }
 
 .games__tile::before {
@@ -7,5 +7,5 @@
 }
 
 .games__tile-image {
-  @apply h-full object-cover rounded-lg;
+  @apply h-full object-cover rounded;
 }

@@ -5,7 +5,7 @@ import styles from '~/css/teams/pl-matches.css?inline'
 
 interface Props {
   matches: PlMatch[]
-  cssClass?: string
+  class?: string
   teamName?: string
 }
 
@@ -18,7 +18,7 @@ export function hasWon(result: string) {
   return !!parseInt(result)
 }
 
-export default component$(({ matches, cssClass, teamName }: Props) => {
+export default component$(({ matches, class: className, teamName }: Props) => {
   useStylesScoped$(styles)
 
   const resultClass = (result: string | null) => {
@@ -30,11 +30,11 @@ export default component$(({ matches, cssClass, teamName }: Props) => {
       return 'pl-match--pink'
     }
 
-    return 'pl-match--violet'
+    return 'pl-match--purple'
   }
 
   return (
-    <section class={['pl-match__list', cssClass]}>
+    <section class={['pl-match__list', className]}>
       {matches.sort(sortByMatchDay).map((match) => {
         return (
           <a

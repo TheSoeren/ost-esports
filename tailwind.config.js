@@ -8,7 +8,7 @@ module.exports = {
       },
       colors: {
         'ost-black': '#191919',
-        'ost-violet': '#8C195F',
+        'ost-purple': '#8C195F',
         'ost-pink': '#D72864',
         'light-white': '#f9f9f9',
       },

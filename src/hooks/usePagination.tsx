@@ -1,12 +1,14 @@
-import type { QRL, Signal } from '@builder.io/qwik'
+import type { Signal } from '@builder.io/qwik'
 import { $, useSignal } from '@builder.io/qwik'
 
 export interface PaginationReturn {
   page: Signal<number>
   perPage: Signal<number>
   totalPages: Signal<number>
-  nextPage: QRL<() => void>
-  previousPage: QRL<() => void>
+  setTotalPages$(pages: number): void
+  setPage$(pageNr: number): void
+  nextPage$(): void
+  previousPage$(): void
 }
 
 function usePagination(page: number, perPage: number) {
@@ -14,23 +16,23 @@ function usePagination(page: number, perPage: number) {
   const perPageSig = useSignal(perPage)
   const totalPages = useSignal(0)
 
-  const setPage = $((pageNr: number) => {
+  const setPage$ = $((pageNr: number) => {
     pageSig.value = pageNr
   })
 
-  const nextPage = $(() => {
+  const nextPage$ = $(() => {
     if (pageSig.value < totalPages.value) {
       pageSig.value++
     }
   })
 
-  const previousPage = $(() => {
+  const previousPage$ = $(() => {
     if (pageSig.value > 1) {
       pageSig.value--
     }
   })
 
-  const setTotalPages = $((pages: number) => {
+  const setTotalPages$ = $((pages: number) => {
     totalPages.value = pages
   })
 
@@ -38,10 +40,10 @@ function usePagination(page: number, perPage: number) {
     page: pageSig,
     perPage: perPageSig,
     totalPages: totalPages,
-    setTotalPages,
-    setPage,
-    nextPage,
-    previousPage,
+    setTotalPages$,
+    setPage$,
+    nextPage$,
+    previousPage$,
   }
 }
 
