@@ -1,10 +1,5 @@
 import type { PropFunction, QwikFocusEvent } from '@builder.io/qwik'
-import {
-  component$,
-  noSerialize,
-  useStore,
-  useVisibleTask$,
-} from '@builder.io/qwik'
+import { component$, useVisibleTask$ } from '@builder.io/qwik'
 import InputLabel from './input-label'
 import InputError from './input-error'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'

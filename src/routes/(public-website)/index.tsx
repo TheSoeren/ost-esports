@@ -11,7 +11,6 @@ import PlMatchList from '~/components/teams/league-of-legends/pl-match-list'
 import { Collection, type NewsEntry, type Team } from '~/types'
 import styles from '~/css/index.css?inline'
 import usePocketbase from '~/hooks/usePocketbase'
-import type { ListResult } from 'pocketbase'
 import PocketBase from 'pocketbase'
 import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
 import {
