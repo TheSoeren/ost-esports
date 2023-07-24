@@ -1,6 +1,5 @@
 import TeamTile from '~/components/teams/team-tile'
 import LolTeamTile from '~/components/teams/league-of-legends/team-tile'
-import type { ListResult } from 'pocketbase'
 import type { Team } from '~/types'
 import type { PlTeamDetailed } from '~/types/primeleague'
 import { LEAGUE_OF_LEGENDS } from '../games/game-id'
@@ -32,9 +31,7 @@ export interface LoLSpecificData {
 }
 
 export type ResolvedGameSpecificData = LoLSpecificData | {} // | ValorantSpecificData etc...
-type GameDataFunction = (
-  teams: ListResult<Team>
-) => Promise<ResolvedGameSpecificData>
+type GameDataFunction = (teams: Team[]) => Promise<ResolvedGameSpecificData>
 type DataMapping = Record<string, GameDataFunction>
 
 const dataMapping: DataMapping = {
@@ -51,10 +48,7 @@ const isKeyOfDataMapping = (
   return false
 }
 
-export async function getGameSpecificData(
-  teams: ListResult<Team>,
-  gameId: string
-) {
+export async function getGameSpecificData(teams: Team[], gameId: string) {
   if (isKeyOfDataMapping(gameId)) {
     return dataMapping[gameId](teams)
   }
@@ -72,10 +66,8 @@ export const isLeagueOfLegendsData = (
   return false
 }
 
-async function leagueOfLegendsData(
-  teams: ListResult<Team>
-): Promise<LoLSpecificData> {
-  const registeredTeams = teams.items
+async function leagueOfLegendsData(teams: Team[]): Promise<LoLSpecificData> {
+  const registeredTeams = teams
     .filter((team) => !!team.gameSpecificData?.plTeamId)
     .map((team) => team.gameSpecificData.plTeamId)
 

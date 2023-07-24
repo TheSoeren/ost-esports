@@ -11,12 +11,11 @@ import {
   getTeamTile,
 } from '~/data/teams/team-tile-mapping'
 import BackButton from '~/components/elements/back-button'
-import type { ListResult } from 'pocketbase'
 import { Collection, type Team } from '~/types'
 import PocketBase from 'pocketbase'
 
 interface UseTeamFetchingResponse {
-  teams: ListResult<Team>
+  teams: Team[]
   gameSpecificData: ResolvedGameSpecificData
 }
 
@@ -24,7 +23,7 @@ export const useTeamData = routeLoader$<UseTeamFetchingResponse>(
   async (requestEvent) => {
     const pb = new PocketBase(import.meta.env.VITE_API_URL)
 
-    const teams = await pb.collection(Collection.TEAMS).getList<Team>(1, 30, {
+    const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
       filter: `game="${requestEvent.params.id}" && hidden=false`,
       expand: 'membership(team).user',
       $cancelKey: requestEvent.params.id,
@@ -50,7 +49,7 @@ export default component$(() => {
     <article>
       <BackButton href="/games" label="Game Auswahl" />
       <div class="teams__container">
-        {teamsResource.value.teams.items.map((team) => (
+        {teamsResource.value.teams.map((team) => (
           <TeamTile key={team.id} {...team} />
         ))}
       </div>

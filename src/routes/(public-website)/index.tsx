@@ -11,7 +11,6 @@ import PlMatchList from '~/components/teams/league-of-legends/pl-match-list'
 import { Collection, type NewsEntry, type Team } from '~/types'
 import styles from '~/css/index.css?inline'
 import usePocketbase from '~/hooks/usePocketbase'
-import type { ListResult } from 'pocketbase'
 import PocketBase from 'pocketbase'
 import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
 import {
@@ -21,7 +20,7 @@ import {
 import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
 
 interface UseTeamFetchingResponse {
-  teams: ListResult<Team>
+  teams: Team[]
   gameSpecificData: ResolvedGameSpecificData
 }
 
@@ -32,7 +31,7 @@ interface UseTeamFetchingResponse {
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
   const pb = new PocketBase(import.meta.env.VITE_API_URL)
 
-  const teams = await pb.collection(Collection.TEAMS).getList<Team>(1, 30, {
+  const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
     filter: `game="${LEAGUE_OF_LEGENDS}"`,
     expand: 'membership(team).user',
     $cancelKey: LEAGUE_OF_LEGENDS,

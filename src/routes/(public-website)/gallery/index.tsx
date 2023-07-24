@@ -23,7 +23,9 @@ export default component$(() => {
   const teamsResource = useResource$<ListResult<Gallery>>(async () => {
     const response = await pb
       .collection(Collection.GALLERIES)
-      .getList<Gallery>(pagination.page.value, pagination.perPage.value)
+      .getList<Gallery>(pagination.page.value, pagination.perPage.value, {
+        filter: 'hidden=false',
+      })
     pagination.setTotalPages$(response.totalPages)
 
     return structuredClone(response)

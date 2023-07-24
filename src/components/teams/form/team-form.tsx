@@ -19,7 +19,7 @@ import type { SelectValue } from '../../form/select'
 import EmptyGameForm from './empty-game-form'
 
 export const teamSchema = z.object({
-  name: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
+  name: z.string().min(1, 'Teamname darf nicht leer sein!'),
   captain: z.string().optional(),
   game: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
   gameSpecificData: z.object({

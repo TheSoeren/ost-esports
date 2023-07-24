@@ -6,4 +6,5 @@ export interface NewsEntry extends Record {
   content: string
   hidden: boolean
   publishDate: string
+  author: string
 }
