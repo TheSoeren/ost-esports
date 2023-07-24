@@ -21,7 +21,7 @@ import {
 import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
 
 interface UseTeamFetchingResponse {
-  teams: ListResult<Team>
+  teams: Team[]
   gameSpecificData: ResolvedGameSpecificData
 }
 
@@ -32,7 +32,7 @@ interface UseTeamFetchingResponse {
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
   const pb = new PocketBase(import.meta.env.VITE_API_URL)
 
-  const teams = await pb.collection(Collection.TEAMS).getList<Team>(1, 30, {
+  const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
     filter: `game="${LEAGUE_OF_LEGENDS}"`,
     expand: 'membership(team).user',
     $cancelKey: LEAGUE_OF_LEGENDS,

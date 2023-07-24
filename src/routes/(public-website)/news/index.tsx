@@ -27,6 +27,7 @@ export default component$(() => {
         .collection(Collection.NEWS)
         .getList<NewsEntry>(pagination.page.value, pagination.perPage.value, {
           sort: '-publishDate',
+          filter: 'hidden=false && publishDate <= @now',
         })
       pagination.setTotalPages$(response.totalPages)
 

@@ -24,6 +24,7 @@
   "devDependencies": {
     "@builder.io/qwik": "1.1.5",
     "@builder.io/qwik-city": "1.1.5",
+    "@ckeditor/ckeditor5-build-classic": "^38.1.1",
     "@fortawesome/fontawesome-free": "^6.4.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",

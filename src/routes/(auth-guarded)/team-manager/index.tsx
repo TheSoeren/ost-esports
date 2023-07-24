@@ -8,11 +8,11 @@ import {
 import { Link, type DocumentHead } from '@builder.io/qwik-city'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
-import TeamManagerSkeleton from '~/components/teams/team-manager-skeleton'
+import DataManagerSkeleton from '~/components/elements/data-manager-skeleton'
 import { AuthContext } from '~/contexts/AuthContext'
-import styles from '~/css/teams/team-manager.css?inline'
 import type { Game, Team } from '~/types'
 import { Collection } from '~/types'
+import styles from '~/css/teams/team-manager.css?inline'
 
 export default component$(() => {
   useStyles$(styles)
@@ -43,7 +43,7 @@ export default component$(() => {
 
         <Resource
           value={teamsResource}
-          onPending={() => <TeamManagerSkeleton />}
+          onPending={() => <DataManagerSkeleton />}
           onRejected={(error) => <>Error: {error.message}</>}
           onResolved={(teams) => (
             <>
