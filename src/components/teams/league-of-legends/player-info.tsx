@@ -16,7 +16,9 @@ export default component$(({ player, membership }: PlayerInfo) => {
     <section class="player-info">
       <img
         class="player-info__icon"
-        src={pb.files.getUrl(membership, membership.roleIcon)}
+        src={pb.files.getUrl(membership, membership.roleIcon, {
+          thumb: '32x32',
+        })}
         alt="Role Icon"
       />
       <div class="player-info__text">

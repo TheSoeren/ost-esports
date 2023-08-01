@@ -1,0 +1,18 @@
+.gallery-manager {
+  @apply grid grid-cols-1 my-5 gap-3;
+  @apply sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+}
+
+.gallery-manager__add {
+  @apply flex justify-center items-center;
+
+  height: 100% !important;
+}
+
+.gallery-manager__title {
+  @apply line-clamp-1 text-xl font-semibold;
+}
+
+.gallery-manager__game {
+  @apply line-clamp-1;
+}
