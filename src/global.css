@@ -95,7 +95,7 @@
   }
 
   .btn-link {
-    @apply text-ost-purple font-semibold py-1 px-3 rounded h-fit transition-colors;
+    @apply text-ost-purple font-semibold py-1 px-3 rounded h-fit transition-colors cursor-pointer;
     @apply hover:bg-ost-purple/5;
     @apply disabled:text-pink-200 disabled:hover:bg-transparent;
   }

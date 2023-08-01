@@ -1,5 +1,5 @@
 import { $, component$, useContext, useVisibleTask$ } from '@builder.io/qwik'
-import { useNavigate, type DocumentHead } from '@builder.io/qwik-city'
+import { Link, useNavigate, type DocumentHead } from '@builder.io/qwik-city'
 import { reset, useForm, zodForm$ } from '@modular-forms/qwik'
 import type { ClientResponseError } from 'pocketbase'
 import { z } from 'zod'
@@ -35,6 +35,12 @@ export default component$(() => {
   const handleSubmit = $(async (values: LoginForm) => {
     try {
       await login(values.user, values.password)
+
+      enqueueSnackbar({
+        type: 'success',
+        title: 'Anmeldung erfolgreich',
+        duration: 3000,
+      })
     } catch (error: unknown) {
       const responseError = error as ClientResponseError
       const snackbar: Snackbar = {
@@ -83,13 +89,18 @@ export default component$(() => {
               />
             )}
           </Field>
-          <button
-            type="submit"
-            class="btn-outline block ml-auto"
-            disabled={loginForm.submitting || !loginForm.dirty}
-          >
-            Login
-          </button>
+          <section class="flex justify-end gap-2 items-center">
+            <Link class="btn-link" href="/register">
+              Account erstellen
+            </Link>
+            <button
+              type="submit"
+              class="btn-outline block ml-auto"
+              disabled={loginForm.submitting || !loginForm.dirty}
+            >
+              Login
+            </button>
+          </section>
         </Form>
       </section>
       {loginForm.submitting && <LoadingBackdrop />}
