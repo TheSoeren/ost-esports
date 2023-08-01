@@ -13,6 +13,7 @@ import Pocketbase, {
   ClientResponseError,
   type RecordAuthResponse,
 } from 'pocketbase'
+import type { RegisterForm } from '~/routes/public/register'
 import { Collection, type Record, type User } from '~/types'
 
 // We know user is always of type User, but somehow I can't get the typing to work
@@ -22,6 +23,7 @@ interface AuthContext {
   authenticated: Signal<boolean>
   authUser: Signal<User | null>
   pocketbase(): Promise<Pocketbase>
+  register(values: RegisterForm): Promise<Record>
   login(user: string, password: string): Promise<RecordAuthResponse<Record>>
   logout(): void
 }
@@ -85,6 +87,18 @@ export const AuthProvider = component$(() => {
     }
   })
 
+  const register = $(async (values: RegisterForm) => {
+    const qrlPb = await createPocketbase(updateAuthStore)
+
+    try {
+      const authRecord = await qrlPb.collection(Collection.USERS).create(values)
+
+      return authRecord
+    } catch (e: any) {
+      throw new ClientResponseError(e)
+    }
+  })
+
   const logout = $(async () => {
     const qrlPb = await createPocketbase(updateAuthStore)
     qrlPb.authStore.clear()
@@ -98,6 +112,7 @@ export const AuthProvider = component$(() => {
     authenticated,
     authUser,
     pocketbase,
+    register,
     login,
     logout,
   })

@@ -24,7 +24,7 @@ export default component$(({ name, coverImage, ...record }: Gallery) => {
           <span class="gallery__tile-backdrop-text">{name}</span>
         </div>
         <img
-          src={pb.files.getUrl(record, coverImage)}
+          src={pb.files.getUrl(record, coverImage, { thumb: '350x350' })}
           alt={name}
           class="gallery__tile-image"
         />
