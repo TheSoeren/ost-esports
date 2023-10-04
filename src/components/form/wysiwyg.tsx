@@ -56,7 +56,7 @@ export default component$(
     })
 
     return (
-      <div class={[error ? 'mb-3' : 'mb-6', props.class]}>
+      <div class={[error ? 'mb-3' : 'mb-6', 'prose max-w-none', props.class]}>
         <InputLabel name={name} label={label} required={required} />
         <textarea
           {...props}

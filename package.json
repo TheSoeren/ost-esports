@@ -2,7 +2,7 @@
   "name": "ost-esports",
   "description": "OST eSports website",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=17.0.0"
   },
   "private": true,
   "scripts": {
