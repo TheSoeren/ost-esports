@@ -75,7 +75,11 @@ async function leagueOfLegendsData(teams: Team[]): Promise<LoLSpecificData> {
     registeredTeams.map((plTeamId: number) =>
       fetch(`https://www.primebot.me/api/teams/${plTeamId}`)
     )
-  ).then((responses) => Promise.all(responses.map((res) => res.json())))
+  )
+    .then((responses) => Promise.all(responses.map((res) => res.json())))
+    .catch(() => {
+      return []
+    })
 
   if (plTeamList.length) {
     return { plTeamList: plTeamList.filter((plTeam) => !!plTeam.id) }
