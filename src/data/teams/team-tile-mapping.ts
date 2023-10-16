@@ -73,7 +73,7 @@ async function leagueOfLegendsData(teams: Team[]): Promise<LoLSpecificData> {
 
   const plTeamList = await Promise.all(
     registeredTeams.map((plTeamId: number) =>
-      fetch(`https://www.primebot.me/api/teams/${plTeamId}`)
+      fetch(`https://primebot.me/api/teams/${plTeamId}`)
     )
   )
     .then((responses) => Promise.all(responses.map((res) => res.json())))
