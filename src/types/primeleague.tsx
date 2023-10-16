@@ -1,5 +1,5 @@
 /*
- * Types to cover api responses of https://www.primebot.me/api/#/
+ * Types to cover api responses of https://primebot.me/api/#/
  */
 
 export interface PlListResult<T> {
