@@ -1,9 +1,9 @@
 import { component$ } from '@builder.io/qwik'
-import type { DocumentHead } from '@builder.io/qwik-city'
 
 export default component$(() => {
   return (
-    <section class="container mx-auto mt-14 flex flex-col gap-4">
+    <article class="container mx-auto flex flex-col gap-4 my-3">
+      <h1 class="text-2xl font-bold">Wir sind Ost eSports</h1>
       <p>
         Wir sind der Gaming Club der Ostschweizer Fachhochschule. Bei uns wird
         mit Leidenschaft Videospiele gespielt und sich darüber ausgetauscht.
@@ -14,20 +14,21 @@ export default component$(() => {
         mit unseren kompetitiven Teams in den entsprechenden Ligen.
       </p>
       <p>
-        Hast du lust ein Teil unseres Clubs zu sein? Dann tritt unserem Discord
+        Hast du lust ein Teil unseres Clubs zu sein? Dann tritt unserem&nbsp;
+        <a
+          href="https://discord.gg/UAWGz7gg5A"
+          target="_blank"
+          class="text-blue-600 dark:text-blue-500 hover:underline"
+        >
+          Discord
+          <img
+            src="/discord.webp"
+            alt="join discord"
+            class="inline-block w-5 ml-1 mr-2"
+          />
+        </a>
         bei!
       </p>
-      <a
-        href="https://discord.gg/UAWGz7gg5A"
-        target="_blank"
-        class="block mx-auto mt-2 md:mt-8 mb-8 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6"
-      >
-        <img src="/join_discord.svg" alt="join discord" />
-      </a>
-    </section>
+    </article>
   )
 })
-
-export const head: DocumentHead = {
-  title: 'OST eSports - Mitmachen',
-}
