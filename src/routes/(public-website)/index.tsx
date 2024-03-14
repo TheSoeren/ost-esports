@@ -18,6 +18,7 @@ import {
   isLeagueOfLegendsData,
 } from '~/data/teams/team-tile-mapping'
 import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
+import ClubSummary from '~/components/club-summary'
 
 interface UseTeamFetchingResponse {
   teams: Team[]
@@ -62,16 +63,14 @@ export default component$(() => {
 
     if (isLeagueOfLegendsData(data)) {
       return (
-        <div class="match-section">
+        <section class="match-section">
           {data.plTeamList.map((plTeam) => (
-            <>
-              <div key={plTeam.id} class="tile match-section__tile">
-                <h2 class="text-2xl mb-4">Spiele von {plTeam.name}</h2>
-                <PlMatchList matches={plTeam.matches} />
-              </div>
-            </>
+            <div key={plTeam.id} class="tile match-section__tile">
+              <h2 class="text-2xl mb-4">Spiele von {plTeam.name}</h2>
+              <PlMatchList matches={plTeam.matches} />
+            </div>
           ))}
-        </div>
+        </section>
       )
     }
 
@@ -80,13 +79,14 @@ export default component$(() => {
 
   return (
     <article class="home-page">
+      <ClubSummary />
       <Resource
         value={newsResource}
         onPending={() => <NewsTileSkeleton />}
         onRejected={(error) => <>Error: {error.message}</>}
         onResolved={(news) => <NewsTile {...news} />}
       />
-      {renderMatchSection()}
+      <div>{renderMatchSection()}</div>
     </article>
   )
 })

@@ -65,7 +65,7 @@ export default component$(() => {
           aria-label="Additional Links"
         >
           <a href="https://discord.gg/UAWGz7gg5A" target="_blank" class="block">
-            <img src="/join_discord.svg" alt="join discord" />
+            <img src="/discord-wide.svg" alt="join discord" />
           </a>
         </div>
         <nav
