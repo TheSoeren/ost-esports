@@ -1,8 +1,8 @@
 import {
-  Resource,
-  component$,
-  useResource$,
-  useStylesScoped$,
+        Resource,
+        component$,
+        useResource$,
+        useStylesScoped$,
 } from '@builder.io/qwik'
 import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
 import NewsTile from '~/components/news/news-tile'
@@ -14,15 +14,15 @@ import usePocketbase from '~/hooks/usePocketbase'
 import PocketBase from 'pocketbase'
 import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
 import {
-  getGameSpecificData,
-  isLeagueOfLegendsData,
+        getGameSpecificData,
+        isLeagueOfLegendsData,
 } from '~/data/teams/team-tile-mapping'
 import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
 import ClubSummary from '~/components/club-summary'
 
 interface UseTeamFetchingResponse {
-  teams: Team[]
-  gameSpecificData: ResolvedGameSpecificData
+        teams: Team[]
+        gameSpecificData: ResolvedGameSpecificData
 }
 
 /*
@@ -30,67 +30,72 @@ interface UseTeamFetchingResponse {
  * remember to add a condition to the rendering of <PlMatchList/>.
  */
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
-  const pb = new PocketBase(import.meta.env.VITE_API_URL)
+        const pb = new PocketBase(import.meta.env.VITE_API_URL)
 
-  const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
-    filter: `game="${LEAGUE_OF_LEGENDS}"`,
-    expand: 'membership(team).user',
-    $cancelKey: LEAGUE_OF_LEGENDS,
-  })
+        const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
+                filter: `game="${LEAGUE_OF_LEGENDS}"`,
+                expand: 'membership(team).user',
+                $cancelKey: LEAGUE_OF_LEGENDS,
+        })
 
-  const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
+        const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
 
-  return structuredClone({ teams, gameSpecificData })
+        return structuredClone({ teams, gameSpecificData })
 })
 
 export default component$(() => {
-  useStylesScoped$(styles)
-  const pb = usePocketbase()
+        useStylesScoped$(styles)
+        const pb = usePocketbase()
 
-  const teamResource = useTeamData()
-  const newsResource = useResource$<NewsEntry>(async () => {
-    const response = await pb
-      .collection(Collection.NEWS)
-      .getFirstListItem<NewsEntry>('', {
-        sort: '-publishDate',
-      })
+        const teamResource = useTeamData()
+        const newsResource = useResource$<NewsEntry>(async () => {
+                const response = await pb
+                        .collection(Collection.NEWS)
+                        .getFirstListItem<NewsEntry>('', {
+                                sort: '-publishDate',
+                        })
 
-    return structuredClone(response)
-  })
+                return structuredClone(response)
+        })
 
-  const renderMatchSection = () => {
-    const data = teamResource.value.gameSpecificData
+        const renderMatchSection = () => {
+                const data = teamResource.value.gameSpecificData
 
-    if (isLeagueOfLegendsData(data)) {
-      return (
-        <section class="match-section">
-          {data.plTeamList.map((plTeam) => (
-            <div key={plTeam.id} class="tile match-section__tile">
-              <h2 class="text-2xl mb-4">Spiele von {plTeam.name}</h2>
-              <PlMatchList matches={plTeam.matches} />
-            </div>
-          ))}
-        </section>
-      )
-    }
+                if (isLeagueOfLegendsData(data)) {
+                        const teamsWithMatches = data.plTeamList.filter(plTeam => plTeam.matches.length > 0)
+                        if (teamsWithMatches.length <= 0) {
+                                return null
+                        }
 
-    return null
-  }
+                        return (
+                                <section class="match-section">
+                                        {teamsWithMatches.map((plTeam) => (
+                                                <div key={plTeam.id} class="tile match-section__tile">
+                                                        <h2 class="text-2xl mb-4">Spiele von {plTeam.name}</h2>
+                                                        <PlMatchList matches={plTeam.matches} />
+                                                </div>
+                                        ))}
+                                </section>
+                        )
+                }
 
-  return (
-    <article class="home-page">
-      <ClubSummary />
-      <Resource
-        value={newsResource}
-        onPending={() => <NewsTileSkeleton />}
-        onRejected={(error) => <>Error: {error.message}</>}
-        onResolved={(news) => <NewsTile {...news} />}
-      />
-      <div>{renderMatchSection()}</div>
-    </article>
-  )
+                return null
+        }
+
+        return (
+                <article class="home-page">
+                        <ClubSummary />
+                        <Resource
+                                value={newsResource}
+                                onPending={() => <NewsTileSkeleton />}
+                                onRejected={(error) => <>Error: {error.message}</>}
+                                onResolved={(news) => <NewsTile {...news} />}
+                        />
+                        <div>{renderMatchSection()}</div>
+                </article>
+        )
 })
 
 export const head: DocumentHead = {
-  title: 'OST eSports',
+        title: 'OST eSports',
 }
