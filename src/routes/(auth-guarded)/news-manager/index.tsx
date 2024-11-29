@@ -14,17 +14,17 @@ import type { NewsEntry } from '~/types'
 import { Collection } from '~/types'
 import styles from '~/css/news/news-manager.css?inline'
 import dayjs from 'dayjs'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
   useStyles$(styles)
-  const { pocketbase, authenticated, authUser } = useContext(AuthContext)
+  const { authenticated, authUser } = useContext(AuthContext)
 
   const newsResource = useResource$<NewsEntry[]>(async ({ track }) => {
     track(() => authenticated.value)
-    const qrlPb = await pocketbase()
     if (!authUser.value) return []
 
-    const response: NewsEntry[] = await qrlPb
+    const response: NewsEntry[] = await pb
       .collection(Collection.NEWS)
       .getFullList({
         filter: `author="${authUser.value.id}"`,

@@ -9,11 +9,10 @@ import styles from '~/css/games/index.css?inline'
 import { Collection, type Game } from '~/types'
 import { type DocumentHead } from '@builder.io/qwik-city'
 import GameTileSkeleton from '~/components/games/game-tile-skeleton'
-import usePocketbase from '~/hooks/use-pocketbase'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
 
   const gamesResource = useResource$<Game[]>(async () => {
     const response: Game[] = await pb.collection(Collection.GAMES).getFullList({

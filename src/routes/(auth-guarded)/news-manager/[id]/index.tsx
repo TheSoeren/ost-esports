@@ -9,10 +9,9 @@ import type { FormStore } from '@modular-forms/qwik'
 import { reset } from '@modular-forms/qwik'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
+import pb from '~/services/pocketbase'
 
 export const useNewsEntry = routeLoader$<NewsEntry>(async (event) => {
-  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
-
   const news = await pb
     .collection(Collection.NEWS)
     .getOne<NewsEntry>(event.params.id)
@@ -28,14 +27,11 @@ export default component$(() => {
 
   const handleSubmit$ = $(
     async (values: NewsFormSchema, form: FormStore<any, undefined>) => {
-      const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
       try {
         if (!authUser.value) {
           throw new Error('Not authenticated!')
         }
-        await qrlPb
-          .collection(Collection.NEWS)
-          .update(newsEntry.value.id, values)
+        await pb.collection(Collection.NEWS).update(newsEntry.value.id, values)
         enqueueSnackbar({
           type: 'success',
           title: 'Newsartikel erfolgreich aktualisiert',
@@ -55,12 +51,11 @@ export default component$(() => {
   )
 
   const handleDelete$ = $(async () => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
     try {
       if (!authUser.value) {
         throw new Error('Not authenticated!')
       }
-      await qrlPb.collection(Collection.NEWS).delete(newsEntry.value.id)
+      await pb.collection(Collection.NEWS).delete(newsEntry.value.id)
       enqueueSnackbar({
         type: 'success',
         title: 'Newsartikel erfolgreich gelöscht',

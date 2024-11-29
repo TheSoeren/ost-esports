@@ -13,22 +13,20 @@ import { AuthContext } from '~/contexts/auth-context'
 import type { Game, Team } from '~/types'
 import { Collection } from '~/types'
 import styles from '~/css/teams/team-manager.css?inline'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
   useStyles$(styles)
-  const { pocketbase, authenticated, authUser } = useContext(AuthContext)
+  const { authenticated, authUser } = useContext(AuthContext)
 
   const teamsResource = useResource$<Team[]>(async ({ track }) => {
     track(() => authenticated.value)
-    const qrlPb = await pocketbase()
     if (!authUser.value) return []
 
-    const response: Team[] = await qrlPb
-      .collection(Collection.TEAMS)
-      .getFullList({
-        filter: `captain="${authUser.value.id}"`,
-        expand: 'game',
-      })
+    const response: Team[] = await pb.collection(Collection.TEAMS).getFullList({
+      filter: `captain="${authUser.value.id}"`,
+      expand: 'game',
+    })
 
     return structuredClone(response)
   })

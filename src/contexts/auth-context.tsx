@@ -1,4 +1,4 @@
-import type { QRL, Signal } from '@builder.io/qwik'
+import type { Signal } from '@builder.io/qwik'
 import {
   $,
   Slot,
@@ -9,20 +9,15 @@ import {
   useSignal,
   useVisibleTask$,
 } from '@builder.io/qwik'
-import Pocketbase, {
-  ClientResponseError,
-  type RecordAuthResponse,
-} from 'pocketbase'
+import { ClientResponseError, type RecordAuthResponse } from 'pocketbase'
 import type { RegisterForm } from '~/routes/public/register'
-import { Collection, type Record, type User } from '~/types'
-
-// We know user is always of type User, but somehow I can't get the typing to work
-type OnChangeFunc = (token: string, user: unknown) => void
+import pb from '~/services/pocketbase'
+import { login, register } from '~/services/user-service'
+import { type Record, type User } from '~/types'
 
 interface AuthContext {
   authenticated: Signal<boolean>
   authUser: Signal<User | null>
-  pocketbase(): Promise<Pocketbase>
   register(values: RegisterForm): Promise<Record>
   login(user: string, password: string): Promise<RecordAuthResponse<Record>>
   logout(): void
@@ -44,76 +39,43 @@ export const isUserObject = (
 
 export const AuthContext = createContextId<AuthContext>('auth-context')
 
-export const createPocketbase = $((onChangeHandler?: QRL<OnChangeFunc>) => {
-  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
-
-  if (onChangeHandler) {
-    pb.authStore.onChange(onChangeHandler)
-  }
-
-  noSerialize(pb)
-  return pb
-})
-
 export const AuthProvider = component$(() => {
   const authenticated = useSignal<boolean>(false)
   const authUser = useSignal<User | null>(null)
 
-  const updateAuthStore = $((token: string, user: User) => {
-    authenticated.value = !!token
-    noSerialize(user)
-    authUser.value = user
-  }) as QRL<OnChangeFunc>
-
   useVisibleTask$(async () => {
-    const qrlPb = await createPocketbase(updateAuthStore)
-    authenticated.value = qrlPb.authStore.isValid
-    const temp = qrlPb.authStore?.model as Record as User
+    // TODO: Figure out if `authenticated` can be used more instead of `authUser.value`
+    authenticated.value = pb.authStore.isValid
+    const temp = pb.authStore?.model as Record as User
     noSerialize(temp)
     authUser.value = temp ?? null
   })
 
-  const login = $(async (user: string, password: string) => {
-    const qrlPb = await createPocketbase(updateAuthStore)
-
+  const handleLogin = $(async (user: string, password: string) => {
     try {
-      const authRecord = await qrlPb
-        .collection(Collection.USERS)
-        .authWithPassword(user, password)
-
-      return authRecord
-    } catch (e: any) {
+      return login(user, password)
+    } catch (e) {
       throw new ClientResponseError(e)
     }
   })
 
-  const register = $(async (values: RegisterForm) => {
-    const qrlPb = await createPocketbase(updateAuthStore)
-
+  const handleRegistration = $(async (values: RegisterForm) => {
     try {
-      const authRecord = await qrlPb.collection(Collection.USERS).create(values)
-
-      return authRecord
-    } catch (e: any) {
+      return register(values)
+    } catch (e) {
       throw new ClientResponseError(e)
     }
   })
 
   const logout = $(async () => {
-    const qrlPb = await createPocketbase(updateAuthStore)
-    qrlPb.authStore.clear()
-  })
-
-  const pocketbase = $(async () => {
-    return await createPocketbase(updateAuthStore)
+    pb.authStore.clear()
   })
 
   useContextProvider(AuthContext, {
     authenticated,
     authUser,
-    pocketbase,
-    register,
-    login,
+    register: handleRegistration,
+    login: handleLogin,
     logout,
   })
 

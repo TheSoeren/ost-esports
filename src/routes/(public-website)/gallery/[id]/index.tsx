@@ -1,14 +1,12 @@
 import { component$, useSignal, useStylesScoped$ } from '@builder.io/qwik'
 import { routeLoader$ } from '@builder.io/qwik-city'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
-import Pocketbase from 'pocketbase'
 import BackButton from '~/components/elements/back-button'
 import IconButton from '~/components/elements/icon-button'
 import Modal from '~/components/elements/modal'
 import styles from '~/css/gallery/gallery-images.css?inline'
-import usePocketbase from '~/hooks/use-pocketbase'
-import type { Gallery } from '~/types'
-import { Collection } from '~/types'
+import { getGalleryById } from '~/services/gallery-service'
+import pb from '~/services/pocketbase'
 
 export function circularSubtract(value: number, length: number) {
   return (value + length - 1) % length
@@ -18,19 +16,13 @@ export function circularAdd(value: number, length: number) {
   return (value + 1) % length
 }
 
-export const useGallery = routeLoader$<Gallery>(async (event) => {
-  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
-
-  const galleries = await pb
-    .collection(Collection.GALLERIES)
-    .getOne<Gallery>(event.params.id)
-
+export const useGallery = routeLoader$(async (event) => {
+  const galleries = await getGalleryById(event.params.id)
   return structuredClone(galleries)
 })
 
 export default component$(() => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
   const {
     value: { images, ...galleryObject },
   } = useGallery()

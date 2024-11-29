@@ -1,7 +1,7 @@
 import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import type { Membership, User } from '~/types'
 import styles from '~/css/teams/player-info.css?inline'
-import usePocketbase from '~/hooks/use-pocketbase'
+import pb from '~/services/pocketbase'
 
 interface PlayerInfo {
   membership: Membership
@@ -10,7 +10,6 @@ interface PlayerInfo {
 
 export default component$(({ player, membership }: PlayerInfo) => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
 
   return (
     <section class="player-info">

@@ -1,11 +1,11 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import type { TeamFormSchema } from '~/components/teams/form/team-form'
 import TeamForm from '~/components/teams/form/team-form'
-import Pocketbase from 'pocketbase'
 import { AuthContext } from '~/contexts/auth-context'
 import { Collection } from '~/types'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
   const { authUser } = useContext(AuthContext)
@@ -13,14 +13,12 @@ export default component$(() => {
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: TeamFormSchema) => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
       if (!authUser.value) {
         throw new Error('Not authenticated!')
       }
 
-      const team = await qrlPb.collection(Collection.TEAMS).create({
+      const team = await pb.collection(Collection.TEAMS).create({
         ...values,
         captain: authUser.value.id,
       })

@@ -11,24 +11,20 @@ import { FaIcon } from 'qwik-fontawesome'
 import DataManagerSkeleton from '~/components/elements/data-manager-skeleton'
 import { AuthContext } from '~/contexts/auth-context'
 import type { Gallery } from '~/types'
-import { Collection } from '~/types'
 import styles from '~/css/gallery/gallery-manager.css?inline'
+import { getGalleriesByCreator } from '~/services/gallery-service'
 
 export default component$(() => {
   useStyles$(styles)
-  const { pocketbase, authenticated, authUser } = useContext(AuthContext)
+  const { authenticated, authUser } = useContext(AuthContext)
 
   const galleryResource = useResource$<Gallery[]>(async ({ track }) => {
     track(() => authenticated.value)
-    const qrlPb = await pocketbase()
-    if (!authUser.value) return []
+    if (!authUser.value) {
+      return []
+    }
 
-    const response: Gallery[] = await qrlPb
-      .collection(Collection.GALLERIES)
-      .getFullList({
-        filter: `creator="${authUser.value.id}"`,
-      })
-
+    const response = await getGalleriesByCreator(authUser.value.id)
     return structuredClone(response)
   })
 

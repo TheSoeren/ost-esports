@@ -5,27 +5,19 @@ import {
   useStylesScoped$,
 } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-import type { ListResult } from 'pocketbase'
-import type { Gallery } from '~/types/gallery'
 import styles from '~/css/gallery/index.css?inline'
 import GalleryTile from '~/components/gallery/gallery-tile'
 import GalleryTileSkeleton from '~/components/gallery/gallery-tile-skeleton'
-import usePocketbase from '~/hooks/use-pocketbase'
 import usePagination from '~/hooks/use-pagination'
 import Pagination from '~/components/elements/pagination'
-import { Collection } from '~/types'
+import { getGalleries } from '~/services/gallery-service'
 
 export default component$(() => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
   const pagination = usePagination(1, 30)
 
-  const teamsResource = useResource$<ListResult<Gallery>>(async () => {
-    const response = await pb
-      .collection(Collection.GALLERIES)
-      .getList<Gallery>(pagination.page.value, pagination.perPage.value, {
-        filter: 'hidden=false',
-      })
+  const galleriesResource = useResource$(async () => {
+    const response = await getGalleries(pagination)
     pagination.setTotalPages$(response.totalPages)
 
     return structuredClone(response)
@@ -35,7 +27,7 @@ export default component$(() => {
     <article>
       <Pagination {...pagination} />
       <Resource
-        value={teamsResource}
+        value={galleriesResource}
         onPending={() => <GalleryTileSkeleton />}
         onResolved={(galleries) => (
           <div class="gallery__container">

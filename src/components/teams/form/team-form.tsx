@@ -11,12 +11,13 @@ import type { FormStore } from '@modular-forms/qwik'
 import { getValue, useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
 import { getGameSpecificForm } from '~/data/games/game-form-mapping'
-import usePocketbase from '~/hooks/use-pocketbase'
 import type { Game, GameSpecificForm, Team, User } from '~/types'
 import { Collection } from '~/types'
 import { Checkbox, Select, TextInput } from '../../form'
 import type { SelectValue } from '../../form/select'
 import EmptyGameForm from './empty-game-form'
+import pb from '~/services/pocketbase'
+import { getUsers } from '~/services/user-service'
 
 export const teamSchema = z.object({
   name: z.string().min(1, 'Teamname darf nicht leer sein!'),
@@ -45,7 +46,6 @@ interface TeamFormProps {
 
 export default component$(
   ({ team, edit, onSubmit$, onDelete$ }: TeamFormProps) => {
-    const pb = usePocketbase()
     const gameSpecificForm = useStore<SubformObject>({
       element: EmptyGameForm,
     })
@@ -63,9 +63,7 @@ export default component$(
     const usersResource = useResource$<SelectValue[]>(async () => {
       if (!edit) return []
 
-      const response: User[] = await pb
-        .collection(Collection.USERS)
-        .getFullList()
+      const response = await getUsers()
 
       return response.map((user) => ({
         label: user.gamertag ? user.gamertag : user.username,

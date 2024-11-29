@@ -12,11 +12,10 @@ import Pagination from '~/components/elements/pagination'
 import usePagination from '~/hooks/use-pagination'
 import type { ListResult } from 'pocketbase'
 import NewsListSkeleton from '~/components/news/news-list-skeleton'
-import usePocketbase from '~/hooks/use-pocketbase'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
 
   const pagination = usePagination(1, 30)
   const newsResource = useResource$<ListResult<NewsEntry>>(

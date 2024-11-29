@@ -12,7 +12,7 @@ import {
 } from '~/data/teams/team-tile-mapping'
 import BackButton from '~/components/elements/back-button'
 import { Collection, type Team } from '~/types'
-import PocketBase from 'pocketbase'
+import pb from '~/services/pocketbase'
 
 interface UseTeamFetchingResponse {
   teams: Team[]
@@ -21,8 +21,6 @@ interface UseTeamFetchingResponse {
 
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(
   async (requestEvent) => {
-    const pb = new PocketBase(import.meta.env.VITE_API_URL)
-
     const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
       filter: `game="${requestEvent.params.id}" && hidden=false`,
       expand: 'membership(team).user',

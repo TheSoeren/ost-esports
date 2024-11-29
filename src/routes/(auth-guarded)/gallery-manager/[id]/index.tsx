@@ -1,24 +1,28 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import { routeLoader$, useNavigate } from '@builder.io/qwik-city'
-import Pocketbase from 'pocketbase'
 import GalleryForm from '~/components/gallery/gallery-form'
 import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
+import pb from '~/services/pocketbase'
+import {
+  deleteGalleryById,
+  getGalleryById,
+  updateGalleryById,
+} from '~/services/gallery-service'
 import type { Gallery } from '~/types'
-import { Collection } from '~/types'
 
-export const useGallery = routeLoader$<Gallery>(async (event) => {
-  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
-
-  const gallery = await pb
-    .collection(Collection.GALLERIES)
-    .getOne<Gallery>(event.params.id)
+export const useGallery = routeLoader$(async (event) => {
+  const gallery = await getGalleryById(event.params.id)
+  // TODO: WHY DOES THIS NOT WORK?
+  // gallery.coverImage = pb.getFileUrl(gallery, gallery.coverImage)
+  // gallery.images = gallery.images.map((image) => pb.getFileUrl(gallery, image))
+  // return gallery
 
   return {
     ...gallery,
     coverImage: pb.getFileUrl(gallery, gallery.coverImage),
     images: gallery.images.map((image) => pb.getFileUrl(gallery, image)),
-  }
+  } as Gallery
 })
 
 export default component$(() => {
@@ -28,24 +32,21 @@ export default component$(() => {
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: FormData) => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
       if (!authUser.value) {
         throw new Error('Not authenticated!')
       }
 
+      // TODO: Images are not handled gracefully! Refactor this some day.
       const hasNewImages = !!values.get('images')
       if (hasNewImages) {
         // Delete all existing images before uploading new ones
-        await qrlPb
-          .collection(Collection.GALLERIES)
-          .update(gallery.value.id, { images: null })
+        await updateGalleryById(gallery.value.id, {
+          images: undefined,
+        } as unknown as FormData)
       }
 
-      await qrlPb
-        .collection(Collection.GALLERIES)
-        .update(gallery.value.id, values)
+      await updateGalleryById(gallery.value.id, values)
 
       enqueueSnackbar({
         type: 'success',
@@ -64,14 +65,12 @@ export default component$(() => {
   })
 
   const handleDelete$ = $(async () => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
       if (!authUser.value) {
         throw new Error('Not authenticated!')
       }
 
-      await qrlPb.collection(Collection.GALLERIES).delete(gallery.value.id)
+      await deleteGalleryById(gallery.value.id)
 
       enqueueSnackbar({
         type: 'success',

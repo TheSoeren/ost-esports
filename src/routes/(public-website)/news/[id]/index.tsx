@@ -9,11 +9,10 @@ import BackButton from '~/components/elements/back-button'
 import { Collection, type NewsEntry } from '~/types'
 import styles from '~/css/news/news-detail.css?inline'
 import NewsEntrySkeleton from '~/components/news/news-entry-skeleton'
-import usePocketbase from '~/hooks/use-pocketbase'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
   useStyles$(styles)
-  const pb = usePocketbase()
 
   const { params } = useLocation()
   const newsResource = useResource$<NewsEntry>(async () => {

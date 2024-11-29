@@ -1,17 +1,17 @@
 import { $, component$, useContext, useTask$ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { reset, setValues, useForm, zodForm$ } from '@modular-forms/qwik'
-import Pocketbase from 'pocketbase'
 import { z } from 'zod'
 import { TextInput } from '~/components/form'
 import { AuthContext, isUserObject } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
-import { Collection, type User } from '~/types'
+import { updateUser } from '~/services/user-service'
+import { type User } from '~/types'
 
 export const profileSchema = z.object({
   gamertag: z.string().min(1),
 })
-type ProfileForm = z.infer<typeof profileSchema>
+export type ProfileForm = z.infer<typeof profileSchema>
 
 export const userToProfileForm = (user: User): ProfileForm => {
   return { gamertag: user.gamertag || '' }
@@ -44,13 +44,10 @@ export default component$(() => {
   })
 
   const handleSubmit = $(async (values: ProfileForm) => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
     if (!authUser.value) return
 
     try {
-      await qrlPb
-        .collection(Collection.USERS)
-        .update<User>(authUser.value.id, values)
+      await updateUser(authUser.value.id, values)
 
       enqueueSnackbar({
         type: 'success',

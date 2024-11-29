@@ -1,11 +1,11 @@
 import { $, component$, useContext } from '@builder.io/qwik'
-import Pocketbase from 'pocketbase'
 import { AuthContext } from '~/contexts/auth-context'
 import { Collection } from '~/types'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
   const { authUser } = useContext(AuthContext)
@@ -13,14 +13,12 @@ export default component$(() => {
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: NewsFormSchema) => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
       if (!authUser.value) {
         throw new Error('Not authenticated!')
       }
 
-      const newsEntry = await qrlPb.collection(Collection.NEWS).create({
+      const newsEntry = await pb.collection(Collection.NEWS).create({
         ...values,
         author: authUser.value.id,
       })

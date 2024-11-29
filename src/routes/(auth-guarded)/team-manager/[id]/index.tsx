@@ -8,10 +8,9 @@ import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import type { FormStore } from '@modular-forms/qwik'
 import { reset } from '@modular-forms/qwik'
+import pb from '~/services/pocketbase'
 
 export const useTeam = routeLoader$<Team>(async (event) => {
-  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
-
   const teams = await pb
     .collection(Collection.TEAMS)
     .getOne<Team>(event.params.id)
@@ -27,14 +26,12 @@ export default component$(() => {
 
   const handleSubmit$ = $(
     async (values: TeamFormSchema, form: FormStore<any, undefined>) => {
-      const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
       try {
         if (!authUser.value) {
           throw new Error('Not authenticated!')
         }
 
-        await qrlPb.collection(Collection.TEAMS).update(team.value.id, values)
+        await pb.collection(Collection.TEAMS).update(team.value.id, values)
 
         enqueueSnackbar({
           type: 'success',
@@ -55,14 +52,12 @@ export default component$(() => {
   )
 
   const handleDelete$ = $(async () => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
       if (!authUser.value) {
         throw new Error('Not authenticated!')
       }
 
-      await qrlPb.collection(Collection.TEAMS).delete(team.value.id)
+      await pb.collection(Collection.TEAMS).delete(team.value.id)
 
       enqueueSnackbar({
         type: 'success',

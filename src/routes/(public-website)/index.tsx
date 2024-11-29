@@ -10,8 +10,6 @@ import NewsTileSkeleton from '~/components/news/news-tile-skeleton'
 import PlMatchList from '~/components/teams/league-of-legends/pl-match-list'
 import { Collection, type NewsEntry, type Team } from '~/types'
 import styles from '~/css/index.css?inline'
-import usePocketbase from '~/hooks/use-pocketbase'
-import PocketBase from 'pocketbase'
 import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
 import {
   getGameSpecificData,
@@ -19,6 +17,7 @@ import {
 } from '~/data/teams/team-tile-mapping'
 import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
 import ClubSummary from '~/components/club-summary'
+import pb from '~/services/pocketbase'
 
 interface UseTeamFetchingResponse {
   teams: Team[]
@@ -30,8 +29,6 @@ interface UseTeamFetchingResponse {
  * remember to add a condition to the rendering of <PlMatchList/>.
  */
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
-  const pb = new PocketBase(import.meta.env.VITE_API_URL)
-
   const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
     filter: `game="${LEAGUE_OF_LEGENDS}"`,
     expand: 'membership(team).user',
@@ -45,7 +42,6 @@ export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
 
 export default component$(() => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
 
   const teamResource = useTeamData()
   const newsResource = useResource$<NewsEntry>(async () => {
