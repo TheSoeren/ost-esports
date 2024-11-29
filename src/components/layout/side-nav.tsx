@@ -93,7 +93,7 @@ export default component$(() => {
       <aside class="side-nav">
         <div class="side-nav__content">
           <Link href="/" aria-label="Site Overview" class="self-center mb-5">
-            <ImgLogoWide alt="OST ESports Logo" class="h-14" />
+            <ImgLogoWide alt="OST ESports Logo" class="h-14 w-auto" />
           </Link>
           {navItems.map((item, index) => (
             <Link

@@ -13,7 +13,7 @@ import styles from '~/css/layout/main-nav.css?inline'
 import useClickOutside from '~/hooks/use-click-outside'
 import type { NavItem } from '~/types/navigation'
 import ImgLogoWide from '~/media/logo_wide.webp?jsx'
-import ImgDiscordWide from '~/media/discord_wide.webp?jsx'
+import ImgDiscordWide from '~/media/discord_wide.svg?jsx'
 
 export const navItems: NavItem[] = [
   { label: 'News', href: '/news' },
@@ -50,7 +50,7 @@ export default component$(() => {
     <section class="main-nav" ref={navRef}>
       <div class="brand-container">
         <Link href="/" aria-label="Site Overview" class="shrink-0">
-          <ImgLogoWide alt="OST ESports Logo" class="logo h-14" />
+          <ImgLogoWide alt="OST ESports Logo" class="logo h-14 w-auto" />
         </Link>
         <button
           class="menu-toggle"
