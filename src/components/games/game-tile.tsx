@@ -20,7 +20,7 @@ export default component$(({ image, name, ...record }: Game) => {
         class="absolute top-0 left-0 h-full w-full rounded"
       >
         <img
-          src={pb.files.getUrl(record, image, { thumb: '350x350' })}
+          src={pb.files.getUrl(record, image)}
           alt={name}
           class="games__tile-image"
         />

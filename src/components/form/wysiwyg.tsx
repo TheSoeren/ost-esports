@@ -1,4 +1,4 @@
-import type { PropFunction, QwikFocusEvent } from '@builder.io/qwik'
+import type { PropFunction } from '@builder.io/qwik'
 import { component$, useVisibleTask$ } from '@builder.io/qwik'
 import InputLabel from './input-label'
 import InputError from './input-error'
@@ -11,12 +11,7 @@ interface WysiwygProps {
   value: string | undefined
   onInput$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
   onChange$: PropFunction<(data: string) => void>
-  onBlur$: PropFunction<
-    (
-      event: QwikFocusEvent<HTMLTextAreaElement>,
-      element: HTMLTextAreaElement
-    ) => void
-  >
+  onBlur$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
   placeholder?: string
   required?: boolean
   class?: string

@@ -11,10 +11,9 @@ import { FaIcon } from 'qwik-fontawesome'
 import DataManagerSkeleton from '~/components/elements/data-manager-skeleton'
 import { AuthContext } from '~/contexts/auth-context'
 import type { NewsEntry } from '~/types'
-import { Collection } from '~/types'
 import styles from '~/css/news/news-manager.css?inline'
 import dayjs from 'dayjs'
-import pb from '~/services/pocketbase'
+import { getNewsByAuthor } from '~/services/news-service'
 
 export default component$(() => {
   useStyles$(styles)
@@ -22,15 +21,11 @@ export default component$(() => {
 
   const newsResource = useResource$<NewsEntry[]>(async ({ track }) => {
     track(() => authenticated.value)
-    if (!authUser.value) return []
+    if (!authUser.value) {
+      return []
+    }
 
-    const response: NewsEntry[] = await pb
-      .collection(Collection.NEWS)
-      .getFullList({
-        filter: `author="${authUser.value.id}"`,
-        sort: '-publishDate',
-      })
-
+    const response = await getNewsByAuthor(authUser.value.id)
     return structuredClone(response)
   })
 

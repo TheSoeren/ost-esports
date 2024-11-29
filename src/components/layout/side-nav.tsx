@@ -17,6 +17,7 @@ import { AuthContext, isUserObject } from '~/contexts/auth-context'
 import styles from '~/css/layout/side-nav.css?inline'
 import type { UserRole } from '~/types'
 import type { SideNavItem } from '~/types/navigation'
+import ImgLogoWide from '~/media/logo_wide.webp?jsx'
 
 export const basicNavItems = [
   { label: 'Profil', href: '/profile', icon: faUser },
@@ -92,7 +93,7 @@ export default component$(() => {
       <aside class="side-nav">
         <div class="side-nav__content">
           <Link href="/" aria-label="Site Overview" class="self-center mb-5">
-            <img src="/logo_wide.webp" alt="OST ESports Logo" class="h-14" />
+            <ImgLogoWide alt="OST ESports Logo" class="h-14" />
           </Link>
           {navItems.map((item, index) => (
             <Link

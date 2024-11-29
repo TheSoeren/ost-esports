@@ -8,7 +8,10 @@ export default component$(({ id }: ModalProps) => {
   const modalRef = useSignal<HTMLElement>()
 
   useVisibleTask$(() => () => {
-    if (!modalRef.value) return
+    if (!modalRef.value) {
+      return
+    }
+
     window.HSOverlay.close(modalRef.value)
   })
 

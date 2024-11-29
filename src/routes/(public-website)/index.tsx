@@ -8,7 +8,7 @@ import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
 import NewsTile from '~/components/news/news-tile'
 import NewsTileSkeleton from '~/components/news/news-tile-skeleton'
 import PlMatchList from '~/components/teams/league-of-legends/pl-match-list'
-import { Collection, type NewsEntry, type Team } from '~/types'
+import { type NewsEntry, type Team } from '~/types'
 import styles from '~/css/index.css?inline'
 import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
 import {
@@ -17,7 +17,8 @@ import {
 } from '~/data/teams/team-tile-mapping'
 import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
 import ClubSummary from '~/components/club-summary'
-import pb from '~/services/pocketbase'
+import { getLolTeams } from '~/services/team-service'
+import { getLatestNewsEntry } from '~/services/news-service'
 
 interface UseTeamFetchingResponse {
   teams: Team[]
@@ -25,16 +26,11 @@ interface UseTeamFetchingResponse {
 }
 
 /*
- * If you generalize this to fetch game specific data about all teams (not only lol)
+ * If you generalize this to fetch game specific data about all teams (not only LoL)
  * remember to add a condition to the rendering of <PlMatchList/>.
  */
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
-  const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
-    filter: `game="${LEAGUE_OF_LEGENDS}"`,
-    expand: 'membership(team).user',
-    $cancelKey: LEAGUE_OF_LEGENDS,
-  })
-
+  const teams = await getLolTeams()
   const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
 
   return structuredClone({ teams, gameSpecificData })
@@ -45,12 +41,7 @@ export default component$(() => {
 
   const teamResource = useTeamData()
   const newsResource = useResource$<NewsEntry>(async () => {
-    const response = await pb
-      .collection(Collection.NEWS)
-      .getFirstListItem<NewsEntry>('', {
-        sort: '-publishDate',
-      })
-
+    const response = await getLatestNewsEntry()
     return structuredClone(response)
   })
 

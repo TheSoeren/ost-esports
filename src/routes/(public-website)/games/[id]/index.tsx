@@ -11,8 +11,8 @@ import {
   getTeamTile,
 } from '~/data/teams/team-tile-mapping'
 import BackButton from '~/components/elements/back-button'
-import { Collection, type Team } from '~/types'
-import pb from '~/services/pocketbase'
+import { type Team } from '~/types'
+import { getTeamsByGameId } from '~/services/team-service'
 
 interface UseTeamFetchingResponse {
   teams: Team[]
@@ -21,16 +21,9 @@ interface UseTeamFetchingResponse {
 
 export const useTeamData = routeLoader$<UseTeamFetchingResponse>(
   async (requestEvent) => {
-    const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
-      filter: `game="${requestEvent.params.id}" && hidden=false`,
-      expand: 'membership(team).user',
-      $cancelKey: requestEvent.params.id,
-    })
-
-    const gameSpecificData = await getGameSpecificData(
-      teams,
-      requestEvent.params.id
-    )
+    const gameId = requestEvent.params.id
+    const teams = await getTeamsByGameId(gameId)
+    const gameSpecificData = await getGameSpecificData(teams, gameId)
 
     return structuredClone({ teams, gameSpecificData })
   }

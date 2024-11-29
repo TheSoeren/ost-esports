@@ -5,23 +5,23 @@ import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import pb from '~/services/pocketbase'
 import {
-  deleteGalleryById,
-  getGalleryById,
-  updateGalleryById,
+  deleteGallery,
+  getGallery,
+  updateGallery,
 } from '~/services/gallery-service'
 import type { Gallery } from '~/types'
 
 export const useGallery = routeLoader$(async (event) => {
-  const gallery = await getGalleryById(event.params.id)
-  // TODO: WHY DOES THIS NOT WORK?
+  const gallery = await getGallery(event.params.id)
+  // TODO: Figure out why this does not work
   // gallery.coverImage = pb.getFileUrl(gallery, gallery.coverImage)
   // gallery.images = gallery.images.map((image) => pb.getFileUrl(gallery, image))
   // return gallery
 
   return {
     ...gallery,
-    coverImage: pb.getFileUrl(gallery, gallery.coverImage),
-    images: gallery.images.map((image) => pb.getFileUrl(gallery, image)),
+    coverImage: pb.files.getURL(gallery, gallery.coverImage),
+    images: gallery.images.map((image) => pb.files.getURL(gallery, image)),
   } as Gallery
 })
 
@@ -41,12 +41,12 @@ export default component$(() => {
       const hasNewImages = !!values.get('images')
       if (hasNewImages) {
         // Delete all existing images before uploading new ones
-        await updateGalleryById(gallery.value.id, {
+        await updateGallery(gallery.value.id, {
           images: undefined,
         } as unknown as FormData)
       }
 
-      await updateGalleryById(gallery.value.id, values)
+      await updateGallery(gallery.value.id, values)
 
       enqueueSnackbar({
         type: 'success',
@@ -70,7 +70,7 @@ export default component$(() => {
         throw new Error('Not authenticated!')
       }
 
-      await deleteGalleryById(gallery.value.id)
+      await deleteGallery(gallery.value.id)
 
       enqueueSnackbar({
         type: 'success',

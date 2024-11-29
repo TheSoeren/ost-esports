@@ -1,4 +1,5 @@
 import { component$ } from '@builder.io/qwik'
+import ImgDiscord from '~/media/discord.webp?jsx'
 
 export default component$(() => {
   return (
@@ -21,11 +22,7 @@ export default component$(() => {
           class="text-blue-600 dark:text-blue-500 hover:underline"
         >
           Discord
-          <img
-            src="/discord.webp"
-            alt="join discord"
-            class="inline-block w-5 ml-1 mr-2"
-          />
+          <ImgDiscord alt="join discord" class="inline-block w-5 ml-1 mr-2" />
         </a>
         bei!
       </p>

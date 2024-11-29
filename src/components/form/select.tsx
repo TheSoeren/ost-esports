@@ -3,8 +3,6 @@ import {
   useSignal,
   useTask$,
   type PropFunction,
-  type QwikChangeEvent,
-  type QwikFocusEvent,
 } from '@builder.io/qwik'
 import InputError from './input-error'
 import InputLabel from './input-label'
@@ -21,18 +19,8 @@ interface SelectProps {
   name: string
   value: string | string[] | null | undefined
   onInput$: PropFunction<(event: Event, element: HTMLSelectElement) => void>
-  onChange$: PropFunction<
-    (
-      event: QwikChangeEvent<HTMLSelectElement>,
-      element: HTMLSelectElement
-    ) => void
-  >
-  onBlur$: PropFunction<
-    (
-      event: QwikFocusEvent<HTMLSelectElement>,
-      element: HTMLSelectElement
-    ) => void
-  >
+  onChange$: PropFunction<(event: Event, element: HTMLSelectElement) => void>
+  onBlur$: PropFunction<(event: Event, element: HTMLSelectElement) => void>
   options: SelectValue[]
   multiple?: boolean
   size?: number
@@ -59,8 +47,8 @@ export default component$(
       values.value = Array.isArray(value)
         ? value
         : value && typeof value === 'string'
-        ? [value]
-        : []
+          ? [value]
+          : []
     })
 
     return (

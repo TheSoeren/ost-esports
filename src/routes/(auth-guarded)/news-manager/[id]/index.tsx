@@ -1,21 +1,20 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import { routeLoader$, useNavigate } from '@builder.io/qwik-city'
 import type { NewsEntry } from '~/types'
-import { Collection } from '~/types'
-import Pocketbase from 'pocketbase'
 import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import type { FormStore } from '@modular-forms/qwik'
 import { reset } from '@modular-forms/qwik'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
-import pb from '~/services/pocketbase'
+import {
+  deleteNewsEntry,
+  getNewsEntry,
+  updateNewsEntry,
+} from '~/services/news-service'
 
 export const useNewsEntry = routeLoader$<NewsEntry>(async (event) => {
-  const news = await pb
-    .collection(Collection.NEWS)
-    .getOne<NewsEntry>(event.params.id)
-
+  const news = await getNewsEntry(event.params.id)
   return structuredClone(news)
 })
 
@@ -31,7 +30,7 @@ export default component$(() => {
         if (!authUser.value) {
           throw new Error('Not authenticated!')
         }
-        await pb.collection(Collection.NEWS).update(newsEntry.value.id, values)
+        await updateNewsEntry(newsEntry.value.id, values)
         enqueueSnackbar({
           type: 'success',
           title: 'Newsartikel erfolgreich aktualisiert',
@@ -55,7 +54,9 @@ export default component$(() => {
       if (!authUser.value) {
         throw new Error('Not authenticated!')
       }
-      await pb.collection(Collection.NEWS).delete(newsEntry.value.id)
+
+      await deleteNewsEntry(newsEntry.value.id)
+
       enqueueSnackbar({
         type: 'success',
         title: 'Newsartikel erfolgreich gelöscht',

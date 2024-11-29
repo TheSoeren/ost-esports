@@ -1,20 +1,16 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import { routeLoader$, useNavigate } from '@builder.io/qwik-city'
-import { Collection, type Team } from '~/types'
-import Pocketbase from 'pocketbase'
+import { type Team } from '~/types'
 import type { TeamFormSchema } from '~/components/teams/form/team-form'
 import TeamForm from '~/components/teams/form/team-form'
 import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import type { FormStore } from '@modular-forms/qwik'
 import { reset } from '@modular-forms/qwik'
-import pb from '~/services/pocketbase'
+import { deleteTeam, getTeamById, updateTeam } from '~/services/team-service'
 
 export const useTeam = routeLoader$<Team>(async (event) => {
-  const teams = await pb
-    .collection(Collection.TEAMS)
-    .getOne<Team>(event.params.id)
-
+  const teams = await getTeamById(event.params.id)
   return structuredClone(teams)
 })
 
@@ -31,7 +27,7 @@ export default component$(() => {
           throw new Error('Not authenticated!')
         }
 
-        await pb.collection(Collection.TEAMS).update(team.value.id, values)
+        await updateTeam(team.value.id, values)
 
         enqueueSnackbar({
           type: 'success',
@@ -57,7 +53,7 @@ export default component$(() => {
         throw new Error('Not authenticated!')
       }
 
-      await pb.collection(Collection.TEAMS).delete(team.value.id)
+      await deleteTeam(team.value.id)
 
       enqueueSnackbar({
         type: 'success',

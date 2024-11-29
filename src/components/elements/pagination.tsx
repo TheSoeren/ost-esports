@@ -7,7 +7,7 @@ import {
 import { FaIcon } from 'qwik-fontawesome'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import styles from '~/css/elements/pagination.css?inline'
-import type { PaginationReturn } from '~/hooks/usePagination'
+import type { PaginationReturn } from '~/hooks/use-pagination'
 
 export default component$((pagination: PaginationReturn) => {
   useStylesScoped$(styles)

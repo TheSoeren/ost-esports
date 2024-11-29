@@ -46,7 +46,9 @@ export default component$(
         }
 
     const usersResource = useResource$<SelectValue[]>(async () => {
-      if (!edit) return []
+      if (!edit) {
+        return []
+      }
 
       const response = await getUsers()
 

@@ -4,8 +4,12 @@ All roles of a user are defined in the field "roles" on the Pocketbase collectio
 
 ## Roles
 
-| Name    | Meaning                                                                                   |
-| ------- | ----------------------------------------------------------------------------------------- |
-| editor  | Create news entries; Edit authored news entries; Create galleries; Edit created galleries |
-| captain | Create teams; Edit created teams                                                          |
-|         |                                                                                           |
+| Name    | Permissions                |
+| ------- | -------------------------- |
+| editor  | Create news entries        |
+|         | Edit authored news entries |
+|         | Create galleries           |
+|         | Edit created galleries     |
+| captain | Create teams               |
+|         | Edit created teams         |
+|         |                            |

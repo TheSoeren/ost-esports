@@ -1,10 +1,6 @@
 import { component$ } from '@builder.io/qwik'
 import InputError from './input-error'
-import {
-  type PropFunction,
-  type QwikChangeEvent,
-  type QwikFocusEvent,
-} from '@builder.io/qwik'
+import { type PropFunction } from '@builder.io/qwik'
 
 interface CheckboxProps {
   ref: PropFunction<(element: Element) => void>
@@ -12,15 +8,8 @@ interface CheckboxProps {
   value?: string
   checked?: boolean
   onInput$: PropFunction<(event: Event, element: HTMLInputElement) => void>
-  onChange$: PropFunction<
-    (
-      event: QwikChangeEvent<HTMLInputElement>,
-      element: HTMLInputElement
-    ) => void
-  >
-  onBlur$: PropFunction<
-    (event: QwikFocusEvent<HTMLInputElement>, element: HTMLInputElement) => void
-  >
+  onChange$: PropFunction<(event: Event, element: HTMLInputElement) => void>
+  onBlur$: PropFunction<(event: Event, element: HTMLInputElement) => void>
   required?: boolean
   class?: string
   label: string

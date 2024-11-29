@@ -5,7 +5,7 @@ import BackButton from '~/components/elements/back-button'
 import IconButton from '~/components/elements/icon-button'
 import Modal from '~/components/elements/modal'
 import styles from '~/css/gallery/gallery-images.css?inline'
-import { getGalleryById } from '~/services/gallery-service'
+import { getGallery } from '~/services/gallery-service'
 import pb from '~/services/pocketbase'
 
 export function circularSubtract(value: number, length: number) {
@@ -17,7 +17,7 @@ export function circularAdd(value: number, length: number) {
 }
 
 export const useGallery = routeLoader$(async (event) => {
-  const galleries = await getGalleryById(event.params.id)
+  const galleries = await getGallery(event.params.id)
   return structuredClone(galleries)
 })
 
@@ -29,7 +29,7 @@ export default component$(() => {
   const modalImage = useSignal(0)
 
   const getImageUrl = (image: string) => {
-    return pb.files.getUrl(galleryObject, image)
+    return pb.files.getURL(galleryObject, image)
   }
 
   return (

@@ -2,10 +2,9 @@ import { $, component$, useContext } from '@builder.io/qwik'
 import type { TeamFormSchema } from '~/components/teams/form/team-form'
 import TeamForm from '~/components/teams/form/team-form'
 import { AuthContext } from '~/contexts/auth-context'
-import { Collection } from '~/types'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
-import pb from '~/services/pocketbase'
+import { createTeam } from '~/services/team-service'
 
 export default component$(() => {
   const { authUser } = useContext(AuthContext)
@@ -18,7 +17,7 @@ export default component$(() => {
         throw new Error('Not authenticated!')
       }
 
-      const team = await pb.collection(Collection.TEAMS).create({
+      const team = await createTeam({
         ...values,
         captain: authUser.value.id,
       })

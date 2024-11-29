@@ -6,19 +6,16 @@ import {
 } from '@builder.io/qwik'
 import GameTile from '~/components/games/game-tile'
 import styles from '~/css/games/index.css?inline'
-import { Collection, type Game } from '~/types'
+import { type Game } from '~/types'
 import { type DocumentHead } from '@builder.io/qwik-city'
 import GameTileSkeleton from '~/components/games/game-tile-skeleton'
-import pb from '~/services/pocketbase'
+import { getVisibleGames } from '~/services/games-service'
 
 export default component$(() => {
   useStylesScoped$(styles)
 
   const gamesResource = useResource$<Game[]>(async () => {
-    const response: Game[] = await pb.collection(Collection.GAMES).getFullList({
-      filter: `hidden=false`,
-    })
-
+    const response = await getVisibleGames()
     return structuredClone(response)
   })
 

@@ -12,6 +12,8 @@ import { AuthContext } from '~/contexts/auth-context'
 import styles from '~/css/layout/main-nav.css?inline'
 import useClickOutside from '~/hooks/use-click-outside'
 import type { NavItem } from '~/types/navigation'
+import ImgLogoWide from '~/media/logo_wide.webp?jsx'
+import ImgDiscordWide from '~/media/discord_wide.webp?jsx'
 
 export const navItems: NavItem[] = [
   { label: 'News', href: '/news' },
@@ -48,7 +50,7 @@ export default component$(() => {
     <section class="main-nav" ref={navRef}>
       <div class="brand-container">
         <Link href="/" aria-label="Site Overview" class="shrink-0">
-          <img src="/logo_wide.webp" alt="OST ESports Logo" class="logo h-14" />
+          <ImgLogoWide alt="OST ESports Logo" class="logo h-14" />
         </Link>
         <button
           class="menu-toggle"
@@ -64,7 +66,7 @@ export default component$(() => {
           aria-label="Additional Links"
         >
           <a href="https://discord.gg/UAWGz7gg5A" target="_blank" class="block">
-            <img src="/discord-wide.svg" alt="join discord" />
+            <ImgDiscordWide alt="join discord" />
           </a>
         </div>
         <nav

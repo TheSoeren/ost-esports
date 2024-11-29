@@ -11,9 +11,8 @@ import { FaIcon } from 'qwik-fontawesome'
 import DataManagerSkeleton from '~/components/elements/data-manager-skeleton'
 import { AuthContext } from '~/contexts/auth-context'
 import type { Game, Team } from '~/types'
-import { Collection } from '~/types'
 import styles from '~/css/teams/team-manager.css?inline'
-import pb from '~/services/pocketbase'
+import { getTeamsByCaptain } from '~/services/team-service'
 
 export default component$(() => {
   useStyles$(styles)
@@ -21,12 +20,11 @@ export default component$(() => {
 
   const teamsResource = useResource$<Team[]>(async ({ track }) => {
     track(() => authenticated.value)
-    if (!authUser.value) return []
+    if (!authUser.value) {
+      return []
+    }
 
-    const response: Team[] = await pb.collection(Collection.TEAMS).getFullList({
-      filter: `captain="${authUser.value.id}"`,
-      expand: 'game',
-    })
+    const response = await getTeamsByCaptain(authUser.value.id)
 
     return structuredClone(response)
   })

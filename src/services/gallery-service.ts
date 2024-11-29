@@ -17,18 +17,18 @@ export async function getGalleries(pagination: PaginationReturn) {
     })
 }
 
-export async function getGalleryById(id: string) {
+export async function getGallery(id: string) {
   return pb.collection(Collection.GALLERIES).getOne<Gallery>(id)
 }
 
 export async function createGallery(values: FormData) {
-  return pb.collection(Collection.GALLERIES).create(values)
+  return pb.collection(Collection.GALLERIES).create<Gallery>(values)
 }
 
-export async function updateGalleryById(id: string, value: FormData) {
-  return pb.collection(Collection.GALLERIES).update(id, value)
+export async function updateGallery(id: string, value: FormData) {
+  return pb.collection(Collection.GALLERIES).update<Gallery>(id, value)
 }
 
-export async function deleteGalleryById(id: string) {
+export async function deleteGallery(id: string) {
   return pb.collection(Collection.GALLERIES).delete(id)
 }

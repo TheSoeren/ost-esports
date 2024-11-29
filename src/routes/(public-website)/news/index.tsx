@@ -5,14 +5,14 @@ import {
   useStylesScoped$,
 } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-import { Collection, type NewsEntry } from '~/types'
+import { type NewsEntry } from '~/types'
 import NewsTile from '~/components/news/news-tile'
 import styles from '~/css/news/index.css?inline'
 import Pagination from '~/components/elements/pagination'
 import usePagination from '~/hooks/use-pagination'
 import type { ListResult } from 'pocketbase'
 import NewsListSkeleton from '~/components/news/news-list-skeleton'
-import pb from '~/services/pocketbase'
+import { getNews } from '~/services/news-service'
 
 export default component$(() => {
   useStylesScoped$(styles)
@@ -22,12 +22,7 @@ export default component$(() => {
     async ({ track }) => {
       track(() => pagination.page.value)
 
-      const response = await pb
-        .collection(Collection.NEWS)
-        .getList<NewsEntry>(pagination.page.value, pagination.perPage.value, {
-          sort: '-publishDate',
-          filter: 'hidden=false && publishDate <= @now',
-        })
+      const response = await getNews(pagination)
       pagination.setTotalPages$(response.totalPages)
 
       return structuredClone(response)

@@ -33,7 +33,9 @@ export default component$(() => {
 
   useTask$(({ track }) => {
     track(() => authenticated.value)
-    if (!authUser.value) return
+    if (!authUser.value) {
+      return
+    }
 
     if (isUserObject(authUser)) {
       setValues(profileForm, userToProfileForm(authUser.value), {
@@ -44,7 +46,9 @@ export default component$(() => {
   })
 
   const handleSubmit = $(async (values: ProfileForm) => {
-    if (!authUser.value) return
+    if (!authUser.value) {
+      return
+    }
 
     try {
       await updateUser(authUser.value.id, values)

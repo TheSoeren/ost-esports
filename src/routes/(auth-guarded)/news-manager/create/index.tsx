@@ -1,11 +1,10 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import { AuthContext } from '~/contexts/auth-context'
-import { Collection } from '~/types'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
-import pb from '~/services/pocketbase'
+import { createNewsEntry } from '~/services/news-service'
 
 export default component$(() => {
   const { authUser } = useContext(AuthContext)
@@ -18,7 +17,7 @@ export default component$(() => {
         throw new Error('Not authenticated!')
       }
 
-      const newsEntry = await pb.collection(Collection.NEWS).create({
+      const newsEntry = await createNewsEntry({
         ...values,
         author: authUser.value.id,
       })

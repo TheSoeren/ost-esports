@@ -33,7 +33,9 @@ interface GalleryFormProps {
 export default component$(
   ({ gallery, edit, onSubmit$, onDelete$ }: GalleryFormProps) => {
     const usersResource = useResource$<SelectValue[]>(async () => {
-      if (!edit) return []
+      if (!edit) {
+        return []
+      }
 
       const response = await getUsers()
 
@@ -64,11 +66,11 @@ export default component$(
       const coverImageRes = await fetch(gallery.coverImage)
       const coverImage = await coverImageRes.blob()
 
-      const imagesRes = await Promise.all(
+      const imagesResponse = await Promise.all(
         gallery.images.map((imageUrl) => fetch(imageUrl))
       )
       const images = await Promise.all(
-        imagesRes.map((imageRes) => imageRes.blob())
+        imagesResponse.map((imageResponse) => imageResponse.blob())
       )
 
       reset(galleryForm, {
