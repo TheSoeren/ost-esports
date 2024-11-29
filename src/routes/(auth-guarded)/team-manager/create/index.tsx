@@ -2,9 +2,9 @@ import { $, component$, useContext } from '@builder.io/qwik'
 import type { TeamFormSchema } from '~/components/teams/form/team-form'
 import TeamForm from '~/components/teams/form/team-form'
 import Pocketbase from 'pocketbase'
-import { AuthContext } from '~/contexts/AuthContext'
+import { AuthContext } from '~/contexts/auth-context'
 import { Collection } from '~/types'
-import { SnackbarContext } from '~/contexts/SnackbarContext'
+import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
 
 export default component$(() => {

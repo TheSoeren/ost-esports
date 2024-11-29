@@ -4,8 +4,8 @@ import { reset, setValues, useForm, zodForm$ } from '@modular-forms/qwik'
 import Pocketbase from 'pocketbase'
 import { z } from 'zod'
 import { TextInput } from '~/components/form'
-import { AuthContext, isUserObject } from '~/contexts/AuthContext'
-import { SnackbarContext } from '~/contexts/SnackbarContext'
+import { AuthContext, isUserObject } from '~/contexts/auth-context'
+import { SnackbarContext } from '~/contexts/snackbar-context'
 import { Collection, type User } from '~/types'
 
 export const profileSchema = z.object({

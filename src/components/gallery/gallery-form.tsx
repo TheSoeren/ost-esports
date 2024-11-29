@@ -9,7 +9,7 @@ import {
   useVisibleTask$,
 } from '@builder.io/qwik'
 import { required, reset, useForm } from '@modular-forms/qwik'
-import usePocketbase from '~/hooks/usePocketbase'
+import usePocketbase from '~/hooks/use-pocketbase'
 import type { Gallery, User } from '~/types'
 import { Collection } from '~/types'
 import { Checkbox, Select, TextInput } from '../form'

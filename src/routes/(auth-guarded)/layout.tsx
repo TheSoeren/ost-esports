@@ -8,8 +8,8 @@ import {
 import { useNavigate } from '@builder.io/qwik-city'
 import LoadingBar from '~/components/layout/loading-bar'
 import SideNav from '~/components/layout/side-nav'
-import { AuthContext } from '~/contexts/AuthContext'
-import { SnackbarContext } from '~/contexts/SnackbarContext'
+import { AuthContext } from '~/contexts/auth-context'
+import { SnackbarContext } from '~/contexts/snackbar-context'
 import styles from '~/css/layout/guarded-layout.css?inline'
 
 export default component$(() => {
