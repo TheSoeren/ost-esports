@@ -4,9 +4,9 @@ import { useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
 import LoadingBackdrop from '~/components/elements/loading-backdrop'
 import { TextInput } from '~/components/form'
-import { AuthContext } from '~/contexts/AuthContext'
-import type { Snackbar } from '~/contexts/SnackbarContext'
-import { SnackbarContext } from '~/contexts/SnackbarContext'
+import { AuthContext } from '~/contexts/auth-context'
+import type { Snackbar } from '~/contexts/snackbar-context'
+import { SnackbarContext } from '~/contexts/snackbar-context'
 
 export const registerSchema = z
   .object({

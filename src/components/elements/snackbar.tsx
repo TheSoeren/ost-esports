@@ -7,7 +7,7 @@ import {
   faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
-import type { Snackbar, SnackbarType } from '~/contexts/SnackbarContext'
+import type { Snackbar, SnackbarType } from '~/contexts/snackbar-context'
 import styles from '~/css/elements/snackbar.css?inline'
 
 type IconMapping = { [K in SnackbarType]: IconProp }

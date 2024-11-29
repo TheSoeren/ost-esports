@@ -9,10 +9,10 @@ import { Collection, type NewsEntry } from '~/types'
 import NewsTile from '~/components/news/news-tile'
 import styles from '~/css/news/index.css?inline'
 import Pagination from '~/components/elements/pagination'
-import usePagination from '~/hooks/usePagination'
+import usePagination from '~/hooks/use-pagination'
 import type { ListResult } from 'pocketbase'
 import NewsListSkeleton from '~/components/news/news-list-skeleton'
-import usePocketbase from '~/hooks/usePocketbase'
+import usePocketbase from '~/hooks/use-pocketbase'
 
 export default component$(() => {
   useStylesScoped$(styles)

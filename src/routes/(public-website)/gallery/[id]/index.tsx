@@ -6,7 +6,7 @@ import BackButton from '~/components/elements/back-button'
 import IconButton from '~/components/elements/icon-button'
 import Modal from '~/components/elements/modal'
 import styles from '~/css/gallery/gallery-images.css?inline'
-import usePocketbase from '~/hooks/usePocketbase'
+import usePocketbase from '~/hooks/use-pocketbase'
 import type { Gallery } from '~/types'
 import { Collection } from '~/types'
 

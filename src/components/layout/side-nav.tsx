@@ -13,7 +13,7 @@ import {
   faUsersRectangle,
 } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
-import { AuthContext, isUserObject } from '~/contexts/AuthContext'
+import { AuthContext, isUserObject } from '~/contexts/auth-context'
 import styles from '~/css/layout/side-nav.css?inline'
 import type { UserRole } from '~/types'
 import type { SideNavItem } from '~/types/navigation'
