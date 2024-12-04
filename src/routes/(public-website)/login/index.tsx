@@ -1,5 +1,11 @@
 import { $, component$, useContext, useVisibleTask$ } from '@builder.io/qwik'
-import { Link, useNavigate, type DocumentHead } from '@builder.io/qwik-city'
+import {
+  Link,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+  type DocumentHead,
+} from '@builder.io/qwik-city'
 import { reset, useForm, zodForm$ } from '@modular-forms/qwik'
 import type { ClientResponseError } from 'pocketbase'
 import { z } from 'zod'
@@ -8,6 +14,8 @@ import { TextInput } from '~/components/form'
 import { AuthContext } from '~/contexts/auth-context'
 import type { Snackbar } from '~/contexts/snackbar-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
+import { loadAuthStoreFromCookie } from '~/services/cookie-service'
+import pb from '~/services/pocketbase'
 
 export const loginSchema = z.object({
   user: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
@@ -15,22 +23,25 @@ export const loginSchema = z.object({
 })
 type LoginForm = z.infer<typeof loginSchema>
 
+export const useRedirect = routeLoader$(async ({ cookie, redirect }) => {
+  loadAuthStoreFromCookie(cookie)
+
+  if (pb.authStore.isValid) {
+    throw redirect(302, `/profile`)
+  }
+})
+
 export default component$(() => {
   const navigate = useNavigate()
+  const { url } = useLocation()
   const { enqueueSnackbar } = useContext(SnackbarContext)
-  const { login, authenticated } = useContext(AuthContext)
+  const { login } = useContext(AuthContext)
   const [loginForm, { Form, Field }] = useForm<LoginForm>({
     loader: { value: { user: '', password: '' } },
     validate: zodForm$(loginSchema),
   })
 
-  useVisibleTask$(({ track }) => {
-    track(() => authenticated.value)
-
-    if (authenticated.value) {
-      navigate('/profile')
-    }
-  })
+  const landingPage = url.searchParams.get('redirect') ?? '/'
 
   const handleSubmit = $(async (values: LoginForm) => {
     try {
@@ -41,6 +52,7 @@ export default component$(() => {
         title: 'Anmeldung erfolgreich',
         duration: 3000,
       })
+      navigate(landingPage)
     } catch (error: unknown) {
       const responseError = error as ClientResponseError
       const snackbar: Snackbar = {

@@ -26,6 +26,7 @@ export default component$(() => {
       })
       navigate(`/gallery-manager/${gallery.id}`)
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Änderung fehlgeschlagen!',

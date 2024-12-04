@@ -11,7 +11,7 @@ import {
 } from '~/services/gallery-service'
 import type { Gallery } from '~/types'
 
-export const useGallery = routeLoader$(async (event) => {
+export const useGallery = routeLoader$<Gallery>(async (event) => {
   const gallery = await getGallery(event.params.id)
   // TODO: Figure out why this does not work
   // gallery.coverImage = pb.getFileUrl(gallery, gallery.coverImage)
@@ -54,6 +54,7 @@ export default component$(() => {
         duration: 3000,
       })
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Änderung fehlgeschlagen!',
@@ -79,6 +80,7 @@ export default component$(() => {
       })
       navigate('/gallery-manager')
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Löschen fehlgeschlagen!',

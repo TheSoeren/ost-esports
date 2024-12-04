@@ -1,14 +1,13 @@
+import type { Signal } from '@builder.io/qwik'
 import {
   $,
   component$,
-  useContext,
   useSignal,
   useStyles$,
   useTask$,
 } from '@builder.io/qwik'
 import { Link, useLocation } from '@builder.io/qwik-city'
 import Burger from '~/components/elements/burger'
-import { AuthContext } from '~/contexts/auth-context'
 import styles from '~/css/layout/main-nav.css?inline'
 import useClickOutside from '~/hooks/use-click-outside'
 import type { NavItem } from '~/types/navigation'
@@ -21,9 +20,12 @@ export const navItems: NavItem[] = [
   { label: 'Galerie', href: '/gallery' },
 ]
 
-export default component$(() => {
+export interface MainNavProps {
+  isAuthenticated: Signal<boolean>
+}
+
+export default component$(({ isAuthenticated }: MainNavProps) => {
   useStyles$(styles)
-  const { authenticated } = useContext(AuthContext)
   const location = useLocation()
   const isOpen = useSignal(false)
   const navRef = useSignal<HTMLElement>()
@@ -85,7 +87,7 @@ export default component$(() => {
             </Link>
           ))}
 
-          {authenticated.value ? (
+          {isAuthenticated.value ? (
             <Link
               href="/profile"
               class={[

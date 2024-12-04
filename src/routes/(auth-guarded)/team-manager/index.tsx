@@ -1,33 +1,27 @@
-import {
-  Resource,
-  component$,
-  useContext,
-  useResource$,
-  useStyles$,
-} from '@builder.io/qwik'
-import { Link, type DocumentHead } from '@builder.io/qwik-city'
+import { component$, useStyles$ } from '@builder.io/qwik'
+import { Link, routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
-import DataManagerSkeleton from '~/components/elements/data-manager-skeleton'
-import { AuthContext } from '~/contexts/auth-context'
 import type { Game, Team } from '~/types'
 import styles from '~/css/teams/team-manager.css?inline'
 import { getTeamsByCaptain } from '~/services/team-service'
+import { loadAuthStoreFromCookie } from '~/services/cookie-service'
+import pb from '~/services/pocketbase'
+
+export const useTeams = routeLoader$<Team[]>(async ({ cookie }) => {
+  loadAuthStoreFromCookie(cookie)
+
+  const authRecord = pb.authStore.record
+  if (!authRecord) {
+    return []
+  }
+
+  return getTeamsByCaptain(authRecord.id)
+})
 
 export default component$(() => {
   useStyles$(styles)
-  const { authenticated, authUser } = useContext(AuthContext)
-
-  const teamsResource = useResource$<Team[]>(async ({ track }) => {
-    track(() => authenticated.value)
-    if (!authUser.value) {
-      return []
-    }
-
-    const response = await getTeamsByCaptain(authUser.value.id)
-
-    return structuredClone(response)
-  })
+  const teams = useTeams()
 
   return (
     <section>
@@ -37,23 +31,14 @@ export default component$(() => {
           <FaIcon icon={faPlus} />
         </Link>
 
-        <Resource
-          value={teamsResource}
-          onPending={() => <DataManagerSkeleton />}
-          onRejected={(error) => <>Error: {error.message}</>}
-          onResolved={(teams) => (
-            <>
-              {teams.map((team) => (
-                <Link class="tile cursor-pointer" href={team.id} key={team.id}>
-                  <h2 class="team-manager__title">{team.name}</h2>
-                  <h2 class="team-manager__game">
-                    {(team.expand.game as Game).name}
-                  </h2>
-                </Link>
-              ))}
-            </>
-          )}
-        />
+        {teams.value.map((team) => (
+          <Link class="tile cursor-pointer" href={team.id} key={team.id}>
+            <h2 class="team-manager__title">{team.name}</h2>
+            <h2 class="team-manager__game">
+              {(team.expand.game as Game).name}
+            </h2>
+          </Link>
+        ))}
       </div>
     </section>
   )

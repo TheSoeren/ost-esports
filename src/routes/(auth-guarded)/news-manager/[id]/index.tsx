@@ -14,8 +14,7 @@ import {
 } from '~/services/news-service'
 
 export const useNewsEntry = routeLoader$<NewsEntry>(async (event) => {
-  const news = await getNewsEntry(event.params.id)
-  return structuredClone(news)
+  return getNewsEntry(event.params.id)
 })
 
 export default component$(() => {
@@ -38,6 +37,7 @@ export default component$(() => {
         })
         reset(form, { initialValues: values })
       } catch (error: unknown) {
+        console.error(error)
         enqueueSnackbar({
           type: 'error',
           title: 'Änderung fehlgeschlagen!',
@@ -64,6 +64,7 @@ export default component$(() => {
       })
       navigate('/news-manager')
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Löschen fehlgeschlagen!',

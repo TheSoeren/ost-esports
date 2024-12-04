@@ -36,6 +36,7 @@ export default component$(() => {
         })
         reset(form, { initialValues: values })
       } catch (error: unknown) {
+        console.error(error)
         enqueueSnackbar({
           type: 'error',
           title: 'Änderung fehlgeschlagen!',
@@ -62,6 +63,7 @@ export default component$(() => {
       })
       navigate('/team-manager')
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Löschen fehlgeschlagen!',

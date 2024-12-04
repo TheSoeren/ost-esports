@@ -61,6 +61,7 @@ export default component$(() => {
 
       reset(profileForm, { initialValues: values })
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Änderung fehlgeschlagen!',

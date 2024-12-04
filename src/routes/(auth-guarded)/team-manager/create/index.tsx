@@ -29,6 +29,7 @@ export default component$(() => {
       })
       navigate(`/team-manager/${team.id}`)
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Änderung fehlgeschlagen!',

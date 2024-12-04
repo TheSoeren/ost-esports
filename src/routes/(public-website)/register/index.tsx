@@ -60,8 +60,7 @@ export default component$(() => {
       })
       navigate('/login')
     } catch (error: unknown) {
-      console.log(error)
-
+      console.error(error)
       const snackbar: Snackbar = {
         type: 'error',
         title: 'Registrierung fehlgeschlagen!',

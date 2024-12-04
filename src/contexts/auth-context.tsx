@@ -12,7 +12,7 @@ import {
 import { ClientResponseError, type RecordAuthResponse } from 'pocketbase'
 import type { RegisterForm } from '~/routes/public/register'
 import pb from '~/services/pocketbase'
-import { login, register } from '~/services/user-service'
+import { login, logout, register } from '~/services/user-service'
 import { type Record, type User } from '~/types'
 
 interface AuthContext {
@@ -67,8 +67,8 @@ export const AuthProvider = component$(() => {
     }
   })
 
-  const logout = $(async () => {
-    pb.authStore.clear()
+  const logoutHandler = $(() => {
+    logout()
   })
 
   useContextProvider(AuthContext, {
@@ -76,7 +76,7 @@ export const AuthProvider = component$(() => {
     authUser,
     register: handleRegistration,
     login: handleLogin,
-    logout,
+    logout: logoutHandler,
   })
 
   return <Slot />
