@@ -5,13 +5,10 @@ import { FaIcon } from 'qwik-fontawesome'
 import styles from '~/css/news/news-manager.css?inline'
 import dayjs from 'dayjs'
 import { getNewsByAuthor } from '~/services/news-service'
-import { loadAuthStoreFromCookie } from '~/services/cookie-service'
 import pb from '~/services/pocketbase'
 import type { NewsEntry } from '~/types'
 
-export const useNews = routeLoader$<NewsEntry[]>(async ({ cookie }) => {
-  loadAuthStoreFromCookie(cookie)
-
+export const useNews = routeLoader$<NewsEntry[]>(async () => {
   const authRecord = pb.authStore.record
   if (!authRecord) {
     return []

@@ -5,12 +5,9 @@ import { FaIcon } from 'qwik-fontawesome'
 import type { Game, Team } from '~/types'
 import styles from '~/css/teams/team-manager.css?inline'
 import { getTeamsByCaptain } from '~/services/team-service'
-import { loadAuthStoreFromCookie } from '~/services/cookie-service'
 import pb from '~/services/pocketbase'
 
-export const useTeams = routeLoader$<Team[]>(async ({ cookie }) => {
-  loadAuthStoreFromCookie(cookie)
-
+export const useTeams = routeLoader$<Team[]>(async () => {
   const authRecord = pb.authStore.record
   if (!authRecord) {
     return []

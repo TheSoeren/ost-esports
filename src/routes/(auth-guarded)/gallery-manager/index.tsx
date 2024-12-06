@@ -3,14 +3,11 @@ import { Link, routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
 import styles from '~/css/gallery/gallery-manager.css?inline'
-import { loadAuthStoreFromCookie } from '~/services/cookie-service'
 import { getGalleriesByCreator } from '~/services/gallery-service'
 import pb from '~/services/pocketbase'
 import type { Gallery } from '~/types/gallery'
 
-export const useGalleries = routeLoader$<Gallery[]>(async ({ cookie }) => {
-  loadAuthStoreFromCookie(cookie)
-
+export const useGalleries = routeLoader$<Gallery[]>(async () => {
   const authRecord = pb.authStore.record
   if (!authRecord) {
     return []

@@ -1,10 +1,11 @@
 import { $, component$, useContext, useTask$ } from '@builder.io/qwik'
-import type { DocumentHead } from '@builder.io/qwik-city'
+import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
 import { reset, setValues, useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
 import { TextInput } from '~/components/form'
 import { AuthContext, isUserObject } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
+import pb from '~/services/pocketbase'
 import { updateUser } from '~/services/user-service'
 import { type User } from '~/types'
 
@@ -17,17 +18,19 @@ export const userToProfileForm = (user: User): ProfileForm => {
   return { gamertag: user.gamertag || '' }
 }
 
+export const useProfile = routeLoader$<ProfileForm>(async () => {
+  const authRecord = pb.authStore.record
+  return { gamertag: authRecord ? authRecord.gamertag : '' }
+})
+
 export default component$(() => {
   const { authenticated, authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
+  const profile = useProfile()
 
   // Initializing values empty, because this happens server-side where the user is not authenticated
   const [profileForm, { Form, Field }] = useForm<ProfileForm>({
-    loader: {
-      value: {
-        gamertag: '',
-      },
-    },
+    loader: profile,
     validate: zodForm$(profileSchema),
   })
 
