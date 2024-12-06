@@ -1,10 +1,10 @@
-import { $, component$, useContext, useStyles$ } from '@builder.io/qwik'
+import { $, component$, useStyles$ } from '@builder.io/qwik'
 import { Link, useLocation, useNavigate } from '@builder.io/qwik-city'
 import { FaIcon } from 'qwik-fontawesome'
-import { AuthContext } from '~/contexts/auth-context'
 import styles from '~/css/layout/side-nav.css?inline'
 import type { SideNavItem } from '~/types/navigation'
 import ImgLogoWide from '~/media/logo_wide.webp?jsx'
+import { logout } from '~/services/user-service'
 
 interface SideNavProps {
   navItems: SideNavItem[]
@@ -13,7 +13,6 @@ interface SideNavProps {
 export default component$(({ navItems }: SideNavProps) => {
   useStyles$(styles)
 
-  const { logout } = useContext(AuthContext)
   const navigate = useNavigate()
   const location = useLocation()
 

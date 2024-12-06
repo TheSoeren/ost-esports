@@ -4,7 +4,7 @@ import {
   useResource$,
   useStylesScoped$,
 } from '@builder.io/qwik'
-import type { DocumentHead } from '@builder.io/qwik-city'
+import { type DocumentHead } from '@builder.io/qwik-city'
 import styles from '~/css/gallery/index.css?inline'
 import GalleryTile from '~/components/gallery/gallery-tile'
 import GalleryTileSkeleton from '~/components/gallery/gallery-tile-skeleton'
@@ -16,11 +16,12 @@ export default component$(() => {
   useStylesScoped$(styles)
   const pagination = usePagination(1, 30)
 
-  const galleriesResource = useResource$(async () => {
+  const galleriesResource = useResource$(async ({ track }) => {
+    track(() => pagination.page.value)
+
     const response = await getGalleries(pagination)
     pagination.setTotalPages$(response.totalPages)
-
-    return structuredClone(response)
+    return response
   })
 
   return (

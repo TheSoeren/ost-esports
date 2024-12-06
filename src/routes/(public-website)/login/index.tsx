@@ -1,4 +1,4 @@
-import { $, component$, useContext, useVisibleTask$ } from '@builder.io/qwik'
+import { $, component$, useContext } from '@builder.io/qwik'
 import {
   Link,
   routeLoader$,
@@ -11,11 +11,11 @@ import type { ClientResponseError } from 'pocketbase'
 import { z } from 'zod'
 import LoadingBackdrop from '~/components/elements/loading-backdrop'
 import { TextInput } from '~/components/form'
-import { AuthContext } from '~/contexts/auth-context'
 import type { Snackbar } from '~/contexts/snackbar-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { loadAuthStoreFromCookie } from '~/services/cookie-service'
 import pb from '~/services/pocketbase'
+import { login } from '~/services/user-service'
 
 export const loginSchema = z.object({
   user: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
@@ -35,7 +35,6 @@ export default component$(() => {
   const navigate = useNavigate()
   const { url } = useLocation()
   const { enqueueSnackbar } = useContext(SnackbarContext)
-  const { login } = useContext(AuthContext)
   const [loginForm, { Form, Field }] = useForm<LoginForm>({
     loader: { value: { user: '', password: '' } },
     validate: zodForm$(loginSchema),

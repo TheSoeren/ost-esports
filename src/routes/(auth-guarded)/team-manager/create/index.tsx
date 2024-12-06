@@ -1,25 +1,24 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import type { TeamFormSchema } from '~/components/teams/form/team-form'
 import TeamForm from '~/components/teams/form/team-form'
-import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
 import { createTeam } from '~/services/team-service'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: TeamFormSchema) => {
     try {
-      if (!authUser.value) {
+      if (!pb.authStore.isValid || !pb.authStore.record) {
         throw new Error('Not authenticated!')
       }
 
       const team = await createTeam({
         ...values,
-        captain: authUser.value.id,
+        captain: pb.authStore.record.id,
       })
 
       enqueueSnackbar({

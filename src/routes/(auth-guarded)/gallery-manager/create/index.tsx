@@ -1,22 +1,21 @@
 import { $, component$, useContext } from '@builder.io/qwik'
-import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
 import GalleryForm from '~/components/gallery/gallery-form'
 import { createGallery } from '~/services/gallery-service'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: FormData) => {
     try {
-      if (!authUser.value) {
+      if (!pb.authStore.isValid || !pb.authStore.record) {
         throw new Error('Not authenticated!')
       }
 
-      values.append('creator', authUser.value.id)
+      values.append('creator', pb.authStore.record.id)
       const gallery = await createGallery(values)
 
       enqueueSnackbar({

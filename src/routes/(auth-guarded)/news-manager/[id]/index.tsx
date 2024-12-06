@@ -1,7 +1,6 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import { routeLoader$, useNavigate } from '@builder.io/qwik-city'
 import type { NewsEntry } from '~/types'
-import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import type { FormStore } from '@modular-forms/qwik'
 import { reset } from '@modular-forms/qwik'
@@ -19,16 +18,12 @@ export const useNewsEntry = routeLoader$<NewsEntry>(async (event) => {
 
 export default component$(() => {
   const newsEntry = useNewsEntry()
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(
     async (values: NewsFormSchema, form: FormStore<any, undefined>) => {
       try {
-        if (!authUser.value) {
-          throw new Error('Not authenticated!')
-        }
         await updateNewsEntry(newsEntry.value.id, values)
         enqueueSnackbar({
           type: 'success',
@@ -51,10 +46,6 @@ export default component$(() => {
 
   const handleDelete$ = $(async () => {
     try {
-      if (!authUser.value) {
-        throw new Error('Not authenticated!')
-      }
-
       await deleteNewsEntry(newsEntry.value.id)
 
       enqueueSnackbar({

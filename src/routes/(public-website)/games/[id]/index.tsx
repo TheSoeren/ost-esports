@@ -14,20 +14,17 @@ import BackButton from '~/components/elements/back-button'
 import { type Team } from '~/types'
 import { getTeamsByGameId } from '~/services/team-service'
 
-interface UseTeamFetchingResponse {
+interface UseTeamData {
   teams: Team[]
   gameSpecificData: ResolvedGameSpecificData
 }
 
-export const useTeamData = routeLoader$<UseTeamFetchingResponse>(
-  async (requestEvent) => {
-    const gameId = requestEvent.params.id
-    const teams = await getTeamsByGameId(gameId)
-    const gameSpecificData = await getGameSpecificData(teams, gameId)
+export const useTeamData = routeLoader$<UseTeamData>(async ({ params }) => {
+  const teams = await getTeamsByGameId(params.id)
+  const gameSpecificData = await getGameSpecificData(teams, params.id)
 
-    return structuredClone({ teams, gameSpecificData })
-  }
-)
+  return { teams, gameSpecificData }
+})
 
 export default component$(() => {
   useStylesScoped$(styles)

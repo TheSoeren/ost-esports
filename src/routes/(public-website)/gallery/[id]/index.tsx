@@ -1,4 +1,4 @@
-import { component$, useSignal, useStylesScoped$ } from '@builder.io/qwik'
+import { $, component$, useSignal, useStylesScoped$ } from '@builder.io/qwik'
 import { routeLoader$ } from '@builder.io/qwik-city'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import BackButton from '~/components/elements/back-button'
@@ -8,28 +8,27 @@ import styles from '~/css/gallery/gallery-images.css?inline'
 import { getGallery } from '~/services/gallery-service'
 import pb from '~/services/pocketbase'
 
-export function circularSubtract(value: number, length: number) {
-  return (value + length - 1) % length
-}
-
-export function circularAdd(value: number, length: number) {
-  return (value + 1) % length
-}
-
-export const useGallery = routeLoader$(async (event) => {
-  const galleries = await getGallery(event.params.id)
-  return structuredClone(galleries)
+export const useGallery = routeLoader$(async ({ params }) => {
+  return getGallery(params.id)
 })
 
 export default component$(() => {
   useStylesScoped$(styles)
-  const {
-    value: { images, ...galleryObject },
-  } = useGallery()
+
+  const gallery = useGallery()
+  const images = gallery.value.images
+
   const modalImage = useSignal(0)
+  const setModalImage = $((value: number) => {
+    modalImage.value = value % images.length
+  })
+
+  const getPreviewImageUrl = (image: string) => {
+    return pb.files.getURL(gallery.value, image, { thumb: '300x300' })
+  }
 
   const getImageUrl = (image: string) => {
-    return pb.files.getURL(galleryObject, image)
+    return pb.files.getURL(gallery.value, image)
   }
 
   return (
@@ -38,11 +37,13 @@ export default component$(() => {
       <div class="gallery-images__container">
         {images.map((galleryImage, index) => (
           <img
+            width={300}
+            height={300}
             key={galleryImage}
             alt={galleryImage}
             class="gallery-images__image"
-            src={getImageUrl(galleryImage)}
-            onClick$={() => (modalImage.value = index)}
+            src={getPreviewImageUrl(galleryImage)}
+            onClick$={() => setModalImage(index)}
             data-hs-overlay="#lightbox"
           />
         ))}
@@ -51,19 +52,12 @@ export default component$(() => {
             <IconButton
               icon={faAngleLeft}
               class="w-full rounded-none rounded-tl"
-              onClick$={() => {
-                modalImage.value = circularSubtract(
-                  modalImage.value,
-                  images.length
-                )
-              }}
+              onClick$={() => setModalImage(modalImage.value - 1)}
             />
             <IconButton
               icon={faAngleRight}
               class="w-full rounded-none rounded-tr"
-              onClick$={() => {
-                modalImage.value = circularAdd(modalImage.value, images.length)
-              }}
+              onClick$={() => setModalImage(modalImage.value + 1)}
             />
           </div>
           <img

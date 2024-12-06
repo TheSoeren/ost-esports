@@ -1,7 +1,6 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import { routeLoader$, useNavigate } from '@builder.io/qwik-city'
 import GalleryForm from '~/components/gallery/gallery-form'
-import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import pb from '~/services/pocketbase'
 import {
@@ -27,16 +26,11 @@ export const useGallery = routeLoader$<Gallery>(async (event) => {
 
 export default component$(() => {
   const gallery = useGallery()
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: FormData) => {
     try {
-      if (!authUser.value) {
-        throw new Error('Not authenticated!')
-      }
-
       // TODO: Images are not handled gracefully! Refactor this some day.
       const hasNewImages = !!values.get('images')
       if (hasNewImages) {
@@ -67,10 +61,6 @@ export default component$(() => {
 
   const handleDelete$ = $(async () => {
     try {
-      if (!authUser.value) {
-        throw new Error('Not authenticated!')
-      }
-
       await deleteGallery(gallery.value.id)
 
       enqueueSnackbar({

@@ -1,25 +1,24 @@
 import { $, component$, useContext } from '@builder.io/qwik'
-import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
 import { createNewsEntry } from '~/services/news-service'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: NewsFormSchema) => {
     try {
-      if (!authUser.value) {
+      if (!pb.authStore.isValid || !pb.authStore.record) {
         throw new Error('Not authenticated!')
       }
 
       const newsEntry = await createNewsEntry({
         ...values,
-        author: authUser.value.id,
+        author: pb.authStore.record.id,
       })
 
       enqueueSnackbar({

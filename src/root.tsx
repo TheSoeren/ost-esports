@@ -20,6 +20,10 @@ export default component$(() => {
     <QwikCityProvider>
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <meta
+          name="description"
+          content="E-Sports Club der Ostschweizerischen Fachhochschule"
+        />
         <RouterHead />
         <FaStylesheet />
       </head>

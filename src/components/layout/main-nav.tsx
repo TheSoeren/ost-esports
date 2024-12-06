@@ -16,7 +16,7 @@ import ImgDiscordWide from '~/media/discord_wide.svg?jsx'
 
 export const navItems: NavItem[] = [
   { label: 'News', href: '/news' },
-  { label: 'Teams', href: '/games' },
+  { label: 'Games', href: '/games' },
   { label: 'Galerie', href: '/gallery' },
 ]
 

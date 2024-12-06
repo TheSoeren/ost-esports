@@ -3,7 +3,6 @@ import { routeLoader$, useNavigate } from '@builder.io/qwik-city'
 import { type Team } from '~/types'
 import type { TeamFormSchema } from '~/components/teams/form/team-form'
 import TeamForm from '~/components/teams/form/team-form'
-import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import type { FormStore } from '@modular-forms/qwik'
 import { reset } from '@modular-forms/qwik'
@@ -16,17 +15,12 @@ export const useTeam = routeLoader$<Team>(async (event) => {
 
 export default component$(() => {
   const team = useTeam()
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(
     async (values: TeamFormSchema, form: FormStore<any, undefined>) => {
       try {
-        if (!authUser.value) {
-          throw new Error('Not authenticated!')
-        }
-
         await updateTeam(team.value.id, values)
 
         enqueueSnackbar({
@@ -50,10 +44,6 @@ export default component$(() => {
 
   const handleDelete$ = $(async () => {
     try {
-      if (!authUser.value) {
-        throw new Error('Not authenticated!')
-      }
-
       await deleteTeam(team.value.id)
 
       enqueueSnackbar({

@@ -5,7 +5,7 @@ import {
   useStylesScoped$,
 } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-import { type NewsEntry } from '~/types'
+import type { NewsEntry } from '~/types'
 import NewsTile from '~/components/news/news-tile'
 import styles from '~/css/news/index.css?inline'
 import Pagination from '~/components/elements/pagination'
@@ -24,8 +24,7 @@ export default component$(() => {
 
       const response = await getNews(pagination)
       pagination.setTotalPages$(response.totalPages)
-
-      return structuredClone(response)
+      return response
     }
   )
 

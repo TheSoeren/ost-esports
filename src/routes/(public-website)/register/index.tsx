@@ -1,12 +1,18 @@
-import { $, component$, useContext, useVisibleTask$ } from '@builder.io/qwik'
-import { useNavigate, type DocumentHead } from '@builder.io/qwik-city'
+import { $, component$, useContext } from '@builder.io/qwik'
+import {
+  routeLoader$,
+  useNavigate,
+  type DocumentHead,
+} from '@builder.io/qwik-city'
 import { useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
 import LoadingBackdrop from '~/components/elements/loading-backdrop'
 import { TextInput } from '~/components/form'
-import { AuthContext } from '~/contexts/auth-context'
 import type { Snackbar } from '~/contexts/snackbar-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
+import { loadAuthStoreFromCookie } from '~/services/cookie-service'
+import pb from '~/services/pocketbase'
+import { register } from '~/services/user-service'
 
 export const registerSchema = z
   .object({
@@ -30,23 +36,22 @@ export const registerSchema = z
   })
 export type RegisterForm = z.infer<typeof registerSchema>
 
+export const useRedirect = routeLoader$(async ({ cookie, redirect }) => {
+  loadAuthStoreFromCookie(cookie)
+
+  if (pb.authStore.isValid) {
+    throw redirect(302, `/profile`)
+  }
+})
+
 export default component$(() => {
   const navigate = useNavigate()
   const { enqueueSnackbar } = useContext(SnackbarContext)
-  const { register, authenticated } = useContext(AuthContext)
   const [registerForm, { Form, Field }] = useForm<RegisterForm>({
     loader: {
       value: { username: '', email: '', password: '', passwordConfirm: '' },
     },
     validate: zodForm$(registerSchema),
-  })
-
-  useVisibleTask$(({ track }) => {
-    track(() => authenticated.value)
-
-    if (authenticated.value) {
-      navigate('/profile')
-    }
   })
 
   const handleSubmit = $(async (values: RegisterForm) => {

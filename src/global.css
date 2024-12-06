@@ -37,7 +37,7 @@
 
 @layer utilities {
   .public-content {
-    @apply container mx-auto my-5;
+    @apply container mx-auto my-12;
   }
 
   .guarded-container {
