@@ -40,6 +40,11 @@ export default component$(() => {
         duration: 3000,
       })
 
+      /*
+       * TODO:
+       * Resetting does not work properly here, because the form value is based
+       * on the cookie, which has not been updated
+       */
       reset(profileForm, { initialValues: values })
     } catch (error: unknown) {
       console.error(error)
@@ -50,7 +55,6 @@ export default component$(() => {
           'Die Änderung konnte nicht durchgeführt werden. Versuchen Sie es später erneut.',
         duration: 3000,
       })
-      // reset(profileForm, { initialValues: userToProfileForm(authUser.value) })
     }
   })
 
