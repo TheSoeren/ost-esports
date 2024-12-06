@@ -4,6 +4,10 @@ import { reset, useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
 import { TextInput } from '~/components/form'
 import { SnackbarContext } from '~/contexts/snackbar-context'
+import {
+  exportAuthStoreToCookie,
+  loadAuthStoreFromCookie,
+} from '~/services/cookie-service'
 import pb from '~/services/pocketbase'
 import { updateUser } from '~/services/user-service'
 
@@ -40,11 +44,7 @@ export default component$(() => {
         duration: 3000,
       })
 
-      /*
-       * TODO:
-       * Resetting does not work properly here, because the form value is based
-       * on the cookie, which has not been updated
-       */
+      exportAuthStoreToCookie()
       reset(profileForm, { initialValues: values })
     } catch (error: unknown) {
       console.error(error)

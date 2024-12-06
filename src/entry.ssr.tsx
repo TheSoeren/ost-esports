@@ -1,6 +1,4 @@
 /**
- * WHAT IS THIS FILE?
- *
  * SSR entry point, in all cases the application is render outside the browser, this
  * entry point will be the common one.
  *

@@ -1,6 +1,4 @@
 /*
- * WHAT IS THIS FILE?
- *
  * It's the bundle entry point for `npm run preview`.
  * That is, serving your app built in production mode.
  *
