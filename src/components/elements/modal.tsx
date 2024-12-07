@@ -1,4 +1,4 @@
-import { Slot, component$, useSignal, useTask$ } from '@builder.io/qwik'
+import { Slot, component$, useSignal, useVisibleTask$ } from '@builder.io/qwik'
 
 interface ModalProps {
   id: string
@@ -7,7 +7,7 @@ interface ModalProps {
 export default component$(({ id }: ModalProps) => {
   const modalRef = useSignal<HTMLElement>()
 
-  useTask$(() => {
+  useVisibleTask$(() => () => {
     if (!modalRef.value) {
       return
     }

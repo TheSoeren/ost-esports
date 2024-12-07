@@ -6,8 +6,6 @@ function useClickOutside(
   callback: QRL<(event: MouseEvent) => void>
 ) {
   const onClick = $((event: MouseEvent) => {
-    console.log('Click', ref.value)
-
     if (!ref.value) {
       return
     }
