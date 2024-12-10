@@ -10,6 +10,7 @@ export default component$(({ id }: ModalProps) => {
   // Use visibleTask until qwik offers a better api (useUnMount$ -> https://qwik.dev/tutorial/hooks/use-un-mount/)
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
+    // Initialize preline.js methods because of Qwik SPA behavior -> https://github.com/htmlstreamofficial/preline/issues/295#issuecomment-1979482193
     window.HSStaticMethods.autoInit()
 
     return () => {
