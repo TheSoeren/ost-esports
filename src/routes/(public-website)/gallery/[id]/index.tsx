@@ -1,5 +1,6 @@
 import { $, component$, useSignal, useStylesScoped$ } from '@builder.io/qwik'
-import { DocumentHead, routeLoader$ } from '@builder.io/qwik-city'
+import type { DocumentHead } from '@builder.io/qwik-city'
+import { routeLoader$ } from '@builder.io/qwik-city'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import BackButton from '~/components/elements/back-button'
 import IconButton from '~/components/elements/icon-button'
@@ -18,18 +19,21 @@ export default component$(() => {
   const gallery = useGallery()
   const images = gallery.value.images
 
-  const modalImage = useSignal(0)
-  const setModalImage = $((value: number) => {
-    modalImage.value = value % images.length
-  })
+  const imageIndex = useSignal(0)
+  const imageSource = useSignal('')
 
   const getPreviewImageUrl = (image: string) => {
     return pb.files.getURL(gallery.value, image, { thumb: '300x300' })
   }
 
-  const getImageUrl = (image: string) => {
+  const getImageUrl = $((image: string) => {
     return pb.files.getURL(gallery.value, image)
-  }
+  })
+
+  const setModalImage = $(async (index: number) => {
+    imageSource.value = await getImageUrl(images[index])
+    imageIndex.value = index % images.length
+  })
 
   return (
     <article>
@@ -44,29 +48,32 @@ export default component$(() => {
             class="gallery-images__image"
             src={getPreviewImageUrl(galleryImage)}
             onClick$={() => setModalImage(index)}
-            data-hs-overlay="#lightbox"
+            data-hs-overlay="#gallery-lightbox"
           />
         ))}
-        <Modal id="lightbox">
-          <div class="flex justify-around">
-            <IconButton
-              icon={faAngleLeft}
-              class="w-full rounded-none rounded-tl"
-              onClick$={() => setModalImage(modalImage.value - 1)}
-            />
-            <IconButton
-              icon={faAngleRight}
-              class="w-full rounded-none rounded-tr"
-              onClick$={() => setModalImage(modalImage.value + 1)}
-            />
-          </div>
-          <img
-            alt={images[modalImage.value]}
-            src={getImageUrl(images[modalImage.value])}
-            class="max-h-screen"
-          />
-        </Modal>
       </div>
+
+      <Modal id="gallery-lightbox">
+        <div class="flex justify-around">
+          <IconButton
+            icon={faAngleLeft}
+            class="w-full rounded-none rounded-tl"
+            onClick$={() => setModalImage(imageIndex.value - 1)}
+          />
+          <IconButton
+            icon={faAngleRight}
+            class="w-full rounded-none rounded-tr"
+            onClick$={() => setModalImage(imageIndex.value + 1)}
+          />
+        </div>
+        <img
+          width={1920}
+          height={1080}
+          alt={images[imageIndex.value]}
+          src={imageSource.value}
+          class="max-h-screen"
+        />
+      </Modal>
     </article>
   )
 })
