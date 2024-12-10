@@ -1,4 +1,5 @@
 import { component$, useStyles$ } from '@builder.io/qwik'
+import type { DocumentHead } from '@builder.io/qwik-city'
 import { routeLoader$ } from '@builder.io/qwik-city'
 import BackButton from '~/components/elements/back-button'
 import styles from '~/css/news/news-detail.css?inline'
@@ -32,3 +33,21 @@ export default component$(() => {
     </article>
   )
 })
+
+export const head: DocumentHead = ({ resolveValue }) => {
+  const newsEntry = resolveValue(useNewsEntry)
+
+  return {
+    title: newsEntry.title,
+    meta: [
+      {
+        name: 'description',
+        content: newsEntry.teaser,
+      },
+      {
+        name: 'id',
+        content: newsEntry.id,
+      },
+    ],
+  }
+}

@@ -1,5 +1,5 @@
 import { $, component$, useSignal, useStylesScoped$ } from '@builder.io/qwik'
-import { routeLoader$ } from '@builder.io/qwik-city'
+import { DocumentHead, routeLoader$ } from '@builder.io/qwik-city'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import BackButton from '~/components/elements/back-button'
 import IconButton from '~/components/elements/icon-button'
@@ -70,3 +70,17 @@ export default component$(() => {
     </article>
   )
 })
+
+export const head: DocumentHead = ({ resolveValue }) => {
+  const gallery = resolveValue(useGallery)
+
+  return {
+    title: gallery.name,
+    meta: [
+      {
+        name: 'id',
+        content: gallery.id,
+      },
+    ],
+  }
+}

@@ -39,5 +39,5 @@ export default component$(() => {
 })
 
 export const head: DocumentHead = {
-  title: 'Dashboard | Galerie Manager',
+  title: 'Galerie Manager',
 }

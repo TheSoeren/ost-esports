@@ -42,5 +42,5 @@ export default component$(() => {
 })
 
 export const head: DocumentHead = {
-  title: 'Dashboard | Team Manager',
+  title: 'Team Manager',
 }

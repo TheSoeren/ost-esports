@@ -33,5 +33,5 @@ export default component$(() => {
 })
 
 export const head: DocumentHead = {
-  title: 'OST eSports - News',
+  title: 'News',
 }

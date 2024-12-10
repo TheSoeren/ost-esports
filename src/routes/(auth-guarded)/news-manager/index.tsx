@@ -43,5 +43,5 @@ export default component$(() => {
 })
 
 export const head: DocumentHead = {
-  title: 'Dashboard | News Manager',
+  title: 'News Manager',
 }
