@@ -1,54 +1,33 @@
-import {
-  component$,
-  Resource,
-  useResource$,
-  useStylesScoped$,
-} from '@builder.io/qwik'
-import type { DocumentHead } from '@builder.io/qwik-city'
+import { component$, useStylesScoped$ } from '@builder.io/qwik'
+import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
 import type { NewsEntry } from '~/types'
 import NewsTile from '~/components/news/news-tile'
 import styles from '~/css/news/index.css?inline'
 import Pagination from '~/components/elements/pagination'
-import usePagination from '~/hooks/use-pagination'
 import type { ListResult } from 'pocketbase'
-import NewsListSkeleton from '~/components/news/news-list-skeleton'
 import { getNews } from '~/services/news-service'
+
+export const useNews = routeLoader$<ListResult<NewsEntry>>(({ query }) => {
+  const page = Number(query.get('page')) || 1
+  const perPage = Number(query.get('perPage')) || 30
+
+  return getNews(page, perPage)
+})
 
 export default component$(() => {
   useStylesScoped$(styles)
 
-  const pagination = usePagination(1, 30)
-  const newsResource = useResource$<ListResult<NewsEntry>>(
-    async ({ track }) => {
-      track(() => pagination.page.value)
-
-      const response = await getNews(pagination)
-      pagination.setTotalPages$(response.totalPages)
-      return response
-    }
-  )
+  const news = useNews()
 
   return (
     <article>
-      <Pagination {...pagination} />
-      <Resource
-        value={newsResource}
-        onPending={() => <NewsListSkeleton />}
-        onRejected={(error) => <>Error: {error.message}</>}
-        onResolved={(news) => (
-          <div
-            class={[
-              'news__container',
-              pagination.totalPages.value > 1 && 'my-5',
-            ]}
-          >
-            {news.items.map((newsEntry) => (
-              <NewsTile key={newsEntry.id} {...newsEntry} />
-            ))}
-          </div>
-        )}
-      />
-      <Pagination {...pagination} />
+      <Pagination {...news.value} />
+      <div class={['news__container', news.value.totalPages > 1 && 'my-5']}>
+        {news.value.items.map((newsEntry) => (
+          <NewsTile key={newsEntry.id} {...newsEntry} />
+        ))}
+      </div>
+      <Pagination {...news.value} />
     </article>
   )
 })

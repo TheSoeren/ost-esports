@@ -1,16 +1,13 @@
 import { Collection } from '~/types/pocketbase'
 import pb from './pocketbase'
 import type { NewsEntry } from '~/types/news'
-import type { PaginationReturn } from '~/hooks/use-pagination'
 import type { NewsFormSchema } from '~/components/news/news-form'
 
-export async function getNews(pagination: PaginationReturn) {
-  return pb
-    .collection(Collection.NEWS)
-    .getList<NewsEntry>(pagination.page.value, pagination.perPage.value, {
-      sort: '-publishDate',
-      filter: 'hidden=false && publishDate <= @now',
-    })
+export async function getNews(page: number, perPage: number) {
+  return pb.collection(Collection.NEWS).getList<NewsEntry>(page, perPage, {
+    sort: '-publishDate',
+    filter: 'hidden=false && publishDate <= @now',
+  })
 }
 
 export async function getNewsByAuthor(author: string) {

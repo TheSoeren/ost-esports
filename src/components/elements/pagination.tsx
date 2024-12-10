@@ -1,28 +1,46 @@
-import {
-  component$,
-  useSignal,
-  useStylesScoped$,
-  useVisibleTask$,
-} from '@builder.io/qwik'
+import { $, component$, useStylesScoped$ } from '@builder.io/qwik'
 import { FaIcon } from 'qwik-fontawesome'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import styles from '~/css/elements/pagination.css?inline'
-import type { PaginationReturn } from '~/hooks/use-pagination'
+import type { ListResult } from 'pocketbase'
+import { useLocation, useNavigate } from '@builder.io/qwik-city'
 
-export default component$((pagination: PaginationReturn) => {
+export default component$((listResult: ListResult<unknown>) => {
   useStylesScoped$(styles)
 
-  // Redundant state, because total pages wouldn't correctly update on first render
-  const paginationArray = useSignal<number[]>([])
-  useVisibleTask$(({ track }) => {
-    track(() => pagination.totalPages.value)
-    paginationArray.value = Array.from(
-      { length: pagination.totalPages.value },
-      (_, i) => i + 1
-    )
+  const navigate = useNavigate()
+  const { url } = useLocation()
+  const queryParams = new URLSearchParams(url.search)
+
+  const updatePagination$ = $(() => {
+    navigate('?' + queryParams.toString(), { replaceState: true })
   })
 
-  if (paginationArray.value.length < 2) {
+  const setPage$ = $((pageNr: number) => {
+    queryParams.set('page', String(pageNr))
+    updatePagination$()
+  })
+
+  const nextPage$ = $(() => {
+    if (listResult.page < listResult.totalPages) {
+      queryParams.set('page', String(listResult.page + 1))
+      updatePagination$()
+    }
+  })
+
+  const previousPage$ = $(() => {
+    if (listResult.page > 1) {
+      queryParams.set('page', String(listResult.page - 1))
+      updatePagination$()
+    }
+  })
+
+  const paginationArray = Array.from(
+    { length: listResult.totalPages },
+    (_, i) => i + 1
+  )
+
+  if (paginationArray.length < 2) {
     return null
   }
 
@@ -30,27 +48,27 @@ export default component$((pagination: PaginationReturn) => {
     <section>
       <button
         class="btn-outline pagination-button__left"
-        disabled={pagination.page.value === 1}
-        onClick$={pagination.previousPage$}
+        disabled={listResult.page === 1}
+        onClick$={previousPage$}
       >
         <FaIcon icon={faAngleLeft} class="mr-1" fixedWidth />
       </button>
-      {paginationArray.value.map((pageNr) => (
+      {paginationArray.map((pageNr) => (
         <button
           key={pageNr}
           class={[
             'btn-outline pagination-button__pages',
-            pagination.page.value === pageNr && 'btn-outline--highlight',
+            listResult.page === pageNr && 'btn-outline--highlight',
           ]}
-          onClick$={() => pagination.setPage$(pageNr)}
+          onClick$={() => setPage$(pageNr)}
         >
           {pageNr}
         </button>
       ))}
       <button
         class="btn-outline pagination-button__right"
-        disabled={pagination.page.value === pagination.totalPages.value}
-        onClick$={pagination.nextPage$}
+        disabled={listResult.page === listResult.totalPages}
+        onClick$={nextPage$}
       >
         <FaIcon icon={faAngleRight} class="mr-1" fixedWidth />
       </button>

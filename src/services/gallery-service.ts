@@ -1,7 +1,6 @@
 import { Collection } from '~/types/pocketbase'
 import pb from './pocketbase'
 import type { Gallery } from '~/types/gallery'
-import type { PaginationReturn } from '~/hooks/use-pagination'
 
 export async function getGalleriesByCreator(creator: string) {
   return pb.collection(Collection.GALLERIES).getFullList<Gallery>({
@@ -9,12 +8,10 @@ export async function getGalleriesByCreator(creator: string) {
   })
 }
 
-export async function getGalleries(pagination: PaginationReturn) {
-  return pb
-    .collection(Collection.GALLERIES)
-    .getList<Gallery>(pagination.page.value, pagination.perPage.value, {
-      filter: 'hidden=false',
-    })
+export async function getGalleries(page: number, perPage: number) {
+  return pb.collection(Collection.GALLERIES).getList<Gallery>(page, perPage, {
+    filter: 'hidden=false',
+  })
 }
 
 export async function getGallery(id: string) {
