@@ -31,8 +31,9 @@ export default component$(() => {
   })
 
   const setModalImage = $(async (index: number) => {
-    imageSource.value = await getImageUrl(images[index])
-    imageIndex.value = index % images.length
+    const circularIndex = (index + images.length) % images.length
+    imageSource.value = await getImageUrl(images[circularIndex])
+    imageIndex.value = circularIndex
   })
 
   return (
