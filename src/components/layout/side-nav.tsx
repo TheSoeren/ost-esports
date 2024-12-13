@@ -1,71 +1,27 @@
-import {
-  component$,
-  useContext,
-  useStore,
-  useStyles$,
-  useTask$,
-} from '@builder.io/qwik'
-import { Link, useLocation } from '@builder.io/qwik-city'
-import {
-  faImages,
-  faNewspaper,
-  faUser,
-  faUsersRectangle,
-} from '@fortawesome/free-solid-svg-icons'
+import { $, component$, useStyles$ } from '@builder.io/qwik'
+import { Link, useLocation, useNavigate } from '@builder.io/qwik-city'
 import { FaIcon } from 'qwik-fontawesome'
-import { AuthContext, isUserObject } from '~/contexts/auth-context'
 import styles from '~/css/layout/side-nav.css?inline'
-import type { UserRole } from '~/types'
 import type { SideNavItem } from '~/types/navigation'
+import ImgLogoWide from '~/media/logo_wide.webp?jsx'
+import { logout } from '~/services/user-service'
 
-export const basicNavItems = [
-  { label: 'Profil', href: '/profile', icon: faUser },
-]
-
-export const teamManagerNav = {
-  label: 'Team Manager',
-  href: '/team-manager',
-  icon: faUsersRectangle,
+interface SideNavProps {
+  navItems: SideNavItem[]
 }
 
-export const newsManagerNav = {
-  label: 'News Manager',
-  href: '/news-manager',
-  icon: faNewspaper,
-}
-
-export const galleryManager = {
-  label: 'Galerie Manager',
-  href: '/gallery-manager',
-  icon: faImages,
-}
-
-export const navRoleMapping: Record<UserRole, SideNavItem[]> = {
-  captain: [teamManagerNav],
-  editor: [newsManagerNav, galleryManager],
-}
-
-export default component$(() => {
+export default component$(({ navItems }: SideNavProps) => {
   useStyles$(styles)
 
-  const navItems = useStore<SideNavItem[]>(structuredClone(basicNavItems))
-  const { authenticated, authUser, logout } = useContext(AuthContext)
+  const navigate = useNavigate()
   const location = useLocation()
 
   const urlMatcher = (url: string) =>
     location.url.pathname.startsWith(url + '/')
 
-  useTask$(({ track }) => {
-    track(() => authenticated.value)
-
-    let navRoleItems: SideNavItem[] = []
-    if (isUserObject(authUser)) {
-      navRoleItems = authUser.value.roles.flatMap(
-        (role) => navRoleMapping[role]
-      )
-    }
-
-    navItems.splice(0, navItems.length, ...basicNavItems, ...navRoleItems)
+  const handleLogout = $(() => {
+    logout()
+    navigate('/')
   })
 
   return (
@@ -92,7 +48,7 @@ export default component$(() => {
       <aside class="side-nav">
         <div class="side-nav__content">
           <Link href="/" aria-label="Site Overview" class="self-center mb-5">
-            <img src="/logo_wide.webp" alt="OST ESports Logo" class="h-14" />
+            <ImgLogoWide alt="OST ESports Logo" class="h-14 w-auto" />
           </Link>
           {navItems.map((item, index) => (
             <Link
@@ -107,7 +63,7 @@ export default component$(() => {
               <span class="ml-2">{item.label}</span>
             </Link>
           ))}
-          <button class="btn-outline mt-auto" onClick$={logout}>
+          <button class="btn-outline mt-auto" onClick$={handleLogout}>
             Ausloggen
           </button>
         </div>

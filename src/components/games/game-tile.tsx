@@ -2,7 +2,7 @@ import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import { Link } from '@builder.io/qwik-city'
 import type { Game } from '~/types'
 import styles from '~/css/games/games-tile.css?inline'
-import usePocketbase from '~/hooks/use-pocketbase'
+import pb from '~/services/pocketbase'
 
 export function random() {
   return Math.round(Math.random())
@@ -10,7 +10,6 @@ export function random() {
 
 export default component$(({ image, name, ...record }: Game) => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
 
   return (
     <section
@@ -21,7 +20,7 @@ export default component$(({ image, name, ...record }: Game) => {
         class="absolute top-0 left-0 h-full w-full rounded"
       >
         <img
-          src={pb.files.getUrl(record, image, { thumb: '350x350' })}
+          src={pb.files.getURL(record, image)}
           alt={name}
           class="games__tile-image"
         />

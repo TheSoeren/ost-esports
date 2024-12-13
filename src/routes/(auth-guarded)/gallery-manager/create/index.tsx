@@ -1,28 +1,22 @@
 import { $, component$, useContext } from '@builder.io/qwik'
-import Pocketbase from 'pocketbase'
-import { AuthContext } from '~/contexts/auth-context'
-import { Collection } from '~/types'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
 import GalleryForm from '~/components/gallery/gallery-form'
+import { createGallery } from '~/services/gallery-service'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: FormData) => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
-      if (!authUser.value) {
+      if (!pb.authStore.isValid || !pb.authStore.record) {
         throw new Error('Not authenticated!')
       }
 
-      values.append('creator', authUser.value.id)
-      const gallery = await qrlPb
-        .collection(Collection.GALLERIES)
-        .create(values)
+      values.append('creator', pb.authStore.record.id)
+      const gallery = await createGallery(values)
 
       enqueueSnackbar({
         type: 'success',
@@ -31,6 +25,7 @@ export default component$(() => {
       })
       navigate(`/gallery-manager/${gallery.id}`)
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Änderung fehlgeschlagen!',

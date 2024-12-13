@@ -1,41 +1,30 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import { routeLoader$, useNavigate } from '@builder.io/qwik-city'
 import type { NewsEntry } from '~/types'
-import { Collection } from '~/types'
-import Pocketbase from 'pocketbase'
-import { AuthContext } from '~/contexts/auth-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import type { FormStore } from '@modular-forms/qwik'
 import { reset } from '@modular-forms/qwik'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
+import {
+  deleteNewsEntry,
+  getNewsEntry,
+  updateNewsEntry,
+} from '~/services/news-service'
 
 export const useNewsEntry = routeLoader$<NewsEntry>(async (event) => {
-  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
-
-  const news = await pb
-    .collection(Collection.NEWS)
-    .getOne<NewsEntry>(event.params.id)
-
-  return structuredClone(news)
+  return getNewsEntry(event.params.id)
 })
 
 export default component$(() => {
   const newsEntry = useNewsEntry()
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(
     async (values: NewsFormSchema, form: FormStore<any, undefined>) => {
-      const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
       try {
-        if (!authUser.value) {
-          throw new Error('Not authenticated!')
-        }
-        await qrlPb
-          .collection(Collection.NEWS)
-          .update(newsEntry.value.id, values)
+        await updateNewsEntry(newsEntry.value.id, values)
         enqueueSnackbar({
           type: 'success',
           title: 'Newsartikel erfolgreich aktualisiert',
@@ -43,6 +32,7 @@ export default component$(() => {
         })
         reset(form, { initialValues: values })
       } catch (error: unknown) {
+        console.error(error)
         enqueueSnackbar({
           type: 'error',
           title: 'Änderung fehlgeschlagen!',
@@ -55,12 +45,9 @@ export default component$(() => {
   )
 
   const handleDelete$ = $(async () => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
     try {
-      if (!authUser.value) {
-        throw new Error('Not authenticated!')
-      }
-      await qrlPb.collection(Collection.NEWS).delete(newsEntry.value.id)
+      await deleteNewsEntry(newsEntry.value.id)
+
       enqueueSnackbar({
         type: 'success',
         title: 'Newsartikel erfolgreich gelöscht',
@@ -68,6 +55,7 @@ export default component$(() => {
       })
       navigate('/news-manager')
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Löschen fehlgeschlagen!',

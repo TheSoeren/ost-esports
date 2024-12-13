@@ -1,46 +1,42 @@
-import type { Signal } from '@builder.io/qwik'
-import { $, useSignal } from '@builder.io/qwik'
+import { $ } from '@builder.io/qwik'
+import { useLocation, useNavigate } from '@builder.io/qwik-city'
+import type { ListResult } from 'pocketbase'
 
 export interface PaginationReturn {
-  page: Signal<number>
-  perPage: Signal<number>
-  totalPages: Signal<number>
-  setTotalPages$(pages: number): void
   setPage$(pageNr: number): void
   nextPage$(): void
   previousPage$(): void
 }
 
-function usePagination(page: number, perPage: number) {
-  const pageSig = useSignal(page)
-  const perPageSig = useSignal(perPage)
-  const totalPages = useSignal(0)
+function usePagination({ page, totalPages }: ListResult<unknown>) {
+  const navigate = useNavigate()
+  const { url } = useLocation()
+  const queryParams = new URLSearchParams(url.search)
+
+  const updatePagination$ = $(() => {
+    navigate('?' + queryParams.toString(), { replaceState: true })
+  })
 
   const setPage$ = $((pageNr: number) => {
-    pageSig.value = pageNr
+    queryParams.set('page', String(pageNr))
+    updatePagination$()
   })
 
   const nextPage$ = $(() => {
-    if (pageSig.value < totalPages.value) {
-      pageSig.value++
+    if (page < totalPages) {
+      queryParams.set('page', String(page + 1))
+      updatePagination$()
     }
   })
 
   const previousPage$ = $(() => {
-    if (pageSig.value > 1) {
-      pageSig.value--
+    if (page > 1) {
+      queryParams.set('page', String(page - 1))
+      updatePagination$()
     }
   })
 
-  const setTotalPages$ = $((pages: number) => {
-    totalPages.value = pages
-  })
-
   return {
-    page: pageSig,
-    perPage: perPageSig,
-    totalPages: totalPages,
-    setTotalPages$,
     setPage$,
     nextPage$,
     previousPage$,

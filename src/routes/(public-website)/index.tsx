@@ -1,17 +1,9 @@
-import {
-  Resource,
-  component$,
-  useResource$,
-  useStylesScoped$,
-} from '@builder.io/qwik'
+import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
 import NewsTile from '~/components/news/news-tile'
-import NewsTileSkeleton from '~/components/news/news-tile-skeleton'
 import PlMatchList from '~/components/teams/league-of-legends/pl-match-list'
-import { Collection, type NewsEntry, type Team } from '~/types'
+import { type NewsEntry, type Team } from '~/types'
 import styles from '~/css/index.css?inline'
-import usePocketbase from '~/hooks/use-pocketbase'
-import PocketBase from 'pocketbase'
 import type { ResolvedGameSpecificData } from '~/data/teams/team-tile-mapping'
 import {
   getGameSpecificData,
@@ -19,47 +11,45 @@ import {
 } from '~/data/teams/team-tile-mapping'
 import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
 import ClubSummary from '~/components/club-summary'
+import { getLolTeams } from '~/services/team-service'
+import { getLatestNewsEntry } from '~/services/news-service'
 
-interface UseTeamFetchingResponse {
-  teams: Team[]
-  gameSpecificData: ResolvedGameSpecificData
+interface UseDataResponse {
+  teamResource: {
+    teams: Team[]
+    gameSpecificData: ResolvedGameSpecificData
+  }
+  newsEntry: NewsEntry
+}
+
+export async function getTeamData() {
+  const teams = await getLolTeams()
+  const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
+
+  return { teams, gameSpecificData }
 }
 
 /*
- * If you generalize this to fetch game specific data about all teams (not only lol)
+ * If you generalize this to fetch game specific data about all teams (not only LoL)
  * remember to add a condition to the rendering of <PlMatchList/>.
  */
-export const useTeamData = routeLoader$<UseTeamFetchingResponse>(async () => {
-  const pb = new PocketBase(import.meta.env.VITE_API_URL)
+export const useData = routeLoader$<UseDataResponse>(async () => {
+  const [teamResource, newsEntry] = await Promise.all([
+    getTeamData(),
+    getLatestNewsEntry(),
+  ])
 
-  const teams = await pb.collection(Collection.TEAMS).getFullList<Team>({
-    filter: `game="${LEAGUE_OF_LEGENDS}"`,
-    expand: 'membership(team).user',
-    $cancelKey: LEAGUE_OF_LEGENDS,
-  })
-
-  const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
-
-  return structuredClone({ teams, gameSpecificData })
+  return { teamResource, newsEntry }
 })
 
 export default component$(() => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
 
-  const teamResource = useTeamData()
-  const newsResource = useResource$<NewsEntry>(async () => {
-    const response = await pb
-      .collection(Collection.NEWS)
-      .getFirstListItem<NewsEntry>('', {
-        sort: '-publishDate',
-      })
-
-    return structuredClone(response)
-  })
+  const data = useData()
+  const { teamResource, newsEntry } = data.value
 
   const renderMatchSection = () => {
-    const data = teamResource.value.gameSpecificData
+    const data = teamResource.gameSpecificData
 
     if (isLeagueOfLegendsData(data)) {
       const teamsWithMatches = data.plTeamList.filter(
@@ -87,12 +77,7 @@ export default component$(() => {
   return (
     <article class="home-page">
       <ClubSummary />
-      <Resource
-        value={newsResource}
-        onPending={() => <NewsTileSkeleton />}
-        onRejected={(error) => <>Error: {error.message}</>}
-        onResolved={(news) => <NewsTile {...news} />}
-      />
+      <NewsTile {...newsEntry} />
       <div>{renderMatchSection()}</div>
     </article>
   )

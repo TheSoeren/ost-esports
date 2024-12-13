@@ -2,13 +2,12 @@ import { $, Resource, component$, useResource$ } from '@builder.io/qwik'
 import type { FormStore } from '@modular-forms/qwik'
 import { setValue, useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
-import usePocketbase from '~/hooks/use-pocketbase'
-import type { NewsEntry, User } from '~/types'
-import { Collection } from '~/types'
+import type { NewsEntry } from '~/types'
 import { Checkbox, Select, TextInput } from '../form'
 import type { SelectValue } from '../form/select'
 import TextArea from '../form/text-area'
 import Wysiwyg from '../form/wysiwyg'
+import { getUsers } from '~/services/user-service'
 
 export const newsSchema = z.object({
   title: z
@@ -35,7 +34,6 @@ interface NewsFormProps {
 
 export default component$(
   ({ newsEntry, edit, onSubmit$, onDelete$ }: NewsFormProps) => {
-    const pb = usePocketbase()
     const initialValues = newsEntry
       ? { ...newsEntry, publishDate: newsEntry.publishDate.split(' ')[0] }
       : {
@@ -48,11 +46,11 @@ export default component$(
         }
 
     const usersResource = useResource$<SelectValue[]>(async () => {
-      if (!edit) return []
+      if (!edit) {
+        return []
+      }
 
-      const response: User[] = await pb
-        .collection(Collection.USERS)
-        .getFullList()
+      const response = await getUsers()
 
       return response.map((user) => ({
         label: user.gamertag ? user.gamertag : user.username,

@@ -1,27 +1,31 @@
+import type { Signal } from '@builder.io/qwik'
 import {
   $,
   component$,
-  useContext,
   useSignal,
   useStyles$,
   useTask$,
 } from '@builder.io/qwik'
 import { Link, useLocation } from '@builder.io/qwik-city'
 import Burger from '~/components/elements/burger'
-import { AuthContext } from '~/contexts/auth-context'
 import styles from '~/css/layout/main-nav.css?inline'
 import useClickOutside from '~/hooks/use-click-outside'
 import type { NavItem } from '~/types/navigation'
+import ImgLogoWide from '~/media/logo_wide.webp?jsx'
+import ImgDiscordWide from '~/media/discord_wide.svg?jsx'
 
 export const navItems: NavItem[] = [
   { label: 'News', href: '/news' },
-  { label: 'Teams', href: '/games' },
+  { label: 'Games', href: '/games' },
   { label: 'Galerie', href: '/gallery' },
 ]
 
-export default component$(() => {
+export interface MainNavProps {
+  isAuthenticated: Signal<boolean>
+}
+
+export default component$(({ isAuthenticated }: MainNavProps) => {
   useStyles$(styles)
-  const { authenticated } = useContext(AuthContext)
   const location = useLocation()
   const isOpen = useSignal(false)
   const navRef = useSignal<HTMLElement>()
@@ -48,7 +52,7 @@ export default component$(() => {
     <section class="main-nav" ref={navRef}>
       <div class="brand-container">
         <Link href="/" aria-label="Site Overview" class="shrink-0">
-          <img src="/logo_wide.webp" alt="OST ESports Logo" class="logo h-14" />
+          <ImgLogoWide alt="OST ESports Logo" class="logo h-14 w-auto" />
         </Link>
         <button
           class="menu-toggle"
@@ -64,7 +68,7 @@ export default component$(() => {
           aria-label="Additional Links"
         >
           <a href="https://discord.gg/UAWGz7gg5A" target="_blank" class="block">
-            <img src="/discord-wide.svg" alt="join discord" />
+            <ImgDiscordWide alt="join discord" />
           </a>
         </div>
         <nav
@@ -83,7 +87,7 @@ export default component$(() => {
             </Link>
           ))}
 
-          {authenticated.value ? (
+          {isAuthenticated.value ? (
             <Link
               href="/profile"
               class={[

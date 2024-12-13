@@ -53,7 +53,9 @@ export default component$(
                 (m) => m.user === player.id
               )
 
-              if (!membership) return null
+              if (!membership) {
+                return null
+              }
 
               return (
                 <PlayerInfo

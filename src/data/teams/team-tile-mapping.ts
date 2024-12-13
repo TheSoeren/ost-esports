@@ -30,7 +30,7 @@ export interface LoLSpecificData {
   plTeamList: PlTeamDetailed[]
 }
 
-export type ResolvedGameSpecificData = LoLSpecificData | {} // | ValorantSpecificData etc...
+export type ResolvedGameSpecificData = LoLSpecificData | Record<string, never> // | ValorantSpecificData etc...
 type GameDataFunction = (teams: Team[]) => Promise<ResolvedGameSpecificData>
 type DataMapping = Record<string, GameDataFunction>
 

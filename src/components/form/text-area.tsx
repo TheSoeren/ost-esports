@@ -3,8 +3,6 @@ import {
   useSignal,
   useTask$,
   type PropFunction,
-  type QwikChangeEvent,
-  type QwikFocusEvent,
 } from '@builder.io/qwik'
 import InputError from './input-error'
 import InputLabel from './input-label'
@@ -15,18 +13,8 @@ interface TextAreaProps {
   name: string
   value: string | undefined
   onInput$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
-  onChange$: PropFunction<
-    (
-      event: QwikChangeEvent<HTMLTextAreaElement>,
-      element: HTMLTextAreaElement
-    ) => void
-  >
-  onBlur$: PropFunction<
-    (
-      event: QwikFocusEvent<HTMLTextAreaElement>,
-      element: HTMLTextAreaElement
-    ) => void
-  >
+  onChange$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
+  onBlur$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
   placeholder?: string
   required?: boolean
   class?: string

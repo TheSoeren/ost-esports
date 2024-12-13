@@ -3,20 +3,20 @@ import { useOnDocument, $ } from '@builder.io/qwik'
 
 function useClickOutside(
   ref: Signal<HTMLElement | undefined>,
-  onClickOut: QRL<() => void>
+  callback: QRL<(event: MouseEvent) => void>
 ) {
-  useOnDocument(
-    'click',
-    $((event) => {
-      if (!ref.value) {
-        return
-      }
-      const target = event.target as HTMLElement
-      if (!ref.value.contains(target)) {
-        onClickOut()
-      }
-    })
-  )
+  const onClick = $((event: MouseEvent) => {
+    if (!ref.value) {
+      return
+    }
+
+    const target = event.target as HTMLElement
+    if (!ref.value.contains(target)) {
+      callback(event)
+    }
+  })
+
+  useOnDocument('click', onClick)
 }
 
 export default useClickOutside

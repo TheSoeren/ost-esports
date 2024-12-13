@@ -9,12 +9,11 @@ import {
   useVisibleTask$,
 } from '@builder.io/qwik'
 import { required, reset, useForm } from '@modular-forms/qwik'
-import usePocketbase from '~/hooks/use-pocketbase'
-import type { Gallery, User } from '~/types'
-import { Collection } from '~/types'
+import type { Gallery } from '~/types'
 import { Checkbox, Select, TextInput } from '../form'
 import FileInput from '../form/file-input'
 import type { SelectValue } from '../form/select'
+import { getUsers } from '~/services/user-service'
 
 export type GalleryFormSchema = {
   name: string
@@ -33,14 +32,12 @@ interface GalleryFormProps {
 
 export default component$(
   ({ gallery, edit, onSubmit$, onDelete$ }: GalleryFormProps) => {
-    const pb = usePocketbase()
-
     const usersResource = useResource$<SelectValue[]>(async () => {
-      if (!edit) return []
+      if (!edit) {
+        return []
+      }
 
-      const response: User[] = await pb
-        .collection(Collection.USERS)
-        .getFullList()
+      const response = await getUsers()
 
       return response.map((user) => ({
         label: user.gamertag ? user.gamertag : user.username,
@@ -69,11 +66,11 @@ export default component$(
       const coverImageRes = await fetch(gallery.coverImage)
       const coverImage = await coverImageRes.blob()
 
-      const imagesRes = await Promise.all(
+      const imagesResponse = await Promise.all(
         gallery.images.map((imageUrl) => fetch(imageUrl))
       )
       const images = await Promise.all(
-        imagesRes.map((imageRes) => imageRes.blob())
+        imagesResponse.map((imageResponse) => imageResponse.blob())
       )
 
       reset(galleryForm, {
