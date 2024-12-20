@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+import typography from '@tailwindcss/typography'
+import preline from 'preline/plugin'
+
+export default {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}', 'node_modules/preline/dist/*.js'],
   theme: {
     extend: {
@@ -26,8 +29,8 @@ module.exports = {
     animation: ['motion-safe'],
   },
   plugins: [
-    require('@tailwindcss/typography'),
-    require('preline/plugin'),
+    typography,
+    preline,
     // expose colors as css variables
     function ({ addBase, theme }) {
       function extractColorVars(colorObj, colorGroup = '') {
