@@ -5,8 +5,8 @@ import { routeLoader$, type DocumentHead } from '@builder.io/qwik-city'
 import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { getVisibleGames } from '~/services/games-service'
 
-export const useGames = routeLoader$(async () => {
-  const pb = getEdgePbInstance()
+export const useGames = routeLoader$(async ({ cookie }) => {
+  const pb = getEdgePbInstance(cookie)
   return getVisibleGames(pb)
 })
 

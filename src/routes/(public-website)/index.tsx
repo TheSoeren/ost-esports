@@ -35,8 +35,8 @@ export async function getTeamData(pb: PocketBase) {
  * If you generalize this to fetch game specific data about all teams (not only LoL)
  * remember to add a condition to the rendering of <PlMatchList/>.
  */
-export const useData = routeLoader$<UseDataResponse>(async () => {
-  const pb = getEdgePbInstance()
+export const useData = routeLoader$<UseDataResponse>(async ({ cookie }) => {
+  const pb = getEdgePbInstance(cookie)
 
   const [teamResource, newsEntry] = await Promise.all([
     getTeamData(pb),

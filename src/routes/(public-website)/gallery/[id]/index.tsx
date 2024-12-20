@@ -10,8 +10,8 @@ import { getEdgePbInstance } from '~/services/pocketbase-service'
 import pb from '~/data/pocketbase'
 import { getGallery } from '~/services/gallery-service'
 
-export const useGallery = routeLoader$(async ({ params }) => {
-  const pb = getEdgePbInstance()
+export const useGallery = routeLoader$(async ({ params, cookie }) => {
+  const pb = getEdgePbInstance(cookie)
   return getGallery(params.id, pb)
 })
 

@@ -22,20 +22,22 @@ interface UseTeamData {
   game: Game
 }
 
-export const useTeamData = routeLoader$<UseTeamData>(async ({ params }) => {
-  const pb = getEdgePbInstance()
+export const useTeamData = routeLoader$<UseTeamData>(
+  async ({ params, cookie }) => {
+    const pb = getEdgePbInstance(cookie)
 
-  const gamePromise = getGame(params.id, pb)
-  const teams = await getTeamsByGameId(params.id, pb)
-  const gameSpecificDataPromise = getGameSpecificData(teams, params.id)
+    const gamePromise = getGame(params.id, pb)
+    const teams = await getTeamsByGameId(params.id, pb)
+    const gameSpecificDataPromise = getGameSpecificData(teams, params.id)
 
-  const [game, gameSpecificData] = await Promise.all([
-    gamePromise,
-    gameSpecificDataPromise,
-  ])
+    const [game, gameSpecificData] = await Promise.all([
+      gamePromise,
+      gameSpecificDataPromise,
+    ])
 
-  return { teams, game, gameSpecificData }
-})
+    return { teams, game, gameSpecificData }
+  }
+)
 
 export default component$(() => {
   useStylesScoped$(styles)

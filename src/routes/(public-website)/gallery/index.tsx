@@ -8,12 +8,14 @@ import type { ListResult } from 'pocketbase'
 import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { getGalleries } from '~/services/gallery-service'
 
-export const useGalleries = routeLoader$<ListResult<Gallery>>(({ query }) => {
-  const pb = getEdgePbInstance()
-  const page = Number(query.get('page')) || 1
-  const perPage = Number(query.get('perPage')) || 30
-  return getGalleries(page, perPage, pb)
-})
+export const useGalleries = routeLoader$<ListResult<Gallery>>(
+  ({ query, cookie }) => {
+    const pb = getEdgePbInstance(cookie)
+    const page = Number(query.get('page')) || 1
+    const perPage = Number(query.get('perPage')) || 30
+    return getGalleries(page, perPage, pb)
+  }
+)
 
 export default component$(() => {
   useStylesScoped$(styles)

@@ -5,8 +5,9 @@ import Header from '~/components/layout/header'
 import { getEdgePbInstance } from '~/services/pocketbase-service'
 
 export const useAuth = routeLoader$(async ({ cookie }) => {
+  // TODO: cookie never contains pb_auth when deployed to vercel
   const pb = getEdgePbInstance(cookie)
-  return pb.authStore.isValid || Boolean(pb.authStore.token)
+  return pb.authStore.isValid
 })
 
 export default component$(() => {
