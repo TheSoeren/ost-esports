@@ -14,6 +14,7 @@ import ClubSummary from '~/components/club-summary'
 import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { getLolTeams } from '~/services/team-service'
 import { getLatestNewsEntry } from '~/services/news-service'
+import type PocketBase from 'pocketbase'
 
 interface UseDataResponse {
   teamResource: {
@@ -23,8 +24,8 @@ interface UseDataResponse {
   newsEntry: NewsEntry
 }
 
-export async function getTeamData() {
-  const teams = await getLolTeams()
+export async function getTeamData(pb: PocketBase) {
+  const teams = await getLolTeams(pb)
   const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
 
   return { teams, gameSpecificData }
@@ -38,8 +39,8 @@ export const useData = routeLoader$<UseDataResponse>(async () => {
   const pb = getEdgePbInstance()
 
   const [teamResource, newsEntry] = await Promise.all([
-    getTeamData(),
-    getLatestNewsEntry(),
+    getTeamData(pb),
+    getLatestNewsEntry(pb),
   ])
 
   return { teamResource, newsEntry }
