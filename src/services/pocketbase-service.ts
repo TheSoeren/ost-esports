@@ -5,6 +5,7 @@ import { loadAuthStoreFromCookie } from './auth-service'
 export function getEdgePbInstance(cookie?: Cookie) {
   const pb = new PocketBase(import.meta.env.VITE_API_URL)
 
+  console.error(cookie)
   if (cookie) {
     loadAuthStoreFromCookie(cookie, pb)
   }

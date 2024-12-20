@@ -6,7 +6,6 @@ import { getEdgePbInstance } from '~/services/pocketbase-service'
 
 export const useAuth = routeLoader$(async ({ cookie }) => {
   const pb = getEdgePbInstance(cookie)
-  console.error(pb.authStore)
   return pb.authStore.isValid || Boolean(pb.authStore.token)
 })
 
