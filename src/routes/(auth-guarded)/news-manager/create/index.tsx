@@ -1,5 +1,6 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import { SnackbarContext } from '~/contexts/snackbar-context'
+import type { DocumentHead } from '@builder.io/qwik-city'
 import { useNavigate } from '@builder.io/qwik-city'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
@@ -46,3 +47,7 @@ export default component$(() => {
     </section>
   )
 })
+
+export const head: DocumentHead = {
+  title: 'Create News Entry',
+}

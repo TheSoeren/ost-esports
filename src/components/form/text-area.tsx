@@ -1,20 +1,18 @@
-import {
-  component$,
-  useSignal,
-  useTask$,
-  type PropFunction,
-} from '@builder.io/qwik'
+import { component$, useSignal, useTask$ } from '@builder.io/qwik'
 import InputError from './input-error'
 import InputLabel from './input-label'
+import type {
+  FieldElementProps,
+  FieldPath,
+  FieldValues,
+} from '@modular-forms/qwik'
 
-interface TextAreaProps {
+interface TextAreaProps<
+  TFieldValues extends FieldValues,
+  TFieldName extends FieldPath<TFieldValues>,
+> extends FieldElementProps<TFieldValues, TFieldName> {
   id?: string
-  ref: PropFunction<(element: Element) => void>
-  name: string
   value: string | undefined
-  onInput$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
-  onChange$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
-  onBlur$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
   placeholder?: string
   required?: boolean
   class?: string
@@ -28,7 +26,15 @@ interface TextAreaProps {
 }
 
 export default component$(
-  ({ label, value, error, ...props }: TextAreaProps) => {
+  <
+    TFieldValues extends FieldValues,
+    TFieldName extends FieldPath<TFieldValues>,
+  >({
+    label,
+    value,
+    error,
+    ...props
+  }: TextAreaProps<TFieldValues, TFieldName>) => {
     const { name, required } = props
 
     const input = useSignal<string>()

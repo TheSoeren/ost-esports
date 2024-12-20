@@ -1,4 +1,10 @@
-import { $, Resource, component$, useResource$ } from '@builder.io/qwik'
+import {
+  $,
+  Resource,
+  component$,
+  useResource$,
+  useSignal,
+} from '@builder.io/qwik'
 import type { FormStore } from '@modular-forms/qwik'
 import { setValue, useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
@@ -9,7 +15,7 @@ import TextArea from '../form/text-area'
 import Wysiwyg from '../form/wysiwyg'
 import { getUsers } from '~/services/user-service'
 
-export const newsSchema = z.object({
+export const NewsSchema = z.object({
   title: z
     .string()
     .min(5, 'Titel muss mindestens 5 Zeichen lang sein!')
@@ -17,10 +23,10 @@ export const newsSchema = z.object({
   teaser: z.string().max(500, 'Teaser kann maximal 500 Zeichen lang sein!'),
   content: z.string().min(1, 'Bericht darf nicht leer sein!'),
   author: z.string().optional(),
-  publishDate: z.string().min(1, 'Publizierdatum muss angegeben werden!'),
+  publishDate: z.string().min(1, 'Publikationsdatum muss angegeben werden!'),
   hidden: z.boolean(),
 })
-export type NewsFormSchema = z.infer<typeof newsSchema>
+export type NewsFormSchema = z.infer<typeof NewsSchema>
 
 interface NewsFormProps {
   newsEntry?: NewsEntry
@@ -32,18 +38,25 @@ interface NewsFormProps {
   onDelete$?(): void
 }
 
+function getInitialValues(newsEntry: NewsEntry | undefined) {
+  if (newsEntry) {
+    newsEntry.publishDate = newsEntry.publishDate.split(' ')[0]
+    return newsEntry
+  }
+
+  return {
+    title: '',
+    teaser: '',
+    content: '',
+    author: '',
+    publishDate: '',
+    hidden: false,
+  }
+}
+
 export default component$(
   ({ newsEntry, edit, onSubmit$, onDelete$ }: NewsFormProps) => {
-    const initialValues = newsEntry
-      ? { ...newsEntry, publishDate: newsEntry.publishDate.split(' ')[0] }
-      : {
-          title: '',
-          teaser: '',
-          content: '',
-          author: '',
-          publishDate: '',
-          hidden: false,
-        }
+    const initialValues = useSignal(getInitialValues(newsEntry))
 
     const usersResource = useResource$<SelectValue[]>(async () => {
       if (!edit) {
@@ -59,10 +72,8 @@ export default component$(
     })
 
     const [newsForm, { Form, Field }] = useForm<NewsFormSchema>({
-      loader: {
-        value: initialValues,
-      },
-      validate: zodForm$(newsSchema),
+      loader: initialValues,
+      validate: zodForm$(NewsSchema),
     })
 
     const submitHandler$ = $((values: NewsFormSchema) => {
@@ -83,13 +94,16 @@ export default component$(
             />
           )}
         </Field>
-        {edit && (
-          <Field name="author" type="string">
-            {(field, props) => (
-              <Resource
-                value={usersResource}
-                onRejected={(error) => <>Error: {error.message}</>}
-                onResolved={(users) => (
+        {/* NOTE: */}
+        {/* Must use `edit` check inside onResolved. Otherwise the page does not load properly */}
+        {/* on direct access. */}
+        <Field name="author" type="string">
+          {(field, props) => (
+            <Resource
+              value={usersResource}
+              onRejected={(error) => <>Error: {error.message}</>}
+              onResolved={(users) =>
+                edit && (
                   <Select
                     {...props}
                     label="Author"
@@ -98,11 +112,11 @@ export default component$(
                     options={users}
                     required
                   />
-                )}
-              />
-            )}
-          </Field>
-        )}
+                )
+              }
+            />
+          )}
+        </Field>
         <Field name="teaser">
           {(field, props) => (
             <TextArea
@@ -121,7 +135,7 @@ export default component$(
             <Wysiwyg
               {...props}
               onChange$={(data) => {
-                setValue(newsForm, 'content', data)
+                setValue(newsForm, 'content', data.type)
               }}
               label="Bericht"
               value={field.value}

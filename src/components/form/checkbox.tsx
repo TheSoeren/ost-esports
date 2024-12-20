@@ -1,15 +1,17 @@
 import { component$ } from '@builder.io/qwik'
 import InputError from './input-error'
-import { type PropFunction } from '@builder.io/qwik'
+import type {
+  FieldElementProps,
+  FieldPath,
+  FieldValues,
+} from '@modular-forms/qwik'
 
-interface CheckboxProps {
-  ref: PropFunction<(element: Element) => void>
-  name: string
+interface CheckboxProps<
+  TFieldValues extends FieldValues,
+  TFieldName extends FieldPath<TFieldValues>,
+> extends FieldElementProps<TFieldValues, TFieldName> {
   value?: string
   checked?: boolean
-  onInput$: PropFunction<(event: Event, element: HTMLInputElement) => void>
-  onChange$: PropFunction<(event: Event, element: HTMLInputElement) => void>
-  onBlur$: PropFunction<(event: Event, element: HTMLInputElement) => void>
   required?: boolean
   class?: string
   label: string
@@ -17,7 +19,15 @@ interface CheckboxProps {
 }
 
 export default component$(
-  ({ label, error, class: className, ...props }: CheckboxProps) => {
+  <
+    TFieldValues extends FieldValues,
+    TFieldName extends FieldPath<TFieldValues>,
+  >({
+    label,
+    error,
+    class: className,
+    ...props
+  }: CheckboxProps<TFieldValues, TFieldName>) => {
     const { name, required } = props
     return (
       <div class={['pl-2', className]}>
