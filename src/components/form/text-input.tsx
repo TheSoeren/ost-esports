@@ -1,29 +1,18 @@
-import {
-  component$,
-  useSignal,
-  useTask$,
-  type PropFunction,
-  type QwikChangeEvent,
-  type QwikFocusEvent,
-} from '@builder.io/qwik'
+import { component$, useSignal, useTask$ } from '@builder.io/qwik'
 import InputError from './input-error'
 import InputLabel from './input-label'
+import type {
+  FieldElementProps,
+  FieldPath,
+  FieldValues,
+} from '@modular-forms/qwik'
 
-interface TextInputProps {
-  ref: PropFunction<(element: Element) => void>
+interface TextInputProps<
+  TFieldValues extends FieldValues,
+  TFieldName extends FieldPath<TFieldValues>,
+> extends FieldElementProps<TFieldValues, TFieldName> {
   type: 'text' | 'email' | 'tel' | 'password' | 'url' | 'number' | 'date'
-  name: string
   value: string | number | undefined
-  onInput$: PropFunction<(event: Event, element: HTMLInputElement) => void>
-  onChange$: PropFunction<
-    (
-      event: QwikChangeEvent<HTMLInputElement>,
-      element: HTMLInputElement
-    ) => void
-  >
-  onBlur$: PropFunction<
-    (event: QwikFocusEvent<HTMLInputElement>, element: HTMLInputElement) => void
-  >
   placeholder?: string
   required?: boolean
   class?: string
@@ -33,7 +22,15 @@ interface TextInputProps {
 }
 
 export default component$(
-  ({ label, value, error, ...props }: TextInputProps) => {
+  <
+    TFieldValues extends FieldValues,
+    TFieldName extends FieldPath<TFieldValues>,
+  >({
+    label,
+    value,
+    error,
+    ...props
+  }: TextInputProps<TFieldValues, TFieldName>) => {
     const { name, required } = props
 
     const input = useSignal<string | number>()

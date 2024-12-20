@@ -1,28 +1,24 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import type { TeamFormSchema } from '~/components/teams/form/team-form'
 import TeamForm from '~/components/teams/form/team-form'
-import Pocketbase from 'pocketbase'
-import { AuthContext } from '~/contexts/AuthContext'
-import { Collection } from '~/types'
-import { SnackbarContext } from '~/contexts/SnackbarContext'
+import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
+import { createTeam } from '~/services/team-service'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: TeamFormSchema) => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
-      if (!authUser.value) {
+      if (!pb.authStore.isValid || !pb.authStore.record) {
         throw new Error('Not authenticated!')
       }
 
-      const team = await qrlPb.collection(Collection.TEAMS).create({
+      const team = await createTeam({
         ...values,
-        captain: authUser.value.id,
+        captain: pb.authStore.record.id,
       })
 
       enqueueSnackbar({
@@ -32,6 +28,7 @@ export default component$(() => {
       })
       navigate(`/team-manager/${team.id}`)
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Änderung fehlgeschlagen!',

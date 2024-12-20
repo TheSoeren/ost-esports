@@ -1,38 +1,24 @@
-import {
-  component$,
-  useSignal,
-  useTask$,
-  type PropFunction,
-  type QwikChangeEvent,
-  type QwikFocusEvent,
-} from '@builder.io/qwik'
+import { component$, useSignal, useTask$ } from '@builder.io/qwik'
 import InputError from './input-error'
 import InputLabel from './input-label'
 import { FaIcon } from 'qwik-fontawesome'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import type {
+  FieldElementProps,
+  FieldPath,
+  FieldValues,
+} from '@modular-forms/qwik'
 
 export interface SelectValue {
   label: string
   value: string
 }
 
-interface SelectProps {
-  ref: PropFunction<(element: Element) => void>
-  name: string
+interface SelectProps<
+  TFieldValues extends FieldValues,
+  TFieldName extends FieldPath<TFieldValues>,
+> extends FieldElementProps<TFieldValues, TFieldName> {
   value: string | string[] | null | undefined
-  onInput$: PropFunction<(event: Event, element: HTMLSelectElement) => void>
-  onChange$: PropFunction<
-    (
-      event: QwikChangeEvent<HTMLSelectElement>,
-      element: HTMLSelectElement
-    ) => void
-  >
-  onBlur$: PropFunction<
-    (
-      event: QwikFocusEvent<HTMLSelectElement>,
-      element: HTMLSelectElement
-    ) => void
-  >
   options: SelectValue[]
   multiple?: boolean
   size?: number
@@ -49,7 +35,16 @@ interface SelectProps {
  * entry requirements.
  */
 export default component$(
-  ({ value, options, label, error, ...props }: SelectProps) => {
+  <
+    TFieldValues extends FieldValues,
+    TFieldName extends FieldPath<TFieldValues>,
+  >({
+    value,
+    options,
+    label,
+    error,
+    ...props
+  }: SelectProps<TFieldValues, TFieldName>) => {
     const { name, required, multiple, placeholder } = props
 
     // Create computed value of selected values
@@ -59,8 +54,8 @@ export default component$(
       values.value = Array.isArray(value)
         ? value
         : value && typeof value === 'string'
-        ? [value]
-        : []
+          ? [value]
+          : []
     })
 
     return (

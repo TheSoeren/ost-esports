@@ -1,25 +1,21 @@
-import type { NoSerialize } from '@builder.io/qwik'
 import {
   $,
   Resource,
   component$,
-  noSerialize,
   useResource$,
   useSignal,
-  useVisibleTask$,
 } from '@builder.io/qwik'
 import { required, reset, useForm } from '@modular-forms/qwik'
-import usePocketbase from '~/hooks/usePocketbase'
-import type { Gallery, User } from '~/types'
-import { Collection } from '~/types'
+import type { Gallery } from '~/types'
 import { Checkbox, Select, TextInput } from '../form'
 import FileInput from '../form/file-input'
 import type { SelectValue } from '../form/select'
+import { getUsers } from '~/services/user-service'
 
 export type GalleryFormSchema = {
   name: string
-  coverImage: NoSerialize<File | Blob>
-  images: NoSerialize<(File | Blob)[]>
+  coverImage: string
+  images: string[]
   creator: string
   hidden: boolean
 }
@@ -32,15 +28,13 @@ interface GalleryFormProps {
 }
 
 export default component$(
-  ({ gallery, edit, onSubmit$, onDelete$ }: GalleryFormProps) => {
-    const pb = usePocketbase()
-
+  ({ edit, onSubmit$, onDelete$ }: GalleryFormProps) => {
     const usersResource = useResource$<SelectValue[]>(async () => {
-      if (!edit) return []
+      if (!edit) {
+        return []
+      }
 
-      const response: User[] = await pb
-        .collection(Collection.USERS)
-        .getFullList()
+      const response = await getUsers()
 
       return response.map((user) => ({
         label: user.gamertag ? user.gamertag : user.username,
@@ -50,8 +44,8 @@ export default component$(
 
     const initialValues = {
       name: '',
-      coverImage: undefined,
-      images: noSerialize([]),
+      coverImage: '',
+      images: [],
       creator: '',
       hidden: false,
     }
@@ -61,42 +55,18 @@ export default component$(
       loader: formLoader,
     })
 
-    useVisibleTask$(async () => {
-      if (!gallery) {
-        return
-      }
-
-      const coverImageRes = await fetch(gallery.coverImage)
-      const coverImage = await coverImageRes.blob()
-
-      const imagesRes = await Promise.all(
-        gallery.images.map((imageUrl) => fetch(imageUrl))
-      )
-      const images = await Promise.all(
-        imagesRes.map((imageRes) => imageRes.blob())
-      )
-
-      reset(galleryForm, {
-        initialValues: {
-          ...gallery,
-          coverImage: noSerialize(coverImage),
-          images: noSerialize(images),
-        },
-      })
-    })
-
     const submitHandler$ = $((values: GalleryFormSchema) => {
       const formData = new FormData()
-      formData.append('coverImage', values.coverImage as Blob)
+      formData.append('coverImage', values.coverImage)
       formData.append('name', values.name)
       formData.append('hidden', values.hidden.toString())
 
-      const newUploads = values.images!.some((image) => image instanceof File)
-      if (newUploads) {
-        values.images!.forEach((image) => {
-          formData.append('images', image as Blob)
-        })
-      }
+      // const newUploads = values.images!.some((image) => image instanceof File)
+      // if (newUploads) {
+      //   values.images!.forEach((image) => {
+      //     formData.append('images', image as Blob)
+      //   })
+      // }
 
       if (edit) {
         formData.append('creator', values.creator)
@@ -111,7 +81,7 @@ export default component$(
         <Field
           name="name"
           type="string"
-          validate={[required('Galeriename darf nicht leer sein!')]}
+          validate={[required<string>('Galeriename darf nicht leer sein!')]}
         >
           {(field, props) => (
             <TextInput
@@ -146,8 +116,8 @@ export default component$(
         )}
         <Field
           name="coverImage"
-          type="File"
-          validate={[required('Titelbild darf nicht leer sein!')]}
+          type="string"
+          validate={[required<string>('Titelbild darf nicht leer sein!')]}
         >
           {(field, props) => (
             <FileInput
@@ -159,7 +129,8 @@ export default component$(
             />
           )}
         </Field>
-        <Field name="images" type="File[]">
+        {/* TODO: */}
+        <Field name="images" type="string[]">
           {(field, props) => (
             <FileInput
               {...props}

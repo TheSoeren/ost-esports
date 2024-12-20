@@ -1,44 +1,40 @@
-import { component$, useSignal, useStylesScoped$ } from '@builder.io/qwik'
+import { $, component$, useSignal, useStylesScoped$ } from '@builder.io/qwik'
+import type { DocumentHead } from '@builder.io/qwik-city'
 import { routeLoader$ } from '@builder.io/qwik-city'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
-import Pocketbase from 'pocketbase'
 import BackButton from '~/components/elements/back-button'
 import IconButton from '~/components/elements/icon-button'
 import Modal from '~/components/elements/modal'
 import styles from '~/css/gallery/gallery-images.css?inline'
-import usePocketbase from '~/hooks/usePocketbase'
-import type { Gallery } from '~/types'
-import { Collection } from '~/types'
+import { getGallery } from '~/services/gallery-service'
+import pb from '~/services/pocketbase'
 
-export function circularSubtract(value: number, length: number) {
-  return (value + length - 1) % length
-}
-
-export function circularAdd(value: number, length: number) {
-  return (value + 1) % length
-}
-
-export const useGallery = routeLoader$<Gallery>(async (event) => {
-  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
-
-  const galleries = await pb
-    .collection(Collection.GALLERIES)
-    .getOne<Gallery>(event.params.id)
-
-  return structuredClone(galleries)
+export const useGallery = routeLoader$(async ({ params }) => {
+  return getGallery(params.id)
 })
 
 export default component$(() => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
-  const {
-    value: { images, ...galleryObject },
-  } = useGallery()
-  const modalImage = useSignal(0)
 
-  const getImageUrl = (image: string) => {
-    return pb.files.getUrl(galleryObject, image)
+  const gallery = useGallery()
+  const images = gallery.value.images
+
+  const imageIndex = useSignal(0)
+  const imageSource = useSignal('')
+
+  const getPreviewImageUrl = (image: string) => {
+    return pb.files.getURL(gallery.value, image, { thumb: '300x300' })
   }
+
+  const getImageUrl = $((image: string) => {
+    return pb.files.getURL(gallery.value, image)
+  })
+
+  const setModalImage = $(async (index: number) => {
+    const circularIndex = (index + images.length) % images.length
+    imageSource.value = await getImageUrl(images[circularIndex])
+    imageIndex.value = circularIndex
+  })
 
   return (
     <article>
@@ -46,41 +42,53 @@ export default component$(() => {
       <div class="gallery-images__container">
         {images.map((galleryImage, index) => (
           <img
+            width={300}
+            height={300}
             key={galleryImage}
             alt={galleryImage}
             class="gallery-images__image"
-            src={getImageUrl(galleryImage)}
-            onClick$={() => (modalImage.value = index)}
-            data-hs-overlay="#lightbox"
+            src={getPreviewImageUrl(galleryImage)}
+            onClick$={() => setModalImage(index)}
+            data-hs-overlay="#gallery-lightbox"
           />
         ))}
-        <Modal id="lightbox">
-          <div class="flex justify-around">
-            <IconButton
-              icon={faAngleLeft}
-              class="w-full rounded-none rounded-tl"
-              onClick$={() => {
-                modalImage.value = circularSubtract(
-                  modalImage.value,
-                  images.length
-                )
-              }}
-            />
-            <IconButton
-              icon={faAngleRight}
-              class="w-full rounded-none rounded-tr"
-              onClick$={() => {
-                modalImage.value = circularAdd(modalImage.value, images.length)
-              }}
-            />
-          </div>
-          <img
-            alt={images[modalImage.value]}
-            src={getImageUrl(images[modalImage.value])}
-            class="max-h-screen"
-          />
-        </Modal>
       </div>
+
+      <Modal id="gallery-lightbox">
+        <div class="flex justify-around">
+          <IconButton
+            icon={faAngleLeft}
+            class="w-full rounded-none rounded-tl"
+            onClick$={() => setModalImage(imageIndex.value - 1)}
+          />
+          <IconButton
+            icon={faAngleRight}
+            class="w-full rounded-none rounded-tr"
+            onClick$={() => setModalImage(imageIndex.value + 1)}
+          />
+        </div>
+        <img
+          width={1920}
+          height={1080}
+          alt={images[imageIndex.value]}
+          src={imageSource.value}
+          class="max-h-screen"
+        />
+      </Modal>
     </article>
   )
 })
+
+export const head: DocumentHead = ({ resolveValue }) => {
+  const gallery = resolveValue(useGallery)
+
+  return {
+    title: gallery.name,
+    meta: [
+      {
+        name: 'id',
+        content: gallery.id,
+      },
+    ],
+  }
+}

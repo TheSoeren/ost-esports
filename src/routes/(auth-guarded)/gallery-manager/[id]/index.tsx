@@ -1,51 +1,46 @@
 import { $, component$, useContext } from '@builder.io/qwik'
 import { routeLoader$, useNavigate } from '@builder.io/qwik-city'
-import Pocketbase from 'pocketbase'
 import GalleryForm from '~/components/gallery/gallery-form'
-import { AuthContext } from '~/contexts/AuthContext'
-import { SnackbarContext } from '~/contexts/SnackbarContext'
+import { SnackbarContext } from '~/contexts/snackbar-context'
+import pb from '~/services/pocketbase'
+import {
+  deleteGallery,
+  getGallery,
+  updateGallery,
+} from '~/services/gallery-service'
 import type { Gallery } from '~/types'
-import { Collection } from '~/types'
 
 export const useGallery = routeLoader$<Gallery>(async (event) => {
-  const pb = new Pocketbase(import.meta.env.VITE_API_URL)
-
-  const gallery = await pb
-    .collection(Collection.GALLERIES)
-    .getOne<Gallery>(event.params.id)
+  const gallery = await getGallery(event.params.id)
+  // TODO: Figure out why this does not work
+  // gallery.coverImage = pb.getFileUrl(gallery, gallery.coverImage)
+  // gallery.images = gallery.images.map((image) => pb.getFileUrl(gallery, image))
+  // return gallery
 
   return {
     ...gallery,
-    coverImage: pb.getFileUrl(gallery, gallery.coverImage),
-    images: gallery.images.map((image) => pb.getFileUrl(gallery, image)),
-  }
+    coverImage: pb.files.getURL(gallery, gallery.coverImage),
+    images: gallery.images.map((image) => pb.files.getURL(gallery, image)),
+  } as Gallery
 })
 
 export default component$(() => {
   const gallery = useGallery()
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: FormData) => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
-      if (!authUser.value) {
-        throw new Error('Not authenticated!')
-      }
-
+      // TODO: Images are not handled gracefully! Refactor this some day.
       const hasNewImages = !!values.get('images')
       if (hasNewImages) {
         // Delete all existing images before uploading new ones
-        await qrlPb
-          .collection(Collection.GALLERIES)
-          .update(gallery.value.id, { images: null })
+        await updateGallery(gallery.value.id, {
+          images: undefined,
+        } as unknown as FormData)
       }
 
-      await qrlPb
-        .collection(Collection.GALLERIES)
-        .update(gallery.value.id, values)
+      await updateGallery(gallery.value.id, values)
 
       enqueueSnackbar({
         type: 'success',
@@ -53,6 +48,7 @@ export default component$(() => {
         duration: 3000,
       })
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Änderung fehlgeschlagen!',
@@ -64,14 +60,8 @@ export default component$(() => {
   })
 
   const handleDelete$ = $(async () => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
-      if (!authUser.value) {
-        throw new Error('Not authenticated!')
-      }
-
-      await qrlPb.collection(Collection.GALLERIES).delete(gallery.value.id)
+      await deleteGallery(gallery.value.id)
 
       enqueueSnackbar({
         type: 'success',
@@ -80,6 +70,7 @@ export default component$(() => {
       })
       navigate('/gallery-manager')
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Löschen fehlgeschlagen!',

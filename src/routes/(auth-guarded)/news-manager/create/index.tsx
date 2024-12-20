@@ -1,28 +1,25 @@
 import { $, component$, useContext } from '@builder.io/qwik'
-import Pocketbase from 'pocketbase'
-import { AuthContext } from '~/contexts/AuthContext'
-import { Collection } from '~/types'
-import { SnackbarContext } from '~/contexts/SnackbarContext'
+import { SnackbarContext } from '~/contexts/snackbar-context'
+import type { DocumentHead } from '@builder.io/qwik-city'
 import { useNavigate } from '@builder.io/qwik-city'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
+import { createNewsEntry } from '~/services/news-service'
+import pb from '~/services/pocketbase'
 
 export default component$(() => {
-  const { authUser } = useContext(AuthContext)
   const { enqueueSnackbar } = useContext(SnackbarContext)
   const navigate = useNavigate()
 
   const handleSubmit$ = $(async (values: NewsFormSchema) => {
-    const qrlPb = new Pocketbase(import.meta.env.VITE_API_URL)
-
     try {
-      if (!authUser.value) {
+      if (!pb.authStore.isValid || !pb.authStore.record) {
         throw new Error('Not authenticated!')
       }
 
-      const newsEntry = await qrlPb.collection(Collection.NEWS).create({
+      const newsEntry = await createNewsEntry({
         ...values,
-        author: authUser.value.id,
+        author: pb.authStore.record.id,
       })
 
       enqueueSnackbar({
@@ -32,6 +29,7 @@ export default component$(() => {
       })
       navigate(`/news-manager/${newsEntry.id}`)
     } catch (error: unknown) {
+      console.error(error)
       enqueueSnackbar({
         type: 'error',
         title: 'Änderung fehlgeschlagen!',
@@ -49,3 +47,7 @@ export default component$(() => {
     </section>
   )
 })
+
+export const head: DocumentHead = {
+  title: 'Create News Entry',
+}

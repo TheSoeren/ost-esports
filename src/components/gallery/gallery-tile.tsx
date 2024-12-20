@@ -2,7 +2,7 @@ import { component$, useStylesScoped$ } from '@builder.io/qwik'
 import { Link } from '@builder.io/qwik-city'
 import type { Gallery } from '~/types'
 import styles from '~/css/gallery/gallery-tile.css?inline'
-import usePocketbase from '~/hooks/usePocketbase'
+import pb from '~/services/pocketbase'
 
 export function random() {
   return Math.round(Math.random())
@@ -10,7 +10,6 @@ export function random() {
 
 export default component$(({ name, coverImage, ...record }: Gallery) => {
   useStylesScoped$(styles)
-  const pb = usePocketbase()
 
   return (
     <section
@@ -24,7 +23,7 @@ export default component$(({ name, coverImage, ...record }: Gallery) => {
           <span class="gallery__tile-backdrop-text">{name}</span>
         </div>
         <img
-          src={pb.files.getUrl(record, coverImage, { thumb: '350x350' })}
+          src={pb.files.getURL(record, coverImage, { thumb: '300x300' })}
           alt={name}
           class="gallery__tile-image"
         />
