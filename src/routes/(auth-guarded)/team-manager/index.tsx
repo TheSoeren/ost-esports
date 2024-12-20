@@ -4,16 +4,17 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
 import type { Game, Team } from '~/types'
 import styles from '~/css/teams/team-manager.css?inline'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { getTeamsByCaptain } from '~/services/team-service'
-import pb from '~/services/pocketbase'
 
-export const useTeams = routeLoader$<Team[]>(async () => {
+export const useTeams = routeLoader$<Team[]>(async ({ cookie }) => {
+  const pb = getEdgePbInstance(cookie)
   const authRecord = pb.authStore.record
   if (!authRecord) {
     return []
   }
 
-  return getTeamsByCaptain(authRecord.id)
+  return getTeamsByCaptain(authRecord.id, pb)
 })
 
 export default component$(() => {

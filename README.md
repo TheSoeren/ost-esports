@@ -49,3 +49,13 @@ yarn build # or `yarn build`
 ## Vercel Edge
 
 This starter site is configured to deploy to [Vercel Edge Functions](https://vercel.com/docs/concepts/functions/edge-functions), which means it will be rendered at an edge location near to your users.
+
+### Known issue:
+
+```
+Error: Cannot perform I/O on behalf of a different request. I/O objects (such as streams, request/response bodies, and others) created in the context of one request handler cannot be accessed from a different request's handler. This is a limitation of Cloudflare Workers which allows us to improve overall performance.
+```
+
+Make sure all server executions contain a new Pocketbase instance
+
+> https://github.com/orgs/vercel/discussions/2678

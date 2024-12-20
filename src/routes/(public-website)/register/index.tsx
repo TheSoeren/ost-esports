@@ -10,9 +10,8 @@ import LoadingBackdrop from '~/components/elements/loading-backdrop'
 import { TextInput } from '~/components/form'
 import type { Snackbar } from '~/contexts/snackbar-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
-import { loadAuthStoreFromCookie } from '~/services/cookie-service'
-import pb from '~/services/pocketbase'
-import { register } from '~/services/user-service'
+import { register } from '~/services/auth-service'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 
 export const registerSchema = z
   .object({
@@ -37,7 +36,7 @@ export const registerSchema = z
 export type RegisterForm = z.infer<typeof registerSchema>
 
 export const useRedirect = routeLoader$(async ({ cookie, redirect }) => {
-  loadAuthStoreFromCookie(cookie)
+  const pb = getEdgePbInstance(cookie)
 
   if (pb.authStore.isValid) {
     throw redirect(302, `/profile`)

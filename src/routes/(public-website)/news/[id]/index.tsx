@@ -4,10 +4,12 @@ import { routeLoader$ } from '@builder.io/qwik-city'
 import BackButton from '~/components/elements/back-button'
 import styles from '~/css/news/news-detail.css?inline'
 import { getNewsEntry } from '~/services/news-service'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import type { NewsEntry } from '~/types'
 
 export const useNewsEntry = routeLoader$<NewsEntry>(async ({ params }) => {
-  return getNewsEntry(params.id)
+  const pb = getEdgePbInstance()
+  return getNewsEntry(params.id, pb)
 })
 
 export default component$(() => {

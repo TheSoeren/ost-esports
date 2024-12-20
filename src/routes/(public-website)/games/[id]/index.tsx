@@ -12,8 +12,9 @@ import {
 } from '~/data/teams/team-tile-mapping'
 import BackButton from '~/components/elements/back-button'
 import type { Game, Team } from '~/types'
-import { getTeamsByGameId } from '~/services/team-service'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { getGame } from '~/services/games-service'
+import { getTeamsByGameId } from '~/services/team-service'
 
 interface UseTeamData {
   teams: Team[]
@@ -22,8 +23,10 @@ interface UseTeamData {
 }
 
 export const useTeamData = routeLoader$<UseTeamData>(async ({ params }) => {
-  const gamePromise = getGame(params.id)
-  const teams = await getTeamsByGameId(params.id)
+  const pb = getEdgePbInstance()
+
+  const gamePromise = getGame(params.id, pb)
+  const teams = await getTeamsByGameId(params.id, pb)
   const gameSpecificDataPromise = getGameSpecificData(teams, params.id)
 
   const [game, gameSpecificData] = await Promise.all([

@@ -4,14 +4,13 @@ import LoadingBar from '~/components/layout/loading-bar'
 import SideNav from '~/components/layout/side-nav'
 import styles from '~/css/layout/guarded-layout.css?inline'
 import { basicNavItems, navRoleMapping } from '~/data/navigation/side-nav'
-import { loadAuthStoreFromCookie } from '~/services/cookie-service'
-import pb from '~/services/pocketbase'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import type { UserRole } from '~/types'
 import type { SideNavItem } from '~/types/navigation'
 
 export const useNavItems = routeLoader$<SideNavItem[]>(
   async ({ cookie, redirect, pathname }) => {
-    loadAuthStoreFromCookie(cookie)
+    const pb = getEdgePbInstance(cookie)
 
     if (!pb.authStore.isValid) {
       throw redirect(302, `/login?redirect=${pathname}`)

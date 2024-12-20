@@ -4,16 +4,17 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
 import styles from '~/css/gallery/gallery-manager.css?inline'
 import { getGalleriesByCreator } from '~/services/gallery-service'
-import pb from '~/services/pocketbase'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import type { Gallery } from '~/types/gallery'
 
-export const useGalleries = routeLoader$<Gallery[]>(async () => {
+export const useGalleries = routeLoader$<Gallery[]>(async ({ cookie }) => {
+  const pb = getEdgePbInstance(cookie)
   const authRecord = pb.authStore.record
   if (!authRecord) {
     return []
   }
 
-  return getGalleriesByCreator(authRecord.id)
+  return getGalleriesByCreator(authRecord.id, pb)
 })
 
 export default component$(() => {

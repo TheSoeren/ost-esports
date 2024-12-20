@@ -3,7 +3,7 @@ import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
 import GalleryForm from '~/components/gallery/gallery-form'
 import { createGallery } from '~/services/gallery-service'
-import pb from '~/services/pocketbase'
+import pb from '~/data/pocketbase'
 
 export default component$(() => {
   const { enqueueSnackbar } = useContext(SnackbarContext)

@@ -11,6 +11,7 @@ import {
 } from '~/data/teams/team-tile-mapping'
 import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
 import ClubSummary from '~/components/club-summary'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { getLolTeams } from '~/services/team-service'
 import { getLatestNewsEntry } from '~/services/news-service'
 
@@ -34,6 +35,8 @@ export async function getTeamData() {
  * remember to add a condition to the rendering of <PlMatchList/>.
  */
 export const useData = routeLoader$<UseDataResponse>(async () => {
+  const pb = getEdgePbInstance()
+
   const [teamResource, newsEntry] = await Promise.all([
     getTeamData(),
     getLatestNewsEntry(),

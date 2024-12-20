@@ -5,13 +5,16 @@ import NewsTile from '~/components/news/news-tile'
 import styles from '~/css/news/index.css?inline'
 import Pagination from '~/components/elements/pagination'
 import type { ListResult } from 'pocketbase'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { getNews } from '~/services/news-service'
 
 export const useNews = routeLoader$<ListResult<NewsEntry>>(({ query }) => {
+  const pb = getEdgePbInstance()
+
   const page = Number(query.get('page')) || 1
   const perPage = Number(query.get('perPage')) || 30
 
-  return getNews(page, perPage)
+  return getNews(page, perPage, pb)
 })
 
 export default component$(() => {

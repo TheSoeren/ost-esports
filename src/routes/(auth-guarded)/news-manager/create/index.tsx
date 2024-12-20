@@ -5,7 +5,7 @@ import { useNavigate } from '@builder.io/qwik-city'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
 import { createNewsEntry } from '~/services/news-service'
-import pb from '~/services/pocketbase'
+import pb from '~/data/pocketbase'
 
 export default component$(() => {
   const { enqueueSnackbar } = useContext(SnackbarContext)

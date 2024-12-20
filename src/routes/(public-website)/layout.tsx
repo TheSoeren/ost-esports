@@ -2,12 +2,10 @@ import { component$, Slot } from '@builder.io/qwik'
 import { routeLoader$ } from '@builder.io/qwik-city'
 import Footer from '~/components/layout/footer'
 import Header from '~/components/layout/header'
-import { loadAuthStoreFromCookie } from '~/services/cookie-service'
-import pb from '~/services/pocketbase'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 
 export const useAuth = routeLoader$(async ({ cookie }) => {
-  loadAuthStoreFromCookie(cookie)
-
+  const pb = getEdgePbInstance(cookie)
   return pb.authStore.isValid
 })
 
