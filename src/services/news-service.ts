@@ -1,7 +1,7 @@
 import { Collection } from '~/types/pocketbase'
 import pb from './pocketbase'
 import type { NewsEntry } from '~/types/news'
-import type { NewsFormSchema } from '~/components/news/news-form'
+import type { NewsForm } from '~/components/news/news-form'
 
 export async function getNews(page: number, perPage: number) {
   return pb.collection(Collection.NEWS).getList<NewsEntry>(page, perPage, {
@@ -27,11 +27,11 @@ export async function getNewsEntry(id: string) {
   return pb.collection(Collection.NEWS).getOne<NewsEntry>(id)
 }
 
-export async function createNewsEntry(value: NewsFormSchema) {
+export async function createNewsEntry(value: NewsForm) {
   return pb.collection(Collection.NEWS).create<NewsEntry>(value)
 }
 
-export async function updateNewsEntry(id: string, value: NewsFormSchema) {
+export async function updateNewsEntry(id: string, value: NewsForm) {
   return pb.collection(Collection.NEWS).update<NewsEntry>(id, value)
 }
 

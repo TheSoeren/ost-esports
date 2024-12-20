@@ -1,17 +1,19 @@
-import type { PropFunction } from '@builder.io/qwik'
-import { component$, useVisibleTask$ } from '@builder.io/qwik'
+import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik'
 import InputLabel from './input-label'
 import InputError from './input-error'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import type {
+  FieldElementProps,
+  FieldPath,
+  FieldValues,
+} from '@modular-forms/qwik'
 
-interface WysiwygProps {
+interface WysiwygProps<
+  TFieldValues extends FieldValues,
+  TFieldName extends FieldPath<TFieldValues>,
+> extends FieldElementProps<TFieldValues, TFieldName> {
   id?: string
-  ref: PropFunction<(element: Element) => void>
-  name: string
   value: string | undefined
-  onInput$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
-  onChange$: PropFunction<(data: string) => void>
-  onBlur$: PropFunction<(event: Event, element: HTMLTextAreaElement) => void>
   placeholder?: string
   required?: boolean
   class?: string
@@ -25,28 +27,41 @@ interface WysiwygProps {
 }
 
 export default component$(
-  ({ label, value, error, onChange$, ...props }: WysiwygProps) => {
+  <
+    TFieldValues extends FieldValues,
+    TFieldName extends FieldPath<TFieldValues>,
+  >({
+    label,
+    value,
+    error,
+    onChange$,
+    ...props
+  }: WysiwygProps<TFieldValues, TFieldName>) => {
     const { name, required } = props
+    const inputRef = useSignal<HTMLTextAreaElement>()
 
+    // NOTE: Must use client-side only rendering because chkeditor uses the dom to register itself
+    // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(async ({ cleanup }) => {
-      const element: HTMLElement | null = document.querySelector(`#${name}`)
-      let editor: ClassicEditor
-
-      if (element) {
-        editor = await ClassicEditor.create(element, {
-          initialData: structuredClone(value),
-          updateSourceElementOnDestroy: false,
-        })
-
-        editor.model.document.on('change', () => {
-          onChange$(editor.getData())
-        })
+      if (!inputRef.value) {
+        console.error(
+          'Unable to bind WYSIWYG editor. Input element not present!'
+        )
+        return
       }
 
+      const editor = await ClassicEditor.create(inputRef.value, {
+        initialData: structuredClone(value),
+        updateSourceElementOnDestroy: false,
+      })
+
+      editor.model.document.on('change', () => {
+        const changeEvent = new Event(editor.getData())
+        onChange$(changeEvent, inputRef.value!)
+      })
+
       cleanup(() => {
-        if (editor) {
-          editor.destroy()
-        }
+        editor?.destroy()
       })
     })
 
@@ -56,6 +71,7 @@ export default component$(
         <textarea
           {...props}
           id={name}
+          ref={inputRef}
           aria-invalid={!!error}
           aria-errormessage={`${name}-error`}
         />

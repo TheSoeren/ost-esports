@@ -9,12 +9,13 @@ import {
   useSignal,
   useVisibleTask$,
 } from '@builder.io/qwik'
+import type { RecordModel } from 'pocketbase'
 import Pocketbase, {
   ClientResponseError,
   type RecordAuthResponse,
 } from 'pocketbase'
 import type { RegisterForm } from '~/routes/public/register'
-import { Collection, type Record, type User } from '~/types'
+import { Collection, type User } from '~/types'
 
 // We know user is always of type User, but somehow I can't get the typing to work
 type OnChangeFunc = (token: string, user: unknown) => void
@@ -23,8 +24,11 @@ interface AuthContext {
   authenticated: Signal<boolean>
   authUser: Signal<User | null>
   pocketbase(): Promise<Pocketbase>
-  register(values: RegisterForm): Promise<Record>
-  login(user: string, password: string): Promise<RecordAuthResponse<Record>>
+  register(values: RegisterForm): Promise<RecordModel>
+  login(
+    user: string,
+    password: string
+  ): Promise<RecordAuthResponse<RecordModel>>
   logout(): void
 }
 
@@ -68,7 +72,7 @@ export const AuthProvider = component$(() => {
   useVisibleTask$(async () => {
     const qrlPb = await createPocketbase(updateAuthStore)
     authenticated.value = qrlPb.authStore.isValid
-    const temp = qrlPb.authStore?.model as Record as User
+    const temp = qrlPb.authStore?.record as User
     noSerialize(temp)
     authUser.value = temp ?? null
   })

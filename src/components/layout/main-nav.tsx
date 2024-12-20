@@ -68,7 +68,7 @@ export default component$(({ isAuthenticated }: MainNavProps) => {
           aria-label="Additional Links"
         >
           <a href="https://discord.gg/UAWGz7gg5A" target="_blank" class="block">
-            <ImgDiscordWide alt="join discord" />
+            <ImgDiscordWide />
           </a>
         </div>
         <nav

@@ -1,24 +1,17 @@
-import {
-  component$,
-  useStore,
-  useTask$,
-  type NoSerialize,
-  type PropFunction,
-} from '@builder.io/qwik'
+import { component$, useStore, useTask$ } from '@builder.io/qwik'
 import InputError from './input-error'
 import InputLabel from './input-label'
+import type {
+  FieldElementProps,
+  FieldPath,
+  FieldValues,
+} from '@modular-forms/qwik'
 
-type FileInputProps = {
-  ref: PropFunction<(element: Element) => void>
-  name: string
-  value:
-    | NoSerialize<File | Blob>
-    | NoSerialize<File | Blob>[]
-    | null
-    | undefined
-  onInput$: PropFunction<(event: Event, element: HTMLInputElement) => void>
-  onChange$: PropFunction<(event: Event, element: HTMLInputElement) => void>
-  onBlur$: PropFunction<(event: Event, element: HTMLInputElement) => void>
+interface FileInputProps<
+  TFieldValues extends FieldValues,
+  TFieldName extends FieldPath<TFieldValues>,
+> extends FieldElementProps<TFieldValues, TFieldName> {
+  value: string | string[] | null | undefined
   accept?: string
   required?: boolean
   multiple?: boolean
@@ -33,11 +26,19 @@ type FileInputProps = {
  * requirements.
  */
 export default component$(
-  ({ value, label, error, ...props }: FileInputProps) => {
+  <
+    TFieldValues extends FieldValues,
+    TFieldName extends FieldPath<TFieldValues>,
+  >({
+    value,
+    label,
+    error,
+    ...props
+  }: FileInputProps<TFieldValues, TFieldName>) => {
     const { name, required, multiple } = props
 
     // Create computed value of selected files
-    const store = useStore<{ images: NoSerialize<File | Blob>[] }>({
+    const store = useStore<{ images: string[] }>({
       images: [],
     })
     useTask$(({ track }) => {
@@ -73,11 +74,10 @@ export default component$(
           </label>
           <div class={[multiple ? 'columns-6 gap-4 mt-3' : 'ml-2']}>
             {store.images.map((file, index) => {
-              const src = URL.createObjectURL(file as Blob)
               return (
                 <img
                   key={index}
-                  src={src}
+                  src={file}
                   class={[
                     multiple ? 'my-2 mx-auto' : 'object-contain max-h-64',
                   ]}
