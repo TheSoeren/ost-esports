@@ -13,9 +13,8 @@ import LoadingBackdrop from '~/components/elements/loading-backdrop'
 import { TextInput } from '~/components/form'
 import type { Snackbar } from '~/contexts/snackbar-context'
 import { SnackbarContext } from '~/contexts/snackbar-context'
-import { loadAuthStoreFromCookie } from '~/services/cookie-service'
-import pb from '~/services/pocketbase'
-import { login } from '~/services/user-service'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
+import { login } from '~/services/auth-service'
 
 export const loginSchema = z.object({
   user: z.string().min(1, 'Dieses Feld darf nicht leer sein!'),
@@ -24,7 +23,7 @@ export const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>
 
 export const useRedirect = routeLoader$(async ({ cookie, redirect }) => {
-  loadAuthStoreFromCookie(cookie)
+  const pb = getEdgePbInstance(cookie)
 
   if (pb.authStore.isValid) {
     throw redirect(302, `/profile`)

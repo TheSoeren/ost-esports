@@ -6,11 +6,13 @@ import BackButton from '~/components/elements/back-button'
 import IconButton from '~/components/elements/icon-button'
 import Modal from '~/components/elements/modal'
 import styles from '~/css/gallery/gallery-images.css?inline'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
+import pb from '~/data/pocketbase'
 import { getGallery } from '~/services/gallery-service'
-import pb from '~/services/pocketbase'
 
-export const useGallery = routeLoader$(async ({ params }) => {
-  return getGallery(params.id)
+export const useGallery = routeLoader$(async ({ params, cookie }) => {
+  const pb = getEdgePbInstance(cookie)
+  return getGallery(params.id, pb)
 })
 
 export default component$(() => {

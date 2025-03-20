@@ -11,8 +11,10 @@ import {
 } from '~/data/teams/team-tile-mapping'
 import { LEAGUE_OF_LEGENDS } from '~/data/games/game-id'
 import ClubSummary from '~/components/club-summary'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { getLolTeams } from '~/services/team-service'
 import { getLatestNewsEntry } from '~/services/news-service'
+import type PocketBase from 'pocketbase'
 
 interface UseDataResponse {
   teamResource: {
@@ -22,8 +24,8 @@ interface UseDataResponse {
   newsEntry: NewsEntry
 }
 
-export async function getTeamData() {
-  const teams = await getLolTeams()
+export async function getTeamData(pb: PocketBase) {
+  const teams = await getLolTeams(pb)
   const gameSpecificData = await getGameSpecificData(teams, LEAGUE_OF_LEGENDS)
 
   return { teams, gameSpecificData }
@@ -33,10 +35,12 @@ export async function getTeamData() {
  * If you generalize this to fetch game specific data about all teams (not only LoL)
  * remember to add a condition to the rendering of <PlMatchList/>.
  */
-export const useData = routeLoader$<UseDataResponse>(async () => {
+export const useData = routeLoader$<UseDataResponse>(async ({ cookie }) => {
+  const pb = getEdgePbInstance(cookie)
+
   const [teamResource, newsEntry] = await Promise.all([
-    getTeamData(),
-    getLatestNewsEntry(),
+    getTeamData(pb),
+    getLatestNewsEntry(pb),
   ])
 
   return { teamResource, newsEntry }

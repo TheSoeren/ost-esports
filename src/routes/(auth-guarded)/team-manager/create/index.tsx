@@ -4,7 +4,7 @@ import TeamForm from '~/components/teams/form/team-form'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import { useNavigate } from '@builder.io/qwik-city'
 import { createTeam } from '~/services/team-service'
-import pb from '~/services/pocketbase'
+import pb from '~/data/pocketbase'
 
 export default component$(() => {
   const { enqueueSnackbar } = useContext(SnackbarContext)

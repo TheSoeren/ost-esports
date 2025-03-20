@@ -4,16 +4,18 @@ import { reset, useForm, zodForm$ } from '@modular-forms/qwik'
 import { z } from 'zod'
 import { TextInput } from '~/components/form'
 import { SnackbarContext } from '~/contexts/snackbar-context'
-import { exportAuthStoreToCookie } from '~/services/cookie-service'
-import pb from '~/services/pocketbase'
+import { exportAuthStoreToCookie } from '~/services/auth-service'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { updateUser } from '~/services/user-service'
+import pb from '~/data/pocketbase'
 
 export const profileSchema = z.object({
   gamertag: z.string().min(1),
 })
 export type ProfileForm = z.infer<typeof profileSchema>
 
-export const useProfile = routeLoader$<ProfileForm>(async () => {
+export const useProfile = routeLoader$<ProfileForm>(async ({ cookie }) => {
+  const pb = getEdgePbInstance(cookie)
   const authRecord = pb.authStore.record
   return { gamertag: authRecord ? authRecord.gamertag : '' }
 })

@@ -4,7 +4,7 @@ import { FaIcon } from 'qwik-fontawesome'
 import styles from '~/css/layout/side-nav.css?inline'
 import type { SideNavItem } from '~/types/navigation'
 import ImgLogoWide from '~/media/logo_wide.webp?jsx'
-import { logout } from '~/services/user-service'
+import { logout } from '~/services/auth-service'
 
 interface SideNavProps {
   navItems: SideNavItem[]

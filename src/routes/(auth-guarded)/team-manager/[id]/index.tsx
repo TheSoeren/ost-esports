@@ -6,11 +6,12 @@ import TeamForm from '~/components/teams/form/team-form'
 import { SnackbarContext } from '~/contexts/snackbar-context'
 import type { FormStore } from '@modular-forms/qwik'
 import { reset } from '@modular-forms/qwik'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { deleteTeam, getTeamById, updateTeam } from '~/services/team-service'
 
-export const useTeam = routeLoader$<Team>(async (event) => {
-  const teams = await getTeamById(event.params.id)
-  return structuredClone(teams)
+export const useTeam = routeLoader$<Team>(async ({ params, cookie }) => {
+  const pb = getEdgePbInstance(cookie)
+  return getTeamById(params.id, pb)
 })
 
 export default component$(() => {

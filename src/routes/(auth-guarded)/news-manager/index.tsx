@@ -4,17 +4,18 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FaIcon } from 'qwik-fontawesome'
 import styles from '~/css/news/news-manager.css?inline'
 import dayjs from 'dayjs'
-import { getNewsByAuthor } from '~/services/news-service'
-import pb from '~/services/pocketbase'
 import type { NewsEntry } from '~/types'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
+import { getNewsByAuthor } from '~/services/news-service'
 
-export const useNews = routeLoader$<NewsEntry[]>(async () => {
+export const useNews = routeLoader$<NewsEntry[]>(async ({ cookie }) => {
+  const pb = getEdgePbInstance(cookie)
   const authRecord = pb.authStore.record
   if (!authRecord) {
     return []
   }
 
-  return getNewsByAuthor(authRecord.id)
+  return getNewsByAuthor(authRecord.id, pb)
 })
 
 export default component$(() => {

@@ -12,8 +12,9 @@ import {
 } from '~/data/teams/team-tile-mapping'
 import BackButton from '~/components/elements/back-button'
 import type { Game, Team } from '~/types'
-import { getTeamsByGameId } from '~/services/team-service'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import { getGame } from '~/services/games-service'
+import { getTeamsByGameId } from '~/services/team-service'
 
 interface UseTeamData {
   teams: Team[]
@@ -21,18 +22,22 @@ interface UseTeamData {
   game: Game
 }
 
-export const useTeamData = routeLoader$<UseTeamData>(async ({ params }) => {
-  const gamePromise = getGame(params.id)
-  const teams = await getTeamsByGameId(params.id)
-  const gameSpecificDataPromise = getGameSpecificData(teams, params.id)
+export const useTeamData = routeLoader$<UseTeamData>(
+  async ({ params, cookie }) => {
+    const pb = getEdgePbInstance(cookie)
 
-  const [game, gameSpecificData] = await Promise.all([
-    gamePromise,
-    gameSpecificDataPromise,
-  ])
+    const gamePromise = getGame(params.id, pb)
+    const teams = await getTeamsByGameId(params.id, pb)
+    const gameSpecificDataPromise = getGameSpecificData(teams, params.id)
 
-  return { teams, game, gameSpecificData }
-})
+    const [game, gameSpecificData] = await Promise.all([
+      gamePromise,
+      gameSpecificDataPromise,
+    ])
+
+    return { teams, game, gameSpecificData }
+  }
+)
 
 export default component$(() => {
   useStylesScoped$(styles)

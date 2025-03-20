@@ -6,15 +6,19 @@ import type { FormStore } from '@modular-forms/qwik'
 import { reset } from '@modular-forms/qwik'
 import type { NewsFormSchema } from '~/components/news/news-form'
 import NewsForm from '~/components/news/news-form'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import {
   deleteNewsEntry,
   getNewsEntry,
   updateNewsEntry,
 } from '~/services/news-service'
 
-export const useNewsEntry = routeLoader$<NewsEntry>(async (event) => {
-  return getNewsEntry(event.params.id)
-})
+export const useNewsEntry = routeLoader$<NewsEntry>(
+  async ({ cookie, params }) => {
+    const pb = getEdgePbInstance(cookie)
+    return getNewsEntry(params.id, pb)
+  }
+)
 
 export default component$(() => {
   const newsEntry = useNewsEntry()

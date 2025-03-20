@@ -2,16 +2,17 @@ import { $, component$, useContext } from '@builder.io/qwik'
 import { routeLoader$, useNavigate } from '@builder.io/qwik-city'
 import GalleryForm from '~/components/gallery/gallery-form'
 import { SnackbarContext } from '~/contexts/snackbar-context'
-import pb from '~/services/pocketbase'
 import {
   deleteGallery,
   getGallery,
   updateGallery,
 } from '~/services/gallery-service'
+import { getEdgePbInstance } from '~/services/pocketbase-service'
 import type { Gallery } from '~/types'
 
-export const useGallery = routeLoader$<Gallery>(async (event) => {
-  const gallery = await getGallery(event.params.id)
+export const useGallery = routeLoader$<Gallery>(async ({ cookie, params }) => {
+  const pb = getEdgePbInstance(cookie)
+  const gallery = await getGallery(params.id, pb)
   // TODO: Figure out why this does not work
   // gallery.coverImage = pb.getFileUrl(gallery, gallery.coverImage)
   // gallery.images = gallery.images.map((image) => pb.getFileUrl(gallery, image))
